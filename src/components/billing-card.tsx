@@ -6,7 +6,15 @@ import { FREE_DIGEST_HOUR, FREE_MAX_CATEGORIES } from "@/modules/billing/domain/
 import { SITE_COPY } from "@/shared/site-copy";
 import type { Locale } from "@/shared/locale";
 
-export function BillingCard({ plan, locale }: { plan: "FREE" | "PRO"; locale: Locale }) {
+export function BillingCard({
+  plan,
+  locale,
+  billingEnabled,
+}: {
+  plan: "FREE" | "PRO";
+  locale: Locale;
+  billingEnabled: boolean;
+}) {
   const copy = SITE_COPY[locale];
   const [loading, setLoading] = useState(false);
 
@@ -38,13 +46,25 @@ export function BillingCard({ plan, locale }: { plan: "FREE" | "PRO"; locale: Lo
             : locale === "de" ? `${FREE_MAX_CATEGORIES} Kategorie und tägliche Zustellung um ${FREE_DIGEST_HOUR}:00 Uhr.` : locale === "en" ? `${FREE_MAX_CATEGORIES} category and delivery fixed at ${FREE_DIGEST_HOUR}:00 every morning.` : `${FREE_MAX_CATEGORIES} kategori ve sabit sabah ${FREE_DIGEST_HOUR}:00 teslimatı.`}
         </p>
       </div>
-      <button
-        onClick={() => go(plan === "PRO" ? "/api/billing/portal" : "/api/billing/checkout")}
-        disabled={loading}
-        className="shrink-0 rounded-md bg-foreground px-3 py-1.5 text-sm font-medium text-background disabled:opacity-60"
-      >
-        {loading ? "..." : plan === "PRO" ? copy.manage : copy.upgrade}
-      </button>
+      {plan === "PRO" ? (
+        <button
+          onClick={() => go("/api/billing/portal")}
+          disabled={loading}
+          className="shrink-0 rounded-md bg-foreground px-3 py-1.5 text-sm font-medium text-background disabled:opacity-60"
+        >
+          {loading ? "..." : copy.manage}
+        </button>
+      ) : billingEnabled ? (
+        <button
+          onClick={() => go("/api/billing/checkout")}
+          disabled={loading}
+          className="shrink-0 rounded-md bg-foreground px-3 py-1.5 text-sm font-medium text-background disabled:opacity-60"
+        >
+          {loading ? "..." : copy.upgrade}
+        </button>
+      ) : (
+        <p className="shrink-0 text-xs text-muted-foreground">{copy.premiumComingSoon}</p>
+      )}
     </div>
   );
 }

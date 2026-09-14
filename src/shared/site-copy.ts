@@ -17,6 +17,7 @@ export const SITE_COPY = {
     manage: "Üyeliğimi yönet", upgrade: "Pro’ya yükselt",
     description: "Almanya’daki en önemli haberlerin günlük Türkçe özeti.",
     privacyLink: "Gizlilik Politikası", emailLanguage: "Günlük e-posta dili",
+    premiumComingSoon: "Genişletilmiş premium sürüm üzerinde çalışıyoruz.",
   },
   de: {
     cookieSettings: "Cookie-Einstellungen",
@@ -35,6 +36,7 @@ export const SITE_COPY = {
     manage: "Abonnement verwalten", upgrade: "Auf Pro upgraden",
     description: "Die wichtigsten Nachrichten aus Deutschland, täglich zusammengefasst.",
     privacyLink: "Datenschutzerklärung", emailLanguage: "Sprache der täglichen E-Mail",
+    premiumComingSoon: "Wir arbeiten an einer erweiterten Premium-Ausgabe.",
   },
   en: {
     cookieSettings: "Cookie settings",
@@ -53,5 +55,6 @@ export const SITE_COPY = {
     manage: "Manage subscription", upgrade: "Upgrade to Pro",
     description: "A daily summary of the most important German news in English.",
     privacyLink: "Privacy Policy", emailLanguage: "Daily email language",
+    premiumComingSoon: "We're working on an expanded premium edition.",
   },
 } satisfies Record<Locale, Record<string, string>>;
