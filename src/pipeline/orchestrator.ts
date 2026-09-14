@@ -47,6 +47,7 @@ export interface PipelineRunSummary {
   summarize: { summarized: number; failed: number };
   digest: { digestId: string; itemCount: number };
   translate: { translated: number; failed: number };
+  translateDe: { translated: number; failed: number };
 }
 
 export async function runPipeline(): Promise<PipelineRunSummary> {
@@ -77,13 +78,14 @@ export async function runPipeline(): Promise<PipelineRunSummary> {
 
     const digestResult = await new BuildDigestUseCase(new PrismaDigestRepository()).execute();
 
-    const translateResult = await new TranslateStoriesUseCase(
-      new PrismaTranslatorRepository(),
-      new OpenAITranslator(),
-    ).execute(digestResult.storyIds);
+    // Five chat requests total across both languages; failures/retries stay isolated.
+    const [translateResult, translateDeResult] = await Promise.all([
+      new TranslateStoriesUseCase(new PrismaTranslatorRepository("en"), new OpenAITranslator(undefined, "en"), 3).execute(digestResult.storyIds),
+      new TranslateStoriesUseCase(new PrismaTranslatorRepository("de"), new OpenAITranslator(undefined, "de"), 2).execute(digestResult.storyIds),
+    ]);
 
     const totalFailed =
-      fetchResult.failed + clusterResult.failed + summarizeResult.failed + translateResult.failed;
+      fetchResult.failed + clusterResult.failed + summarizeResult.failed + translateResult.failed + translateDeResult.failed;
     const status =
       fetchResult.succeeded === 0
         ? "FAILED"
@@ -103,6 +105,7 @@ export async function runPipeline(): Promise<PipelineRunSummary> {
       summarize: summarizeResult,
       digest: digestResult,
       translate: translateResult,
+      translateDe: translateDeResult,
     };
 
     await prisma.pipelineRun.update({

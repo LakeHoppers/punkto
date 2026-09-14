@@ -41,7 +41,7 @@ def test_latest_locale_and_route_precedence():
     with TestClient(create_app(repo)) as client:
         assert client.get("/api/digests/latest?lang=en").json()["digestId"] == "latest"
         assert client.get("/api/digests/latest?lang=de").status_code == 200
-    assert repo.calls == ["en", "tr"]
+    assert repo.calls == ["en", "de"]
 
 
 @pytest.mark.parametrize("day", ["bad", "2026-2-03", "2026-02-30", "2026-13-01", "0000-01-01"])

@@ -2,7 +2,14 @@ import { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/shared/prisma";
 import type { SummaryToTranslate, TranslatorRepository } from "../application/ports";
 
+const TRANSLATION_FIELDS = {
+  en: ["headlineEn", "bodyEn", "whyItMattersEn"],
+  de: ["headlineDe", "bodyDe", "whyItMattersDe"],
+} as const;
+
 export class PrismaTranslatorRepository implements TranslatorRepository {
+  constructor(private readonly locale: "en" | "de" = "en") {}
+
   async getUntranslatedSummaries(storyIds: string[]): Promise<SummaryToTranslate[]> {
     if (storyIds.length === 0) return [];
 
@@ -15,7 +22,7 @@ export class PrismaTranslatorRepository implements TranslatorRepository {
     });
 
     return stories
-      .filter((story) => story.summaries[0] && [story.summaries[0].headlineEn, story.summaries[0].bodyEn, story.summaries[0].whyItMattersEn].some(value => !value?.trim()))
+      .filter((story) => story.summaries[0] && (TRANSLATION_FIELDS[this.locale].some(field => !story.summaries[0][field]?.trim()) || story.summaries[0][TRANSLATION_FIELDS[this.locale][1]]?.trim() === story.summaries[0].body.trim()))
       .map((story) => {
         const summary = story.summaries[0];
         return {
@@ -37,6 +44,7 @@ export class PrismaTranslatorRepository implements TranslatorRepository {
     const excluded = excludeStoryIds.length
       ? Prisma.sql`AND s."storyId" NOT IN (${Prisma.join(excludeStoryIds)})`
       : Prisma.empty;
+    const [headline, body, why] = TRANSLATION_FIELDS[this.locale].map(field => Prisma.raw(`s."${field}"`));
     return prisma.$queryRaw<SummaryToTranslate[]>(Prisma.sql`
       SELECT s.id AS "summaryId", s."storyId", s.headline, s.body, s."whyItMatters"
       FROM "Summary" s
@@ -45,9 +53,10 @@ export class PrismaTranslatorRepository implements TranslatorRepository {
           SELECT 1 FROM "Summary" newer WHERE newer."storyId" = s."storyId"
             AND (newer.version > s.version OR (newer.version = s.version AND newer.id > s.id))
         )
-        AND (NULLIF(BTRIM(s."headlineEn"), '') IS NULL
-          OR NULLIF(BTRIM(s."bodyEn"), '') IS NULL
-          OR NULLIF(BTRIM(s."whyItMattersEn"), '') IS NULL)
+        AND (NULLIF(BTRIM(${headline}), '') IS NULL
+          OR NULLIF(BTRIM(${body}), '') IS NULL
+          OR NULLIF(BTRIM(${why}), '') IS NULL
+          OR BTRIM(${body}) = BTRIM(s.body))
         ${excluded}
       ORDER BY s."createdAt" ASC, s.id ASC
       LIMIT ${limit}
@@ -61,9 +70,9 @@ export class PrismaTranslatorRepository implements TranslatorRepository {
     await prisma.summary.update({
       where: { id: summaryId },
       data: {
-        headlineEn: output.headline,
-        bodyEn: output.body,
-        whyItMattersEn: output.whyItMatters,
+        [TRANSLATION_FIELDS[this.locale][0]]: output.headline,
+        [TRANSLATION_FIELDS[this.locale][1]]: output.body,
+        [TRANSLATION_FIELDS[this.locale][2]]: output.whyItMatters,
       },
     });
   }

@@ -24,7 +24,7 @@ class BillingService:
         )
 
     def checkout(self, user_id, email, locale="tr", price_id=None):
-        if locale not in ("tr", "en"):
+        if locale not in ("tr", "en", "de"):
             locale = "tr"
         price_id = price_id or self.price_id
         if not price_id:
@@ -49,7 +49,7 @@ class BillingService:
         )
 
     def portal(self, user_id, locale="tr"):
-        if locale not in ("tr", "en"):
+        if locale not in ("tr", "en", "de"):
             locale = "tr"
         sub = next(
             (s for s in self.store.read().get("subscriptions", []) if s["userId"] == user_id), {}

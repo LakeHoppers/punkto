@@ -7,19 +7,21 @@ import type { Category } from "@/generated/prisma/enums";
 import { CATEGORY_LABELS_TR, CATEGORY_LABELS } from "@/shared/category-labels";
 
 import { SITE_COPY } from "@/shared/site-copy";
-import type { Locale } from "@/shared/locale";
+import { LOCALES, type Locale } from "@/shared/locale";
 import { useRouter } from "next/navigation";
 
 const ALL_CATEGORIES = Object.keys(CATEGORY_LABELS_TR) as Category[];
 
 export function PreferencesForm({
   initialFavoriteCategories,
-  plan, locale,
+  plan, locale, initialEmailLocale = "tr",
 }: {
   initialFavoriteCategories: Category[];
   plan: "FREE" | "PRO";
   locale: Locale;
+  initialEmailLocale?: Locale;
 }) {
+  const [emailLocale, setEmailLocale] = useState<Locale>(initialEmailLocale);
   const copy = SITE_COPY[locale];
   const router = useRouter();
   const [selected, setSelected] = useState<Set<Category>>(
@@ -43,7 +45,7 @@ export function PreferencesForm({
       const res = await fetch("/api/me/preferences", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ favoriteCategories: [...selected] }),
+        body: JSON.stringify({ favoriteCategories: [...selected], emailLocale }),
       });
       setStatus(res.ok ? "saved" : "error");
       if (res.ok) router.refresh();
@@ -57,6 +59,10 @@ export function PreferencesForm({
       <p className="text-xs text-muted-foreground">
         {copy.preferences} {plan === "FREE" && copy.freeLimit}
       </p>
+      <Label htmlFor="email-language">{copy.emailLanguage}</Label>
+      <select id="email-language" className="w-fit rounded-md border bg-background px-3 py-2 text-sm" value={emailLocale} onChange={(event) => { setEmailLocale(event.target.value as Locale); setStatus("idle"); }}>
+        {LOCALES.map(language => <option key={language} value={language}>{({ tr: "Türkçe", en: "English", de: "Deutsch" })[language]}</option>)}
+      </select>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
         {ALL_CATEGORIES.map((category) => (
           <div

@@ -43,7 +43,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
           <CardTitle className="text-base">{copy.favorites}</CardTitle>
         </CardHeader>
         <CardContent>
-          <PreferencesForm initialFavoriteCategories={favoriteCategories} plan={plan} locale={locale} />
+          <PreferencesForm initialEmailLocale={isLocale(user.preference?.emailLocale) ? user.preference.emailLocale : "tr"} initialFavoriteCategories={favoriteCategories} plan={plan} locale={locale} />
         </CardContent>
       </Card>
 

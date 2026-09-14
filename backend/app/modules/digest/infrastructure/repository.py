@@ -27,8 +27,8 @@ from app.modules.digest.infrastructure.models import (
 def localized(summary, field: str, locale: Locale):
     if summary is None:
         return ""
-    english = getattr(summary, f"{field}_en", None)
-    return english if locale == "en" and english else getattr(summary, field)
+    translated = getattr(summary, f"{field}_{locale}", None) if locale in ("en", "de") else None
+    return translated if translated and translated.strip() else getattr(summary, field)
 
 
 def project_digest(digest, rows, summaries, articles, locale: Locale = "tr") -> Digest:

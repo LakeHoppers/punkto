@@ -7,7 +7,7 @@ export interface SummaryToTranslate {
 }
 
 export interface TranslatorRepository {
-  /** Latest Summary for each given story that has no English translation yet. */
+  /** Latest Summary for each given story that is incomplete in this repository’s target language. */
   getUntranslatedSummaries(storyIds: string[]): Promise<SummaryToTranslate[]>;
   /** Latest incomplete summaries in published digests, independent of this run. */
   getPublishedUntranslatedSummaries(excludeStoryIds: string[], limit: number): Promise<SummaryToTranslate[]>;

@@ -35,12 +35,12 @@ function toDigestView(digest: DigestWithItems, locale: Locale): DigestView {
         rank: item.rank,
         storyId: item.storyId,
         category: item.story.category,
-        headline: pickLocalizedText(locale, summary?.headline ?? "", summary?.headlineEn),
-        summary: pickLocalizedText(locale, summary?.body ?? "", summary?.bodyEn),
+        headline: pickLocalizedText(locale, summary?.headline ?? "", summary?.headlineEn, summary?.headlineDe),
+        summary: pickLocalizedText(locale, summary?.body ?? "", summary?.bodyEn, summary?.bodyDe),
         whyItMatters: pickLocalizedText(
           locale,
           summary?.whyItMatters ?? "",
-          summary?.whyItMattersEn,
+          summary?.whyItMattersEn, summary?.whyItMattersDe,
         ),
         tags: summary?.tags ?? [],
         sourceUrls: item.story.rawArticles.map((article) => article.url),
@@ -103,7 +103,7 @@ export async function getDigestHistory(
       rank: item.rank,
       storyId: item.storyId,
       category: item.story.category,
-      headline: pickLocalizedText(locale, item.story.summaries[0]?.headline ?? "", item.story.summaries[0]?.headlineEn),
+      headline: pickLocalizedText(locale, item.story.summaries[0]?.headline ?? "", item.story.summaries[0]?.headlineEn, item.story.summaries[0]?.headlineDe),
     })),
   }));
 }

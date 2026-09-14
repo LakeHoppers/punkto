@@ -799,3 +799,62 @@ Clerk still displays the cosmetic title "My Application"; renaming that is separ
 GitHub connector still exposes only the personal installation and no LakeHoppers
 repository listing. CLI access/push works; connector access is not a development
 blocker, and its state does not establish whether an org owner has approved it.
+
+
+## German locale (2026-09-14)
+
+- `/tr`, `/en`, `/de` share locale-aware navigation, dashboard, billing return
+  paths and Clerk localization. `/de/privacy` contains the German policy; admin
+  remains Turkish. Email language is a separate saved account preference, available
+  on Free and Pro, defaulting existing users to `tr`. Browsing another locale does
+  not silently change delivery language.
+- Applied additive Prisma migration `20260914090000_german_locale` to live Neon:
+  nullable `Summary.headlineDe/bodyDe/whyItMattersDe`, plus
+  `UserPreference.emailLocale` (default `tr`, DB check for `tr/en/de`). Existing
+  code remains compatible; no data drops, scheduler changes or Python production
+  write ownership changes. Prisma remains migration authority.
+- Production translations reuse grounded Turkish summaries with GPT-4o-mini,
+  preserving facts, paragraph structure, attribution and uncertainty. German
+  glossary maps YZ/AI to KI. Datelines such as Berlin (dpa) do not imply location
+  or category. The existing fact-based summarizer category rules remain intact.
+  Tradeoff: translation inherits omissions/errors in the Turkish summary; it is
+  not a fresh source-based extraction. Tags remain Turkish and hidden on homepage.
+- EN/DE repository instances independently check the newest summary version and
+  save only their target columns. Each retries at most five previously published
+  incomplete summaries per run. Current stories have priority. Admin-created
+  versions start with null translations. Five simultaneous chat calls total:
+  three English workers plus two German workers. Category and digest-item sets
+  are untouched by translation. Missing/blank read fields fall back to Turkish.
+- Browser verification caught an AI response echoing its Turkish source despite
+  nonempty fields. Provider validation now rejects an unchanged source body;
+  repository current/historical queries also select existing echoes for repair.
+  Explicit target-language instructions repaired the affected live story.
+- Verified all 10 current items against live Neon. Initial 15-call batch (10
+  current + 5 historical) took 17.65 seconds, 6,463 input / 2,941 output tokens,
+  estimated $0.00273405. It included the echo later caught in the browser. Two
+  repair attempts rejected the echo while translating five more historical
+  items each; stronger instructions then repaired the one current item in
+  2.05 seconds ($0.00021315). These are translation-stage timings, not a new
+  full-pipeline timing or a guarantee of the 300-second production budget.
+- Cost planning: 10 stories × 1,000–2,000 input and 500–1,000 output tokens is
+  approximately $0.0045–$0.009/day before historical retries. Official standard
+  GPT-4o-mini rates checked Sep 14: $0.15/M input, $0.60/M output:
+  https://developers.openai.com/api/docs/models/gpt-4o-mini
+- Browser checks on a production build: German homepage/date/categories, privacy,
+  signed-in dashboard/billing copy, Clerk account menu/profile modal, and saved
+  DE email preference surviving reload. Reserved test account restored to TR;
+  no subscriber email sent. The local server initially needed the standard
+  binding rather than 127.0.0.1 because Next proxies internally via localhost.
+- Python read projections, preferences, billing returns and email formatting
+  support DE too. Its manually triggered shadow AI orchestrator still generates
+  EN only; adding DE generation there remains a parity follow-up before Phase 4.
+  This release changes the authoritative TypeScript pipeline, not scheduling.
+
+Verification: `docs/verification/german-locale.json`; explicit manual repair tool:
+`npx tsx scripts/verify-german-digest.ts --apply` (latest edition + five historical
+retries), or add `--current-only` to suppress historical work. Existing translations
+are skipped; this does not rebuild the digest or email subscribers.
+
+Final verification for DE: 163 TypeScript tests passed (one private oracle opt-in skipped),
+88 Python tests passed including all three live read-only checks; lint, typecheck,
+Ruff and production build passed. Browser confirmed the repaired German item.

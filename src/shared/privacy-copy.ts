@@ -17,9 +17,9 @@ const CONTACT_EMAIL = "emrekucuksahin@gmail.com";
 export const PRIVACY_COPY: Record<Locale, PrivacyCopy> = {
   tr: {
     title: "Gizlilik Politikası",
-    updated: "Son güncelleme: 11 Eylül 2026",
+    updated: "Son güncelleme: 14 Eylül 2026",
     intro: [
-      "News Daily, Almanya'daki en önemli haberleri günlük olarak toplayıp Türkçe ve İngilizce özetleyen bir hizmettir. Bu sayfa, hizmeti kullanırken hangi kişisel verilerin toplandığını, neden toplandığını ve haklarının neler olduğunu açıklar.",
+      "News Daily, Almanya'daki en önemli haberleri günlük olarak toplayıp Türkçe, İngilizce ve Almanca özetleyen bir hizmettir. Bu sayfa, hizmeti kullanırken hangi kişisel verilerin toplandığını, neden toplandığını ve haklarının neler olduğunu açıklar.",
       `Veri sorumlusu: Emre Küçükşahin (şu an ayrı bir şirket üzerinden değil, şahsen işletiliyor). Sorularınız için: ${CONTACT_EMAIL}`,
     ],
     sections: [
@@ -27,7 +27,7 @@ export const PRIVACY_COPY: Record<Locale, PrivacyCopy> = {
         heading: "Hangi verileri topluyoruz",
         body: [
           "Hesap oluştururken: adın ve e-posta adresin (kimlik doğrulama sağlayıcımız Clerk üzerinden).",
-          "Tercihlerin: favori haber kategorilerin, günlük özetin gönderileceği saat ve zaman dilimi.",
+          "Tercihlerin: favori haber kategorilerin, e-posta dilin, günlük özetin gönderileceği saat ve zaman dilimi.",
           "Abonelik durumun: Pro plana geçip geçmediğin ve abonelik durumu (kart bilgilerini biz değil, doğrudan Stripe işler ve saklar — bize hiç ulaşmaz).",
         ],
       },
@@ -80,11 +80,55 @@ export const PRIVACY_COPY: Record<Locale, PrivacyCopy> = {
       },
     ],
   },
+  de: {
+    title: "Datenschutzerklärung",
+    updated: "Zuletzt aktualisiert: 14. September 2026",
+    intro: [
+      "News Daily sammelt täglich die wichtigsten Nachrichten aus Deutschland und fasst sie auf Türkisch, Englisch und Deutsch zusammen. Hier erfährst du, welche personenbezogenen Daten wir bei der Nutzung erheben, warum wir sie erheben und welche Rechte du hast.",
+      `Verantwortlicher: Emre Küçükşahin (derzeit persönlich betrieben, nicht über ein eingetragenes Unternehmen). Fragen: ${CONTACT_EMAIL}`,
+    ],
+    sections: [
+      { heading: "Welche Daten wir erheben", body: [
+        "Bei der Registrierung: deinen Namen und deine E-Mail-Adresse (über unseren Authentifizierungsanbieter Clerk).",
+        "Deine Einstellungen: bevorzugte Nachrichtenkategorien, Sprache der täglichen E-Mail, Zustellzeit und Zeitzone.",
+        "Deinen Abonnementstatus: ob du den Pro-Tarif nutzt. Deine Kartendaten werden direkt von Stripe verarbeitet und gespeichert — wir erhalten sie nicht.",
+      ] },
+      { heading: "Warum wir diese Daten erheben", body: [
+        "Um dir deinen persönlichen täglichen Nachrichtenüberblick per E-Mail zu schicken.",
+        "Damit du dich anmelden und deine Einstellungen speichern kannst.",
+        "Um Zahlungen für das Pro-Abonnement über Stripe abzuwickeln.",
+        "Rechtsgrundlage ist die Erfüllung des Vertrags zur Bereitstellung unseres Dienstes (Art. 6 Abs. 1 Buchst. b DSGVO).",
+      ] },
+      { heading: "Mit wem wir deine Daten teilen", body: [
+        "Clerk — Authentifizierung (Anmeldung und Registrierung).",
+        "Neon — unsere Datenbank, gehostet in der EU (Frankfurt, Deutschland).",
+        "Vercel — unsere Anwendungsserver, gehostet in der EU (Frankfurt, Deutschland).",
+        "Resend — E-Mail-Versand. Dieser Anbieter speichert Daten in den USA; die Übermittlung ist durch das EU-US Data Privacy Framework und Standardvertragsklauseln (SCC) abgesichert.",
+        "Stripe — Zahlungsabwicklung mit einem eigenen umfassenden Rahmen zur Einhaltung der DSGVO.",
+        "OpenAI — verarbeitet ausschließlich Nachrichteninhalte für Zusammenfassung und Übersetzung. Dein Name, deine E-Mail-Adresse und deine Einstellungen werden niemals an OpenAI gesendet.",
+        "Wir verkaufen deine Daten niemals zu Werbezwecken an Dritte.",
+      ] },
+      { heading: "Wie lange wir Daten speichern", body: [
+        "Wir speichern deine Daten, solange dein Konto aktiv ist. Wenn du dein Konto löschen lassen möchtest, kontaktiere uns unter der unten angegebenen Adresse. Wir löschen deine Daten innerhalb einer angemessenen Frist.",
+      ] },
+      { heading: "Deine Rechte (DSGVO)", body: [
+        "Du hast das Recht auf Auskunft, Berichtigung, Löschung und Datenübertragbarkeit sowie das Recht, der Verarbeitung deiner Daten zu widersprechen.",
+        `Um diese Rechte auszuüben, kontaktiere uns unter: ${CONTACT_EMAIL}`,
+        "Du kannst außerdem bei deiner zuständigen Datenschutzaufsichtsbehörde Beschwerde einlegen.",
+      ] },
+      { heading: "Cookies", body: [
+        "Wir verwenden ausschließlich technisch notwendige Authentifizierungs-Cookies von Clerk, damit du angemeldet bleibst. Wir verwenden keine Werbe-, Tracking- oder Analyse-Cookies.",
+      ] },
+      { heading: "Änderungen", body: [
+        "Diese Datenschutzerklärung kann gelegentlich aktualisiert werden. Bei wesentlichen Änderungen aktualisieren wir das Datum auf dieser Seite.",
+      ] },
+    ],
+  },
   en: {
     title: "Privacy Policy",
-    updated: "Last updated: September 11, 2026",
+    updated: "Last updated: September 14, 2026",
     intro: [
-      "News Daily collects the most important German news each day and summarizes it in Turkish and English. This page explains what personal data we collect while you use the service, why we collect it, and what rights you have.",
+      "News Daily collects the most important German news each day and summarizes it in Turkish, English and German. This page explains what personal data we collect while you use the service, why we collect it, and what rights you have.",
       `Data controller: Emre Küçükşahin (currently operated personally, not through a registered company). Questions: ${CONTACT_EMAIL}`,
     ],
     sections: [
@@ -92,7 +136,7 @@ export const PRIVACY_COPY: Record<Locale, PrivacyCopy> = {
         heading: "What we collect",
         body: [
           "When you create an account: your name and email address (via our authentication provider, Clerk).",
-          "Your preferences: favorite news categories, your preferred daily delivery time and time zone.",
+          "Your preferences: favorite news categories, email language, your preferred daily delivery time and time zone.",
           "Your subscription status: whether you're on the Pro plan (your card details are handled and stored directly by Stripe — they never reach us).",
         ],
       },

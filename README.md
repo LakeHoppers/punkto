@@ -2,9 +2,9 @@
 
 **Live:** [daily-news-saas.vercel.app](https://daily-news-saas.vercel.app)
 
-Every morning, subscribers get a high-quality **Turkish** (and, as of the v1 English toggle, **English**) summary of the most important German news — not a translation, but a ranked, deduplicated, explained digest.
+Every morning, subscribers get a high-quality **Turkish, English or German** summary of the most important German news — not a translation, but a ranked, deduplicated, explained digest.
 
-Built for Turkish and English speakers living in or following Germany: expats, professionals tracking the German economy, and anyone who wants "what happened in Germany yesterday and why it matters" in five minutes.
+Built for Turkish, English and German speakers living in or following Germany: expats, professionals tracking the German economy, and anyone who wants "what happened in Germany yesterday and why it matters" in five minutes.
 
 ## Docs
 

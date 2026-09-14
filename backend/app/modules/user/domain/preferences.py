@@ -15,6 +15,10 @@ CATEGORIES = {
 
 def preference_patch(body: dict, plan: str) -> dict:
     data = {}
+    if "emailLocale" in body:
+        if body["emailLocale"] not in ("tr", "en", "de"):
+            raise ValueError("Invalid emailLocale")
+        data["emailLocale"] = body["emailLocale"]
     if isinstance(body.get("favoriteCategories"), list):
         values = [v for v in body["favoriteCategories"] if isinstance(v, str) and v in CATEGORIES]
         data["favoriteCategories"] = values[:1] if plan == "FREE" else values

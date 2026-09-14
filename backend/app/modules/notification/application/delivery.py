@@ -29,7 +29,10 @@ class DeliverDigest:
         for pref in data.get("preferences", []):
             if pref["paused"] or not is_due(pref["timezone"], pref["digestHour"], now):
                 continue
-            digest = data.get("digest")
+            locale = pref.get("emailLocale", "tr")
+            if locale not in ("tr", "en", "de"):
+                locale = "tr"
+            digest = data.get("localizedDigests", {}).get(locale, data.get("digest"))
             if digest:
                 digest = digest | {
                     "items": [
@@ -64,7 +67,7 @@ class DeliverDigest:
                 result["skipped"] += 1
                 continue
             try:
-                self.sender.send(users[pref["userId"]]["email"], build_email(digest), key)
+                self.sender.send(users[pref["userId"]]["email"], build_email(digest, locale), key)
             except Exception:  # noqa: BLE001 - isolate provider failures per recipient, without logging PII
                 self.store.transact(
                     lambda state, key=key: state["deliveryLedger"].update(

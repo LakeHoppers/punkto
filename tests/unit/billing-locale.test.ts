@@ -8,7 +8,7 @@ vi.mock("@/modules/billing/application/create-portal-session.use-case", () => ({
 import { POST as createCheckout } from "@/app/api/billing/checkout/route";
 import { POST as createPortal } from "@/app/api/billing/portal/route";
 beforeEach(() => { checkout.mockReset().mockResolvedValue("https://checkout.stripe.com/test"); portal.mockReset().mockResolvedValue("https://billing.stripe.com/test"); });
-it.each(["tr", "en"])("returns to the %s account after checkout and portal", async (locale) => {
+it.each(["tr", "en", "de"])("returns to the %s account after checkout and portal", async (locale) => {
   const request = () => new Request("https://example.com/api/billing/checkout", { method: "POST", body: JSON.stringify({ locale, priceId: "test" }) });
   expect((await createCheckout(request())).status).toBe(200);
   expect(checkout.mock.calls[0][0]).toMatchObject({ successUrl: `https://example.com/${locale}/dashboard?checkout=success`, cancelUrl: `https://example.com/${locale}/dashboard?checkout=cancelled` });

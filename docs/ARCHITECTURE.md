@@ -291,3 +291,16 @@ simulator. `sandbox_server.py` binds loopback and has no scheduler. Admin-trigge
 pipeline artifacts remain local. This adapter proves behavior, not production
 storage scale or distributed locking. Production TS ownership and Prisma migration
 authority remain unchanged; migration docs list the outstanding cutover gates.
+
+
+### German locale and delivery language
+
+The site uses `/tr`, `/en`, `/de` routes. `UserPreference.emailLocale` independently
+selects the language passed through the notification reader and email formatter;
+its database default is Turkish. Subscriber locale changes do not alter the
+per-digest/user/channel dedup key. Latest-version Summary projections select
+`headline/body/whyItMatters` in TR, or nullable `*En` / `*De` with TR fallback.
+The post-assembly translator runs target-specific repositories concurrently with
+a combined five-call limit (EN 3, DE 2); each target has a five-item historical
+retry budget. Echoed source bodies are rejected/retried. German reuses grounded
+Turkish output, so translation adds no source extraction or category assignment.

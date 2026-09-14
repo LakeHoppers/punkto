@@ -23,6 +23,15 @@ export const HOME_COPY: Record<
     whyItMatters: "Neden önemli — ",
     storiesLabel: (count) => `${count} haber`,
   },
+  de: {
+    tagline: "Automatisch. Jeden Morgen. Verlässlich.",
+    title: "Die wichtigsten Nachrichten aus Deutschland, jeden Morgen.",
+    description: "News Daily sammelt die wichtigsten Nachrichten aus Deutschland, entfernt Dopplungen, ordnet sie nach Bedeutung und erklärt in einer täglichen Zusammenfassung, warum sie wichtig sind.",
+    emptyTitle: "Noch keine heutige Ausgabe",
+    emptyBody: "Die erste Zusammenfassung erscheint hier, sobald die Nachrichten verarbeitet wurden.",
+    whyItMatters: "Warum das wichtig ist — ",
+    storiesLabel: (count) => `${count} Nachrichten`,
+  },
   en: {
     tagline: "Automatic. Every morning. Reliable.",
     title: "The most important German news, every morning.",

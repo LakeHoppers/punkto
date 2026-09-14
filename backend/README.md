@@ -167,3 +167,9 @@ A completed test requires observed browser login, a completed Stripe test checko
 a genuine forwarded webhook, and matching local subscription state—not merely a
 Checkout URL or a manually signed replay. The runner deliberately requires a
 reserved test account, and never makes Python the authoritative production writer.
+
+German compatibility: latest/history reads accept `lang=de`, using nullable German
+summary fields with Turkish fallback. Preferences expose `emailLocale`; sandbox
+email formatting and billing return URLs support DE. The shadow AI orchestrator
+is still EN-only pending pre-cutover parity work; production German generation
+runs in TypeScript. See `docs/PYTHON_MIGRATION.md` in the repository root.

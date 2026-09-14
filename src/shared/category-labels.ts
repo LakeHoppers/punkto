@@ -24,4 +24,8 @@ export const CATEGORY_LABELS_EN: Record<Category, string> = {
   SPORTS: "Sports",
 };
 
-export const CATEGORY_LABELS = { tr: CATEGORY_LABELS_TR, en: CATEGORY_LABELS_EN };
+export const CATEGORY_LABELS_DE: Record<Category, string> = {
+  POLITICS: "Politik", ECONOMY: "Wirtschaft", IMMIGRATION: "Migration", BERLIN: "Berlin",
+  TECHNOLOGY: "Technologie", EUROPE: "Europa", BUSINESS: "Unternehmen", SOCIETY: "Gesellschaft", SPORTS: "Sport",
+};
+export const CATEGORY_LABELS = { tr: CATEGORY_LABELS_TR, en: CATEGORY_LABELS_EN, de: CATEGORY_LABELS_DE };

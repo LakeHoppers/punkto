@@ -1,12 +1,14 @@
 import type { Locale } from "@/shared/locale";
 export type { Locale } from "@/shared/locale";
 
-/** English falls back to Turkish per-field when a story hasn't been translated yet. */
+/** Missing or blank translations fall back to Turkish per field. */
 export function pickLocalizedText(
   locale: Locale,
   turkish: string,
   english: string | null | undefined,
+  german?: string | null,
 ): string {
-  if (locale === "en" && english) return english;
+  if (locale === "en" && english?.trim()) return english;
+  if (locale === "de" && german?.trim()) return german;
   return turkish;
 }

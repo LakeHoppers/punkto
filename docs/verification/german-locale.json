@@ -1,0 +1,69 @@
+{
+  "verifiedAt": "2026-09-14T08:09:03.562Z",
+  "digestDate": "2026-09-14",
+  "currentItems": 10,
+  "currentGermanComplete": true,
+  "translated": 1,
+  "failed": 0,
+  "durationSeconds": 2.0480717499999996,
+  "calls": 1,
+  "inputTokens": 497,
+  "outputTokens": 231,
+  "estimatedUsd": 0.00021314999999999998,
+  "originalAndEnglishUnchanged": true,
+  "unchangedSourceBodyRejected": true,
+  "emailsSent": 0,
+  "scope": "Current German translations only; not a full pipeline timing",
+  "attempts": [
+    {
+      "verifiedAt": "2026-09-14T08:00:51.463Z",
+      "digestDate": "2026-09-14",
+      "currentItems": 10,
+      "currentGermanComplete": false,
+      "translated": 15,
+      "failed": 0,
+      "durationSeconds": 17.645937042,
+      "calls": 15,
+      "inputTokens": 6463,
+      "outputTokens": 2941,
+      "estimatedUsd": 0.0027340499999999996,
+      "originalAndEnglishUnchanged": true,
+      "emailsSent": 0,
+      "scope": "German translations for latest digest plus up to five historical retries; not a full pipeline timing",
+      "nonemptyFieldsComplete": true,
+      "issue": "One Turkish echo later caught in browser; nonempty validation was insufficient."
+    },
+    {
+      "verifiedAt": "2026-09-14T08:09:03.562Z",
+      "digestDate": "2026-09-14",
+      "currentItems": 10,
+      "currentGermanComplete": true,
+      "translated": 1,
+      "failed": 0,
+      "durationSeconds": 2.0480717499999996,
+      "calls": 1,
+      "inputTokens": 497,
+      "outputTokens": 231,
+      "estimatedUsd": 0.00021314999999999998,
+      "originalAndEnglishUnchanged": true,
+      "unchangedSourceBodyRejected": true,
+      "emailsSent": 0,
+      "scope": "Current German translations only; not a full pipeline timing"
+    }
+  ],
+  "intermediateRepairAttempts": {
+    "count": 2,
+    "failedCurrentPerAttempt": 1,
+    "historicalTranslatedPerAttempt": 5,
+    "note": "Echo rejected before storage; aggregate token usage not retained for both attempts."
+  },
+  "browser": {
+    "productionBuild": true,
+    "homepage": true,
+    "privacy": true,
+    "authenticatedDashboard": true,
+    "clerkAccountModalGerman": true,
+    "savedEmailLanguageSurvivesReload": true,
+    "testPreferenceRestored": "tr"
+  }
+}

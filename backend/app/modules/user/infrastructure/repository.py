@@ -28,7 +28,7 @@ class SqlAlchemyUserRepository:
                 connection.execute(
                     text(
                         'SELECT id, "userId", "favoriteCategories"::text[] AS "favoriteCategories", "digestHour", timezone, paused, '
-                        '"updatedAt" FROM "UserPreference" WHERE "userId" = :id'
+                        '"emailLocale", "updatedAt" FROM "UserPreference" WHERE "userId" = :id'
                     ),
                     {"id": user["id"]},
                 )
@@ -56,6 +56,7 @@ class SqlAlchemyUserRepository:
                         digest_hour=pref["digestHour"],
                         timezone=pref["timezone"],
                         paused=pref["paused"],
+                        email_locale=pref["emailLocale"],
                         updated_at=pref["updatedAt"].isoformat(timespec="milliseconds") + "Z",
                     )
                     if pref

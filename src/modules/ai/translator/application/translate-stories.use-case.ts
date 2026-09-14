@@ -17,6 +17,7 @@ export class TranslateStoriesUseCase {
   constructor(
     private readonly repository: TranslatorRepository,
     private readonly translator: Translator,
+    private readonly concurrency = TRANSLATION_CONCURRENCY,
   ) {}
 
   async execute(storyIds: string[]): Promise<TranslateStoriesResult> {
@@ -29,7 +30,7 @@ export class TranslateStoriesUseCase {
 
     let next = 0;
     await Promise.all(Array.from(
-      { length: Math.min(TRANSLATION_CONCURRENCY, summaries.length) },
+      { length: Math.min(this.concurrency, summaries.length) },
       async () => {
         while (next < summaries.length) {
           const summary = summaries[next++];

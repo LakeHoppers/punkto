@@ -63,7 +63,7 @@ def history(request: Request, user: CurrentUser, limit: int = 14, lang: str = "t
         raise HTTPException(400, "limit must be positive")
     categories = user.user.preference.favorite_categories if user.user.preference else []
     result = GetDigestHistory(request.app.state.digest_repository).execute(
-        categories, min(limit, 50), "en" if lang == "en" else "tr"
+        categories, min(limit, 50), lang if lang in ("tr", "en", "de") else "tr"
     )
     return {"digests": wire([asdict(d) for d in result])}
 

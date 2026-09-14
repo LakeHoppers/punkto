@@ -1,16 +1,19 @@
 import type { Category } from "@/generated/prisma/enums";
 import type { DigestView } from "@/modules/digest/domain/types";
 
+import type { Locale } from "@/shared/locale";
+
 export interface DeliveryCandidate {
   userId: string;
   email: string;
+  emailLocale?: Locale;
   timezone: string;
   digestHour: number;
   favoriteCategories: Category[];
 }
 
 export interface DigestReader {
-  getLatestDigest(categories: Category[]): Promise<DigestView | null>;
+  getLatestDigest(categories: Category[], locale?: Locale): Promise<DigestView | null>;
 }
 
 export interface EmailSender {

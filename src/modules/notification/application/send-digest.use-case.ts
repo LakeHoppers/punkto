@@ -26,7 +26,7 @@ export class SendDigestUseCase {
     let skipped = 0;
 
     for (const candidate of due) {
-      const digest = await this.digestReader.getLatestDigest(candidate.favoriteCategories);
+      const digest = await this.digestReader.getLatestDigest(candidate.favoriteCategories, candidate.emailLocale ?? "tr");
       // Editions are keyed by UTC date throughout the digest module. Do not
       // catch up with yesterday's edition while today's pipeline is pending.
       if (!digest || digest.date !== now.toISOString().slice(0, 10) || digest.items.length === 0) {
@@ -40,7 +40,7 @@ export class SendDigestUseCase {
       }
 
       try {
-        const { subject, html, text } = buildDigestEmail(digest);
+        const { subject, html, text } = buildDigestEmail(digest, candidate.emailLocale ?? "tr");
         await this.emailSender.send({ to: candidate.email, subject, html, text });
         await this.repository.recordDelivery({
           digestId: digest.digestId,

@@ -3,7 +3,7 @@ from typing import Literal, Protocol
 
 from app.modules.digest.domain.models import Digest, HistoryEdition, Story
 
-Locale = Literal["tr", "en"]
+Locale = Literal["tr", "en", "de"]
 
 
 class DigestRepository(Protocol):

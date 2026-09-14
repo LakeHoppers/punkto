@@ -5,7 +5,7 @@ import { ThemeProvider } from "next-themes";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import "../globals.css";
-import { enUS, trTR } from "@clerk/localizations";
+import { enUS, trTR, deDE } from "@clerk/localizations";
 import { notFound } from "next/navigation";
 import { SITE_COPY } from "@/shared/site-copy";
 import { isLocale } from "@/shared/locale";
@@ -48,7 +48,7 @@ export default async function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <ClerkProvider
-          localization={locale === "en" ? enUS : trTR}
+          localization={({ en: enUS, tr: trTR, de: deDE })[locale]}
           signInUrl={`/${locale}/sign-in`}
           signUpUrl={`/${locale}/sign-up`}
           signInFallbackRedirectUrl={`/${locale}/dashboard`}

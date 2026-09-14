@@ -2,11 +2,8 @@ import type { DigestView } from "@/modules/digest/domain/types";
 import type { Locale } from "@/modules/digest/domain/localize";
 
 /**
- * Server-side migration switch. Unconfigured deployments keep their current
- * path. The Python backend doesn't support `locale` yet (Phase 0-1 only
- * ports the Turkish read path) — it silently ignores the param and always
- * returns Turkish, which is a safe degrade, not a regression, since that
- * path isn't live in production.
+ * Server-side migration switch. Both readers support TR/EN/DE with per-field
+ * Turkish fallback. Unconfigured deployments use the authoritative TS reader.
  */
 export async function getHomeDigest(locale: Locale = "tr"): Promise<DigestView | null> {
   const backend = process.env.PYTHON_BACKEND_URL;

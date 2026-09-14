@@ -522,3 +522,15 @@ Final checks: 86 Python tests (3 live read-only), 142 TS tests, Ruff, lint,
 typecheck and production build passed. Duplicate generated Next.js type files
 recurred locally; the old cache was preserved outside the repo and a clean build
 resolved the check. The temporary Python server/Stripe listener were stopped.
+
+
+### German compatibility (2026-09-14)
+
+Prisma's additive German migration is applied before this reader deployment.
+Python latest/history projections support `de`, as do preference read/patch,
+admin version invalidation, billing return URLs and email formatting. Private
+sandbox delivery may use `localizedDigests[locale]` snapshots and otherwise falls
+back to the existing Turkish digest, matching the read-side fallback convention.
+The shadow AI pipeline remains EN-only; DE provider/stage parity and fixture export
+for localized sandbox delivery remain explicit pre-cutover work. No Python
+Postgres writes or scheduler changes were added.

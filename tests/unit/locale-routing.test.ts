@@ -11,6 +11,7 @@ import proxy from "@/proxy";
 
 describe("locale routing", () => {
   it.each([
+    ["/?lang=de", "/de"], ["/de/admin/sources", "/tr/admin/sources"], ["/de?lang=en", "/de"],
     ["/", "/tr"], ["/?lang=en", "/en"],
     ["/dashboard?lang=en&checkout=success", "/en/dashboard?checkout=success"],
     ["/sign-in/verify?lang=en&redirect_url=%2Fen%2Fdashboard", "/en/sign-in/verify?redirect_url=%2Fen%2Fdashboard"],
@@ -23,11 +24,14 @@ describe("locale routing", () => {
     expect(localeRedirect(new URL(path, "https://example.com"))).toBeNull();
   });
   it("validates locales and switches the current page", () => {
-    expect(isLocale("de")).toBe(false);
+    expect(isLocale("de")).toBe(true);
+    expect(isLocale("fr")).toBe(false);
+    expect(switchLocalePath("/en/dashboard", "de")).toBe("/de/dashboard");
+    expect(switchLocalePath("/de/privacy", "tr")).toBe("/tr/privacy");
     expect(isLocale("en")).toBe(true);
     expect(switchLocalePath("/tr/dashboard", "en")).toBe("/en/dashboard");
   });
-  it.each(["tr", "en"])("protects the %s dashboard with a localized auth destination", async (locale) => {
+  it.each(["tr", "en", "de"])("protects the %s dashboard with a localized auth destination", async (locale) => {
     protect.mockClear();
     const handler = proxy as unknown as (auth: unknown, req: NextRequest) => Promise<unknown>;
     await handler({ protect }, new NextRequest(`https://example.com/${locale}/dashboard`));

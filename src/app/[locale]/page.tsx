@@ -9,7 +9,7 @@ import { HOME_COPY } from "@/shared/home-copy";
 import type { Locale } from "@/shared/locale";
 
 function formatDate(isoDate: string, locale: Locale): string {
-  return new Intl.DateTimeFormat(locale === "en" ? "en-US" : "tr-TR", {
+  return new Intl.DateTimeFormat(({ tr: "tr-TR", en: "en-US", de: "de-DE" })[locale], {
     timeZone: "UTC",
     day: "numeric",
     month: "long",

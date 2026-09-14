@@ -1,11 +1,11 @@
 "use client";
 import { usePathname } from "next/navigation";
-import { switchLocalePath, type Locale } from "@/shared/locale";
+import { LOCALES, switchLocalePath, type Locale } from "@/shared/locale";
 export function LocaleSwitch({ locale }: { locale: Locale }) {
   const pathname = usePathname();
   if (/^\/tr\/admin(?:\/|$)/.test(pathname)) return null;
-  return <nav aria-label={locale === "en" ? "Language" : "Dil"} className="flex gap-1 text-xs">
-    {(["tr", "en"] as const).map((next) => (
+  return <nav aria-label={({ tr: "Dil", en: "Language", de: "Sprache" })[locale]} className="flex gap-1 text-xs">
+    {LOCALES.map((next) => (
       // Full navigation also resets Clerk's locale and any open account modal.
       <a key={next} href={switchLocalePath(pathname, next)} hrefLang={next}
         aria-current={locale === next ? "page" : undefined}

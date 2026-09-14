@@ -13,7 +13,7 @@ vi.mock('@/shared/prisma', () => ({ prisma: {
   summary: {
     findUnique: async ({where}: {where:{id:string}}) => state.data.summaries.find(s => s.id === where.id),
     aggregate: async ({where}: {where:{storyId:string}}) => ({_max:{version:Math.max(...state.data.summaries.filter(s => s.storyId === where.storyId).map(s => s.version))}}),
-    create: async ({data}: {data:object}) => ({id:'new-summary',headlineEn:null,bodyEn:null,whyItMattersEn:null,...data}),
+    create: async ({data}: {data:object}) => ({id:'new-summary',headlineDe:null,bodyDe:null,whyItMattersDe:null,headlineEn:null,bodyEn:null,whyItMattersEn:null,...data}),
   },
   adminAuditLog: {create: async ({data}: {data:object}) => data},
 } }));

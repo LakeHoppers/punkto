@@ -35,7 +35,7 @@ export function BillingCard({ plan, locale }: { plan: "FREE" | "PRO"; locale: Lo
         <p className="text-xs text-muted-foreground">
           {plan === "PRO"
             ? copy.proDescription
-            : locale === "en" ? `${FREE_MAX_CATEGORIES} category and delivery fixed at ${FREE_DIGEST_HOUR}:00 every morning.` : `${FREE_MAX_CATEGORIES} kategori ve sabit sabah ${FREE_DIGEST_HOUR}:00 teslimatı.`}
+            : locale === "de" ? `${FREE_MAX_CATEGORIES} Kategorie und tägliche Zustellung um ${FREE_DIGEST_HOUR}:00 Uhr.` : locale === "en" ? `${FREE_MAX_CATEGORIES} category and delivery fixed at ${FREE_DIGEST_HOUR}:00 every morning.` : `${FREE_MAX_CATEGORIES} kategori ve sabit sabah ${FREE_DIGEST_HOUR}:00 teslimatı.`}
         </p>
       </div>
       <button

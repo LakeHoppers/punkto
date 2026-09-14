@@ -2,7 +2,7 @@ import type { Locale } from "./locale";
 export const SITE_COPY = {
   tr: {
     signIn: "Giriş yap", signUp: "Kayıt ol", account: "Hesabım", theme: "Tema değiştir",
-    footer: "Almanya’dan her sabah, Türkçe ve İngilizce özet.",
+    footer: "Almanya’dan her sabah, Türkçe, İngilizce ve Almanca özet.",
     choose: "Hangi kategorilerin özetini görmek istediğini seç.", favorites: "Favori kategoriler",
     history: "Geçmiş özetler", empty: "Henüz gösterilecek bir özet yok.",
     preferences: "Seçtiğin kategoriler, sana gönderilen günlük e-postayı ve aşağıdaki geçmiş özet listesini filtreler — ana sayfadaki günlük dijest herkese aynı şekilde gösterilir. Hiçbirini seçmezsen tüm kategorileri alırsın.",
@@ -11,11 +11,24 @@ export const SITE_COPY = {
     pro: "Pro üye", free: "Ücretsiz plan", proDescription: "Tüm kategoriler ve istediğin saatte teslimat açık.",
     manage: "Üyeliğimi yönet", upgrade: "Pro’ya yükselt",
     description: "Almanya’daki en önemli haberlerin günlük Türkçe özeti.",
-    privacyLink: "Gizlilik Politikası",
+    privacyLink: "Gizlilik Politikası", emailLanguage: "Günlük e-posta dili",
+  },
+  de: {
+    signIn: "Anmelden", signUp: "Registrieren", account: "Mein Konto", theme: "Farbschema wechseln",
+    footer: "Nachrichten aus Deutschland, jeden Morgen auf Türkisch, Englisch und Deutsch zusammengefasst.",
+    choose: "Wähle die Kategorien, denen du folgen möchtest.", favorites: "Lieblingskategorien",
+    history: "Frühere Ausgaben", empty: "Noch keine Zusammenfassungen vorhanden.",
+    preferences: "Deine Kategorien filtern die tägliche E-Mail und die früheren Ausgaben unten. Auf der Startseite sehen alle dieselbe Ausgabe. Wenn du keine Kategorie auswählst, erhältst du alle Kategorien.",
+    freeLimit: "Im kostenlosen Tarif kannst du höchstens 1 Kategorie auswählen.",
+    save: "Speichern", saving: "Wird gespeichert…", saved: "Gespeichert — gilt ab deiner nächsten E-Mail.", error: "Etwas ist schiefgelaufen.",
+    pro: "Pro-Mitglied", free: "Kostenloser Tarif", proDescription: "Alle Kategorien und Zustellung zu deiner Wunschzeit.",
+    manage: "Abonnement verwalten", upgrade: "Auf Pro upgraden",
+    description: "Die wichtigsten Nachrichten aus Deutschland, täglich zusammengefasst.",
+    privacyLink: "Datenschutzerklärung", emailLanguage: "Sprache der täglichen E-Mail",
   },
   en: {
     signIn: "Sign in", signUp: "Sign up", account: "My Account", theme: "Toggle theme",
-    footer: "German news every morning, summarized in Turkish and English.",
+    footer: "German news every morning, summarized in Turkish, English and German.",
     choose: "Choose the categories you want to follow.", favorites: "Favorite categories",
     history: "Past digests", empty: "No digests to show yet.",
     preferences: "Your categories filter your daily email and the digest history below. Everyone sees the same daily digest on the homepage. Leave all categories unselected to receive every category.",
@@ -24,6 +37,6 @@ export const SITE_COPY = {
     pro: "Pro member", free: "Free plan", proDescription: "All categories and your choice of delivery time.",
     manage: "Manage subscription", upgrade: "Upgrade to Pro",
     description: "A daily summary of the most important German news in English.",
-    privacyLink: "Privacy Policy",
+    privacyLink: "Privacy Policy", emailLanguage: "Daily email language",
   },
 } satisfies Record<Locale, Record<string, string>>;

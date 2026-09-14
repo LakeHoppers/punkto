@@ -37,7 +37,7 @@ router = APIRouter()
 @router.get("/api/digests/latest", response_model=DigestResponse)
 def latest_digest(request: Request, lang: str = "tr"):
     digest = GetLatestDigest(request.app.state.digest_repository).execute(
-        "en" if lang == "en" else "tr"
+        lang if lang in ("tr", "en", "de") else "tr"
     )
     if digest is None:
         return JSONResponse({"error": "No digest available yet"}, status_code=404)

@@ -10,6 +10,7 @@ class Preference:
     timezone: str
     paused: bool
     updated_at: str
+    email_locale: str = "tr"
 
 
 @dataclass(frozen=True)

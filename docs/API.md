@@ -299,3 +299,20 @@ use FastAPI 422; invalid domain inputs 400, missing rows 404, local conflicts 40
 No Clerk cookie auth, unsigned JWT fallback, automatic provisioning, public CORS,
 production scheduler wiring or authoritative Python database writes are enabled.
 See PYTHON_MIGRATION.md for live verification limitations before cutover.
+
+
+### German localization (2026-09-14)
+
+`GET /api/digests/latest?lang=de` returns German headline/summary/whyItMatters
+fields (TR fallback when missing or blank), exactly like `lang=en`. Invalid or
+missing `lang` defaults to TR. Dashboard history passes its route locale directly
+to the digest reader. Category enum values and source URLs stay language-neutral.
+
+`PATCH /api/me/preferences` now accepts `emailLocale: "tr" | "en" | "de"`,
+independently of plan/category/hour limits; an invalid explicit value is HTTP 400.
+Omitting the field preserves the saved setting. `GET /api/me` includes it in
+`preference`; existing users default to `tr`. Delivery reads that saved language
+and localizes subject, category labels and significance label as well as content.
+Billing Checkout/Portal accept `locale: "de"` and return to `/de/dashboard`.
+The pipeline response/stats adds `translateDe: { translated, failed }`; existing
+`translate` remains English for compatibility.

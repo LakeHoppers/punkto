@@ -5,6 +5,8 @@ import { prisma } from "@/shared/prisma";
 import { isValidTimezone } from "@/shared/timezone";
 import { clampCategoriesForPlan, clampDigestHourForPlan } from "@/modules/billing/domain/plan-limits";
 
+import { isLocale, type Locale } from "@/shared/locale";
+
 const CATEGORY_VALUES = new Set<string>(Object.values(Category));
 
 export async function PATCH(request: Request) {
@@ -17,7 +19,13 @@ export async function PATCH(request: Request) {
       digestHour?: number;
       timezone?: string;
       paused?: boolean;
+      emailLocale?: Locale;
     } = {};
+
+    if (body.emailLocale !== undefined) {
+      if (!isLocale(body.emailLocale)) return NextResponse.json({ error: "Invalid emailLocale" }, { status: 400 });
+      data.emailLocale = body.emailLocale;
+    }
 
     if (Array.isArray(body.favoriteCategories)) {
       const categories = body.favoriteCategories.filter(

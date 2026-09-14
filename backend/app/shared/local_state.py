@@ -55,6 +55,7 @@ class LocalState:
                     pref["timezone"],
                     pref["paused"],
                     pref["updatedAt"],
+                    pref.get("emailLocale", "tr"),
                 )
                 if pref
                 else None,

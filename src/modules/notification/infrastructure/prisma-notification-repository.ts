@@ -1,3 +1,4 @@
+import { isLocale } from "@/shared/locale";
 import { prisma } from "@/shared/prisma";
 import type {
   DeliveryCandidate,
@@ -17,6 +18,7 @@ export class PrismaNotificationRepository implements NotificationRepository {
       .map((user) => ({
         userId: user.id,
         email: user.email,
+        emailLocale: isLocale(user.preference!.emailLocale) ? user.preference!.emailLocale : "tr",
         timezone: user.preference!.timezone,
         digestHour: user.preference!.digestHour,
         favoriteCategories: user.preference!.favoriteCategories,

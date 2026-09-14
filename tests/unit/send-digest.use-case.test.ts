@@ -198,3 +198,21 @@ it("allows the next day's edition after yesterday was delivered", async () => {
   const useCase = new SendDigestUseCase(repository, new FakeDigestReader({ ...DIGEST, digestId: "digest-2", date: "2026-01-16" }), sender);
   expect(await useCase.execute(new Date("2026-01-16T12:17:00Z"))).toEqual({ delivered: 1, failed: 0, skipped: 0 });
 });
+
+it("reads and formats in the saved email language and does not resend after a language change", async () => {
+  const repository = new FakeRepository();
+  repository.candidates = [candidate({ emailLocale: "de" })];
+  const locales: unknown[] = [];
+  const messages: { subject: string; html: string; text: string }[] = [];
+  const useCase = new SendDigestUseCase(repository, {
+    async getLatestDigest(categories, locale) { locales.push(locale); return { ...DIGEST, items: [{ ...DIGEST.items[0], headline: "Deutsche Nachricht" }] }; },
+  }, { async send(message) { messages.push(message); } });
+  expect((await useCase.execute(NOW)).delivered).toBe(1);
+  expect(locales).toEqual(["de"]);
+  expect(messages[0].subject).toContain("Nachrichtenüberblick");
+  expect(messages[0].text).toContain("[Politik] Deutsche Nachricht");
+  expect(messages[0].html).toContain("Warum das wichtig ist");
+  repository.candidates[0].emailLocale = "en";
+  expect((await useCase.execute(NOW)).skipped).toBe(1);
+  expect(messages).toHaveLength(1);
+});
