@@ -155,4 +155,4 @@ Marka kırmızısı kimlik rengidir, vurgu rengi değildir. İkisi karışırsa 
 | DE | Die täglichen Nachrichten aus Deutschland |
 | EN | Germany's daily news briefing |
 
-Tagline (pazarlama): `Haberler, özetle.` / `Nachrichten, auf den Punkt.` / `News, to the point.`
+Tagline (pazarlama): `Haberler, kısa ve öz.` / `Nachrichten, auf den Punkt.` / `News, to the point.`
