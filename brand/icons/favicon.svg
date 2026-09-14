@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Punkto">
+  <title>Punkto</title>
   <rect width="100" height="100" rx="4" fill="#9E3527"/>
   <g fill="#FAF7F1">
     <rect x="28" y="18" width="13" height="64"/>

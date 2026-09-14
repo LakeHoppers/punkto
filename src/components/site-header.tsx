@@ -6,6 +6,7 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Logo } from "../../brand/Logo";
 
 import { SITE_COPY } from "@/shared/site-copy";
 import type { Locale } from "@/shared/locale";
@@ -16,13 +17,8 @@ export async function SiteHeader({ locale }: { locale: Locale }) {
   return (
     <header className="border-b">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
-        <Link href={`/${locale}`} className="flex items-center gap-2">
-          <span className="font-heading flex size-7 items-center justify-center rounded-md bg-foreground text-sm font-semibold text-background">
-            P
-          </span>
-          <span className="font-heading text-lg font-medium tracking-tight">
-            Punkto
-          </span>
+        <Link href={`/${locale}`} className="flex items-center">
+          <Logo size={22} />
         </Link>
         <div className="flex items-center gap-2 sm:gap-3">
           <LocaleSwitch locale={locale} />
