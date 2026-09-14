@@ -1,6 +1,6 @@
-# News Daily
+# Punkto
 
-**Live:** [daily-news-saas.vercel.app](https://daily-news-saas.vercel.app)
+**Live:** [punkto.fyi](https://www.punkto.fyi)
 
 Every morning, subscribers get a high-quality **Turkish, English or German** summary of the most important German news — not a translation, but a ranked, deduplicated, explained digest.
 

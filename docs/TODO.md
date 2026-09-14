@@ -904,3 +904,92 @@ and AI prompts are unchanged; the model continues returning SOCIETY. No migratio
   to avoid automatic duplicate/unsanitized events. A real new registration received
   in GA Realtime remains unverified; unit tests cover Clerk completion semantics.
   Configuration and limitations: `docs/ANALYTICS.md`.
+- [x] Done manually by Emre in each dashboard: `sign_up` marked as a key event,
+  Enhanced Measurement page-view collection disabled in the GA4 stream.
+
+## "Society" → "Culture" category label — 2026-09-14
+- [x] Renamed the display label only (`Toplum`/`Society` → `Kültür`/`Culture`,
+  DE included) across every locale. Enum/category key unchanged, no migration,
+  no effect on categorization logic or the AI prompt's category enum.
+
+## Hide new Pro checkout behind a feature flag — 2026-09-14
+- [x] Added `BILLING_ENABLED` (default off). While off: the dashboard shows a
+  quiet "expanded premium edition" note instead of the upgrade button/price,
+  and `/api/billing/checkout` returns 404. Portal, cancellation, and webhook
+  sync are untouched and still work for any existing Pro tester. Reason: we're
+  not accepting new Pro payments until the trademark filing and rebrand are
+  finalized (Stripe is still test-mode anyway — no real customer is affected).
+  Flip `BILLING_ENABLED=true` in Vercel when ready to reopen signups.
+- Caught and fixed a real gap while implementing this: the earlier billing-flag
+  commit had broken 3 existing checkout/portal tests without anyone re-running
+  the suite. Refactored the flag to a function (`isBillingEnabled()`) so tests
+  can toggle it per-case, fixed the 3 tests, and added a new one asserting the
+  404-while-disabled behavior. Full suite (178 passed, 1 pre-existing skip) is
+  green again.
+
+## Rebrand execution: "News Daily" → "Punkto" — 2026-09-14
+Domain decided and bought: [punkto.fyi](https://www.punkto.fyi) (via Vercel,
+$7/yr renewal). Full naming rationale, rejected candidates, and trademark plan
+are in `punkto-marka-karar-ve-gecis-dokumani.md` (not part of this repo).
+- [x] Renamed "News Daily" → "Punkto" in every user-facing spot: header
+  wordmark, footer copyright, homepage copy (all 3 locales), Privacy Policy
+  intro (all 3 locales), digest email subject/text/HTML templates, pipeline
+  alert email, contact-form sender name, Resend sender fallback, `package.json`
+  name. `README.md` and `ARCHITECTURE.md` current-state descriptions updated
+  too. Left historical dated log entries elsewhere in this file and in
+  `PYTHON_MIGRATION.md` as-is — they're accurate records of what the product
+  was called at the time, not something to rewrite.
+- [x] Added the brand tagline to the end of each locale's homepage description
+  (not a rewrite of the paragraph, just appended): TR "Almanya, özetle.", EN
+  "Germany, to the point.", DE "Deutschland, auf den Punkt." — matches the
+  tagline set already decided in the brand doc.
+- [x] App icon (`src/app/icon.svg`) updated from "N" to a "P" placeholder;
+  stale `favicon.ico` (still showing "N", couldn't be text-edited) deleted so
+  the SVG icon is the single source of truth. **Still needs a real logo** —
+  this is a placeholder, not a design deliverable.
+- [x] GitHub repo renamed `LakeHoppers/daily-news-saas` → `LakeHoppers/punkto`
+  (admin access confirmed first). GitHub redirects the old name automatically
+  for both git and web, so existing clones/links keep working. Local `origin`
+  remote updated to match.
+- [x] Stripe: product renamed via API to "Punkto Pro". The account-level
+  "public business name" (shown on checkout/invoices) could **not** be changed
+  via API ("you cannot use this method on your own account") — Emre did this
+  manually in the Stripe Dashboard, along with the Vercel project name and the
+  Clerk application name (neither had a working API/CLI path either).
+- [x] Google Search Console: added a TXT verification record for `punkto.fyi`
+  via Vercel DNS on Emre's behalf; he completed the verify step.
+- [x] `daily-news-saas.vercel.app` hardcoded Impressum link in the digest email
+  template swapped to `https://www.punkto.fyi` (code + the test asserting on it).
+
+### Remaining, not done this pass
+- [ ] Cosmetic-only: no other README/docs files needed changes beyond
+  `README.md`/`ARCHITECTURE.md` (checked — nothing else hardcodes the old name
+  outside historical logs). GitHub Actions workflow names were already generic
+  ("CI", "Hourly digest delivery") — nothing to rename there.
+- [ ] Old `daily-news-saas.vercel.app` → new domain 301 redirect: not done.
+  Vercel doesn't offer a simple built-in redirect for a project's own assigned
+  subdomain; would need middleware. Low priority — that URL isn't indexed or
+  publicly linked anywhere anymore now that Impressum/README point at the new
+  domain, so it can just fall out of use rather than being actively redirected.
+- [ ] DPMA trademark filing + KMU-Fonds coupon application: Emre's task,
+  external, not started.
+- [ ] Real logo/wordmark design: not started, current icon is a text placeholder.
+- [ ] Business registration: still deliberately deferred until real revenue
+  (unrelated to the rebrand — see the business-registration section above).
+
+## Resend domain verification — 2026-09-14
+- [x] Added `punkto.fyi` to Resend (region `eu-west-1`, consistent with the
+  rest of the EU-hosting decisions in the GDPR section above). Created the
+  required DKIM (TXT), SPF (TXT + MX), and one additional CNAME record via
+  Vercel DNS. Triggered verification via the API — **confirmed `verified`**
+  for every record within a few minutes of propagation.
+- [x] Updated `EMAIL_FROM_ADDRESS` to `Punkto <daily@punkto.fyi>` in `.env`,
+  `.env.example`, and Vercel (production + preview); redeployed.
+- This closes the long-standing sandbox limitation (Resend previously only
+  allowed sending to the account-owner's own address) — the recurring GitHub
+  Actions "Hourly digest delivery: All jobs have failed" emails, caused by a
+  real signed-up user (`batatop@gmail.com`) whose delivery kept failing on
+  that restriction, should stop from the next scheduled run. Verified the fix
+  via Resend's domain-status API (`verified`) rather than sending an ad-hoc
+  test email to that user's real inbox; if the Action still fails after the
+  next hourly run, re-open this.

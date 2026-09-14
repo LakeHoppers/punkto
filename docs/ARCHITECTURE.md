@@ -2,7 +2,7 @@
 
 ## Overview
 
-News Daily is a scheduled ETL + AI pipeline behind a Next.js app. The core
+Punkto is a scheduled ETL + AI pipeline behind a Next.js app. The core
 loop runs on a cron trigger once a day; the web/app layer serves the results
 of the last run plus user account management. Nothing here is real-time.
 

@@ -38,8 +38,12 @@ real test-mode checkout: real Stripe customer/subscription created,
 `customer.subscription.created` webhook fired and verified, `Subscription`
 row synced to PRO/ACTIVE, dashboard correctly shows "Pro üye". Pricing:
 €4.99/month via Stripe Managed Payments (Stripe as merchant of record for
-VAT). Billing Portal (cancel/update card) round-trip not yet separately
-tested — see TODO.md.
+VAT). Billing Portal (cancel/update card) round-trip verified 2026-09-11 (see
+TODO.md). **2026-09-14: new-signup checkout intentionally hidden** behind a
+`BILLING_ENABLED` feature flag (default off) — trademark filing and rebrand
+aren't finalized yet, so we're not accepting new Pro payments for now. Free
+tier, portal/cancellation, and webhook sync are all unaffected; flip the flag
+back on when ready. See TODO.md.
 
 ## M8 — Admin panel ✅
 Source management UI, force refresh, summary editing (versioned), pipeline
@@ -51,11 +55,24 @@ compatibility and the single-request pipeline timeout risk. Then test coverage
 across modules, error alerting (Sentry), rate limiting, docs
 finalized, soft launch to a small user group.
 
-## Deferred to Emre (not blocking other milestones)
-- **Sending domain for Resend**: buy a domain, verify it at
-  resend.com/domains, update `EMAIL_FROM_ADDRESS`. Until then, email
-  delivery only works for Resend's own account-owner address — a real,
-  accepted limitation, not something to route around from this repo.
+## Rebrand: "News Daily" → "Punkto" — 2026-09-14
+Final brand name decided (see `punkto-marka-karar-ve-gecis-dokumani.md` for the
+full naming rationale, trademark filing plan, and rename checklist). Live domain:
+[punkto.fyi](https://www.punkto.fyi), bought and connected via Vercel. Completed
+this pass: all user-facing UI/email/package copy renamed, GitHub repo renamed to
+`LakeHoppers/punkto`, Stripe product renamed to "Punkto Pro" (business name,
+Vercel project name, and Clerk application name updated directly by Emre),
+Google Search Console verified, placeholder "P" app icon (real logo still
+pending design), homepage description now carries the per-locale tagline
+("Almanya, özetle." / "Germany, to the point." / "Deutschland, auf den Punkt.").
+Not yet started: DPMA trademark filing, business registration (still
+deliberately deferred until real revenue — see TODO.md).
+
+## Deferred to Emre (not blocking other milestones) — Resend domain: done 2026-09-14
+`punkto.fyi` added to Resend (EU region) with DKIM/SPF/MX DNS records created via
+Vercel; verification was still propagating as of this pass — see TODO.md for
+current status before assuming it's live. `EMAIL_FROM_ADDRESS` still needs
+updating to the new domain once verification completes.
 
 ## Risks to keep in view
 
