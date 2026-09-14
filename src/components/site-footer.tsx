@@ -7,9 +7,14 @@ export function SiteFooter({ locale }: { locale: Locale }) {
       <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-4 py-6 text-xs text-muted-foreground">
         <span>© {new Date().getFullYear()} News Daily</span>
         <span>{SITE_COPY[locale].footer}</span>
-        <Link href={`/${locale}/privacy`} className="hover:text-foreground hover:underline">
-          {SITE_COPY[locale].privacyLink}
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link href={`/${locale}/impressum`} className="hover:text-foreground hover:underline">
+            Impressum
+          </Link>
+          <Link href={`/${locale}/privacy`} className="hover:text-foreground hover:underline">
+            {SITE_COPY[locale].privacyLink}
+          </Link>
+        </div>
       </div>
     </footer>
   );
