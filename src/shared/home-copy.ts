@@ -21,7 +21,7 @@ export const HOME_COPY: Record<
     aiAnalysis: "AI yorumu",
     aiFooter: "Özetler yapay zeka ile oluşturulur.",
     sourcesLabel: "Kaynaklar",
-    tagline: "Otomatik. Her sabah. Güvenilir.",
+    tagline: "Güvenilir. Her sabah. Üç dakika.",
     title: "Almanya'dan her sabah, Türkçe özet.",
     description:
       "Punkto; en önemli Alman haberlerini toplar, tekrarları ayıklar, önem sırasına koyar ve akıcı Türkçe özetler halinde neden önemli olduğunu anlatır. Haberler, özetle.",
@@ -36,7 +36,7 @@ export const HOME_COPY: Record<
     aiAnalysis: "KI-Einordnung",
     aiFooter: "Zusammenfassungen mit KI erstellt.",
     sourcesLabel: "Quellen",
-    tagline: "Automatisch. Jeden Morgen. Verlässlich.",
+    tagline: "Verlässlich. Jeden Morgen. Drei Minuten.",
     title: "Die wichtigsten Nachrichten aus Deutschland, jeden Morgen.",
     description: "Punkto sammelt die wichtigsten Nachrichten aus Deutschland, entfernt Dopplungen, ordnet sie nach Bedeutung und erklärt in einer täglichen Zusammenfassung, warum sie wichtig sind. Nachrichten, auf den Punkt.",
     emptyTitle: "Noch keine heutige Ausgabe",
@@ -49,7 +49,7 @@ export const HOME_COPY: Record<
     aiAnalysis: "AI analysis",
     aiFooter: "Summaries generated with AI.",
     sourcesLabel: "Sources",
-    tagline: "Automatic. Every morning. Reliable.",
+    tagline: "Reliable. Every morning. Three minutes.",
     title: "The most important German news, every morning.",
     description:
       "Punkto collects the most important German news, removes duplicates, ranks them by importance, and explains why each one matters in a fluent daily summary. News, to the point.",

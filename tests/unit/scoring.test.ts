@@ -52,6 +52,22 @@ describe("computeImportanceScore", () => {
     expect(fresh).toBeGreaterThan(stale);
   });
 
+  it("does not let a very fresh single-source story outrank an older, corroborated one", () => {
+    const freshSingleSource = computeImportanceScore({
+      distinctSourceCount: 1,
+      avgTrustScore: 90,
+      mostRecentPublishedAt: now,
+      now,
+    });
+    const olderMultiSource = computeImportanceScore({
+      distinctSourceCount: 3,
+      avgTrustScore: 70,
+      mostRecentPublishedAt: new Date("2026-01-02T02:00:00Z"), // 10h old
+      now,
+    });
+    expect(olderMultiSource).toBeGreaterThan(freshSingleSource);
+  });
+
   it("treats an unknown publish time as old rather than crashing", () => {
     expect(() =>
       computeImportanceScore({
