@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PreferencesForm } from "@/components/preferences-form";
 import { BillingCard } from "@/components/billing-card";
-import { BILLING_ENABLED } from "@/shared/billing-flag";
+import { isBillingEnabled } from "@/shared/billing-flag";
 import { getDigestHistory } from "@/modules/digest/infrastructure/digest-view";
 import { getOrCreateCurrentUser } from "@/shared/api-guards";
 import { CATEGORY_LABELS } from "@/shared/category-labels";
@@ -35,7 +35,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
 
       <Card>
         <CardContent>
-          <BillingCard plan={plan} locale={locale} billingEnabled={BILLING_ENABLED} />
+          <BillingCard plan={plan} locale={locale} billingEnabled={isBillingEnabled()} />
         </CardContent>
       </Card>
 

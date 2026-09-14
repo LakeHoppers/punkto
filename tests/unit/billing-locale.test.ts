@@ -7,7 +7,17 @@ vi.mock("@/modules/billing/application/create-checkout-session.use-case", () => 
 vi.mock("@/modules/billing/application/create-portal-session.use-case", () => ({ CreatePortalSessionUseCase: class { execute = portal; }, NoStripeCustomerError: class extends Error {} }));
 import { POST as createCheckout } from "@/app/api/billing/checkout/route";
 import { POST as createPortal } from "@/app/api/billing/portal/route";
-beforeEach(() => { checkout.mockReset().mockResolvedValue("https://checkout.stripe.com/test"); portal.mockReset().mockResolvedValue("https://billing.stripe.com/test"); });
+beforeEach(() => {
+  checkout.mockReset().mockResolvedValue("https://checkout.stripe.com/test");
+  portal.mockReset().mockResolvedValue("https://billing.stripe.com/test");
+  process.env.BILLING_ENABLED = "true";
+});
+it("checkout is unavailable while the billing flag is off", async () => {
+  process.env.BILLING_ENABLED = "false";
+  const request = new Request("https://example.com/api/billing/checkout", { method: "POST", body: JSON.stringify({ locale: "tr", priceId: "test" }) });
+  expect((await createCheckout(request)).status).toBe(404);
+  expect(checkout).not.toHaveBeenCalled();
+});
 it.each(["tr", "en", "de"])("returns to the %s account after checkout and portal", async (locale) => {
   const request = () => new Request("https://example.com/api/billing/checkout", { method: "POST", body: JSON.stringify({ locale, priceId: "test" }) });
   expect((await createCheckout(request())).status).toBe(200);

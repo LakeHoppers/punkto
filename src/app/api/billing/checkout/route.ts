@@ -4,10 +4,10 @@ import { getOrCreateCurrentUser, UnauthorizedError } from "@/shared/api-guards";
 import { CreateCheckoutSessionUseCase } from "@/modules/billing/application/create-checkout-session.use-case";
 import { PrismaBillingRepository } from "@/modules/billing/infrastructure/prisma-billing-repository";
 import { RealStripeGateway } from "@/modules/billing/infrastructure/stripe-gateway";
-import { BILLING_ENABLED } from "@/shared/billing-flag";
+import { isBillingEnabled } from "@/shared/billing-flag";
 
 export async function POST(request: Request) {
-  if (!BILLING_ENABLED) {
+  if (!isBillingEnabled()) {
     return NextResponse.json({ error: "not_available" }, { status: 404 });
   }
 

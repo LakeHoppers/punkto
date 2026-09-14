@@ -56,7 +56,7 @@ function buildLines(input: PipelineAlertInput): string[] {
 
 /** Pure formatter: given a failed/partial pipeline run, produces an internal alert email. */
 export function buildPipelineAlertEmail(input: PipelineAlertInput): PipelineAlertEmail {
-  const subject = `News Daily pipeline ${input.status} — run ${input.pipelineRunId}`;
+  const subject = `Punkto pipeline ${input.status} — run ${input.pipelineRunId}`;
   const lines = buildLines(input);
 
   const text = [`Pipeline run ${input.pipelineRunId} finished with status ${input.status}.`, ...lines].join(
@@ -64,7 +64,7 @@ export function buildPipelineAlertEmail(input: PipelineAlertInput): PipelineAler
   );
 
   const html = `<div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #111;">
-<h1 style="font-size: 18px;">News Daily pipeline: ${escapeHtml(input.status)}</h1>
+<h1 style="font-size: 18px;">Punkto pipeline: ${escapeHtml(input.status)}</h1>
 <p style="font-size: 13px; color: #666;">Run ID: ${escapeHtml(input.pipelineRunId)}</p>
 <ul style="font-size: 14px; line-height: 1.6;">
 ${lines.map((line) => `<li>${escapeHtml(line)}</li>`).join("\n")}

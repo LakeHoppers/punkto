@@ -19,7 +19,7 @@ export const PRIVACY_COPY: Record<Locale, PrivacyCopy> = {
     title: "Gizlilik Politikası",
     updated: "Son güncelleme: 14 Eylül 2026",
     intro: [
-      "News Daily, Almanya'daki en önemli haberleri günlük olarak toplayıp Türkçe, İngilizce ve Almanca özetleyen bir hizmettir. Bu sayfa, hizmeti kullanırken hangi kişisel verilerin toplandığını, neden toplandığını ve haklarının neler olduğunu açıklar.",
+      "Punkto, Almanya'daki en önemli haberleri günlük olarak toplayıp Türkçe, İngilizce ve Almanca özetleyen bir hizmettir. Bu sayfa, hizmeti kullanırken hangi kişisel verilerin toplandığını, neden toplandığını ve haklarının neler olduğunu açıklar.",
       `Veri sorumlusu: Emre Küçükşahin (şu an ayrı bir şirket üzerinden değil, şahsen işletiliyor). Sorularınız için: ${CONTACT_EMAIL}`,
     ],
     sections: [
@@ -85,7 +85,7 @@ export const PRIVACY_COPY: Record<Locale, PrivacyCopy> = {
     title: "Datenschutzerklärung",
     updated: "Zuletzt aktualisiert: 14. September 2026",
     intro: [
-      "News Daily sammelt täglich die wichtigsten Nachrichten aus Deutschland und fasst sie auf Türkisch, Englisch und Deutsch zusammen. Hier erfährst du, welche personenbezogenen Daten wir bei der Nutzung erheben, warum wir sie erheben und welche Rechte du hast.",
+      "Punkto sammelt täglich die wichtigsten Nachrichten aus Deutschland und fasst sie auf Türkisch, Englisch und Deutsch zusammen. Hier erfährst du, welche personenbezogenen Daten wir bei der Nutzung erheben, warum wir sie erheben und welche Rechte du hast.",
       `Verantwortlicher: Emre Küçükşahin (derzeit persönlich betrieben, nicht über ein eingetragenes Unternehmen). Fragen: ${CONTACT_EMAIL}`,
     ],
     sections: [
@@ -130,7 +130,7 @@ export const PRIVACY_COPY: Record<Locale, PrivacyCopy> = {
     title: "Privacy Policy",
     updated: "Last updated: September 14, 2026",
     intro: [
-      "News Daily collects the most important German news each day and summarizes it in Turkish, English and German. This page explains what personal data we collect while you use the service, why we collect it, and what rights you have.",
+      "Punkto collects the most important German news each day and summarizes it in Turkish, English and German. This page explains what personal data we collect while you use the service, why we collect it, and what rights you have.",
       `Data controller: Emre Küçükşahin (currently operated personally, not through a registered company). Questions: ${CONTACT_EMAIL}`,
     ],
     sections: [

@@ -22,7 +22,7 @@ export async function POST(request: Request) {
   }
 
   const recipient = process.env.CONTACT_FORM_RECIPIENT ?? "emre@synch.coach";
-  const from = process.env.EMAIL_FROM_ADDRESS ?? "News Daily <onboarding@resend.dev>";
+  const from = process.env.EMAIL_FROM_ADDRESS ?? "Punkto <onboarding@resend.dev>";
 
   const response = await fetch(RESEND_URL, {
     method: "POST",

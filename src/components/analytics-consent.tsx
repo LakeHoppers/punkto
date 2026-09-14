@@ -54,7 +54,7 @@ function getAnalytics() {
       window.location.reload();
     },
     event(name, params) {
-      target.gtag?.("event", name, { ...params, page_location: window.location.origin + (params.page_path ?? "/"), page_referrer: "", page_title: "News Daily" });
+      target.gtag?.("event", name, { ...params, page_location: window.location.origin + (params.page_path ?? "/"), page_referrer: "", page_title: "Punkto" });
     },
   });
   return analytics;

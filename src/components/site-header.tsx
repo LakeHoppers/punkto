@@ -18,10 +18,10 @@ export async function SiteHeader({ locale }: { locale: Locale }) {
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
         <Link href={`/${locale}`} className="flex items-center gap-2">
           <span className="font-heading flex size-7 items-center justify-center rounded-md bg-foreground text-sm font-semibold text-background">
-            N
+            P
           </span>
           <span className="font-heading text-lg font-medium tracking-tight">
-            News Daily
+            Punkto
           </span>
         </Link>
         <div className="flex items-center gap-2 sm:gap-3">

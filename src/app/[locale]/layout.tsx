@@ -30,7 +30,7 @@ const newsreader = Newsreader({
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
-  return { title: "News Daily", description: SITE_COPY[locale].description };
+  return { title: "Punkto", description: SITE_COPY[locale].description };
 }
 
 export default async function RootLayout({

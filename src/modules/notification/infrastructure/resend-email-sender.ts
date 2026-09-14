@@ -6,7 +6,7 @@ export class ResendEmailSender implements EmailSender {
   constructor(
     private readonly apiKey: string = process.env.RESEND_API_KEY ?? "",
     private readonly from: string = process.env.EMAIL_FROM_ADDRESS ??
-      "News Daily <onboarding@resend.dev>",
+      "Punkto <onboarding@resend.dev>",
   ) {}
 
   async send(input: { to: string; subject: string; html: string; text: string }): Promise<void> {

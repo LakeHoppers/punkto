@@ -37,9 +37,9 @@ export function buildDigestEmail(digest: DigestView, locale: Locale = "tr"): Dig
   const impressumUrl = `https://daily-news-saas.vercel.app/${locale}/impressum`;
   const why = { tr: "Neden önemli", en: "Why it matters", de: "Warum das wichtig ist" }[locale];
   const subject = {
-    tr: `News Daily — ${digest.date} özeti (${digest.items.length} haber)`,
-    en: `News Daily — ${digest.date} digest (${digest.items.length} stories)`,
-    de: `News Daily — Nachrichtenüberblick vom ${digest.date} (${digest.items.length} Nachrichten)`,
+    tr: `Punkto — ${digest.date} özeti (${digest.items.length} haber)`,
+    en: `Punkto — ${digest.date} digest (${digest.items.length} stories)`,
+    de: `Punkto — Nachrichtenüberblick vom ${digest.date} (${digest.items.length} Nachrichten)`,
   }[locale];
 
   const storyText = digest.items
@@ -49,10 +49,10 @@ export function buildDigestEmail(digest: DigestView, locale: Locale = "tr"): Dig
     )
     .join("\n\n---\n\n");
 
-  const text = `News Daily — ${digest.date}\n${copy.aiDisclosure}\n\n${storyText}\n\n${impressumLabel}: ${impressumUrl}\n${copy.aiFooter}`;
+  const text = `Punkto — ${digest.date}\n${copy.aiDisclosure}\n\n${storyText}\n\n${impressumLabel}: ${impressumUrl}\n${copy.aiFooter}`;
 
   const html = `<div lang="${locale}" style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #111; background-color: #fff;">
-<h1 style="font-size: 20px;">News Daily — ${escapeHtml(digest.date)}</h1>
+<h1 style="font-size: 20px;">Punkto — ${escapeHtml(digest.date)}</h1>
 <p style="font-size: 12px; font-weight: 400; line-height: 1.5; color: #666;">${escapeHtml(copy.aiDisclosure)}</p>
 ${digest.items
   .map(

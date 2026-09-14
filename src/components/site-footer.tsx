@@ -6,7 +6,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
   return (
     <footer className="border-t">
       <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-4 py-6 text-xs text-muted-foreground">
-        <span>© {new Date().getFullYear()} News Daily</span>
+        <span>© {new Date().getFullYear()} Punkto</span>
         <span>{SITE_COPY[locale].footer}</span>
         <div className="flex flex-wrap items-center gap-3">
           <CookieSettings locale={locale} />
