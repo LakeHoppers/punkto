@@ -10,25 +10,26 @@ Geniş marka dokümanı (ton, editöryal kurallar, sosyal medya) ayrı tutulur, 
 ```
 brand/
 ├── punkto-mark.svg          İşaret, tek renk, currentColor
-├── punkto-wordmark.svg      Dondurulmuş "Punkto" outline (Geist SemiBold)
-├── punkto-lockup.svg        Dondurulmuş işaret + "unkto" outline
-├── Logo.tsx                 React bileşeni (mark / wordmark / lockup)
+├── punkto-wordmark.svg      Tam wordmark, outline, font bağımsız
+├── Logo.tsx                 React bileşeni (wordmark / mark)
 ├── BRAND.md                 bu dosya
+├── wordmark-preview-light.png   (henüz üretilmedi)
+├── wordmark-preview-dark.png    (henüz üretilmedi)
 └── icons/
     ├── favicon.svg          kırmızı zemin, kağıt işaret
-    ├── favicon-16.png
-    ├── favicon-32.png
-    ├── favicon-48.png
-    ├── icon-192.png         PWA
-    ├── icon-512.png         PWA
-    ├── apple-touch-icon.png 180px, köşe yuvarlaması YOK (iOS kendi maskesini uygular)
-    ├── icon-512-ink.png     antrasit zemin varyantı
-    └── icon-512-paper.png   kağıt zemin, kırmızı işaret
+    ├── favicon-16.png       (henüz üretilmedi)
+    ├── favicon-32.png       (henüz üretilmedi)
+    ├── favicon-48.png       (henüz üretilmedi)
+    ├── icon-192.png         PWA (henüz üretilmedi)
+    ├── icon-512.png         PWA (henüz üretilmedi)
+    ├── apple-touch-icon.png 180px, köşe yuvarlaması YOK (henüz üretilmedi)
+    ├── icon-512-ink.png     antrasit zemin varyantı (henüz üretilmedi)
+    └── icon-512-paper.png   kağıt zemin, kırmızı işaret (henüz üretilmedi)
 ```
 
-**Not (2026-09-14):** PNG ikon varyantları (favicon-*.png, icon-192/512.png,
-apple-touch-icon.png, icon-512-ink/paper.png) henüz üretilmedi — sadece SVG
-kaynaklar mevcut. Bir rasterization adımı (örn. `sharp` veya `resvg` ile) gerekiyor.
+**Not (2026-09-14):** PNG/rasterize edilmiş varyantlar ve önizleme görselleri
+henüz üretilmedi — sadece SVG kaynaklar mevcut. Bir rasterization adımı
+(örn. `sharp` ile) gerekiyor.
 
 ---
 
@@ -87,20 +88,27 @@ Tam token seti `globals.css` içindedir.
 | Rol | Font |
 |---|---|
 | Başlık, haber başlığı | Newsreader (500) |
-| Gövde, arayüz | sans (`--font-sans`, Geist) |
-| Wordmark | dondurulmuş outline — **Geist SemiBold (600)**, harf aralığı `-0.035em` |
+| Gövde, arayüz, wordmark | sans (`--font-sans`) |
 
-Wordmark artık sabittir: "Punkto" ve lockup'taki "unkto" Geist SemiBold'dan
-outline'a (vektör path) çevrilip `brand/Logo.tsx` içine gömülüdür. `--font-sans`
-değişse bile logo değişmez, font hiç yüklenmese bile logo doğru görünür.
+Wordmark **dondurulmuştur**. Instrument Sans SemiBold (600), letter-spacing `-0.035em`,
+P harfi markanın kendi işaretiyle değiştirilmiş halde outline'a çevrildi. Artık font
+değişkenlerine bağlı değil, `--font-sans` değişse bile logo değişmez.
 
-Dosyalar: `brand/punkto-wordmark.svg` (tek başına yazı), `brand/punkto-lockup.svg`
-(işaret + "unkto"). İkisi de `scripts/build-wordmark.mjs` ile üretildi.
+Wordmark'taki P, fontun kendi P'sinden türetildi: gövde kalınlığı (130/1000 em) ve cap
+height (720) fontla birebir aynı, kâse daireye çevrildi. Bu yüzden harflerle aynı ağırlıkta
+duruyor.
 
-Wordmark'ı değiştirmek (font, ağırlık, tracking) isteyen bu script'i güncelleyip
-yeniden çalıştırmalı — SVG çıktıları veya `Logo.tsx` içindeki path verileri elle
-düzenlenmez. Script'in çalışması için ilgili fontun `.ttf`/`.otf` dosyası yerel
-olarak gerekir (repoya commit edilmez): `npm run build:wordmark`.
+**İkondaki P ile wordmark'taki P birebir aynı değil.** İkon versiyonu daha kalın gövdeli,
+çünkü 16 pikselde ayakta kalması gerekiyor. Wordmark versiyonu daha ince, çünkü yanındaki
+harflerle uyumlu olmak zorunda. Bu bilinçli bir optik farktır, hata değil.
+
+Wordmark'ı değiştirmek gerekirse SVG elle düzenlenmez, üretim script'i yeniden çalıştırılır.
+
+**Not (2026-09-14):** `scripts/build-wordmark.mjs` bu repoda mevcut ama Geist
+SemiBold kullanıyor ve mark'ı ayrı bir "lockup" olarak (P harfini değiştirmek yerine
+yanına ekleyerek) kompoze ediyor — yani bu dosyadaki (Instrument Sans, P'nin
+kendisinin mark'a dönüştüğü) tam yaklaşımı birebir yeniden üretmiyor. Bu SVG'ler
+elle entegre edildi. Script'i bu yeni yaklaşıma göre güncellemek ayrı bir iş.
 
 ---
 
