@@ -1,3 +1,4 @@
+import { AnalyticsConsent } from "@/components/analytics-consent";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Newsreader } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -68,6 +69,7 @@ export default async function RootLayout({
             <SiteHeader locale={locale} />
             {children}
             <SiteFooter locale={locale} />
+            <AnalyticsConsent locale={locale} />
           </ThemeProvider>
         </ClerkProvider>
       </body>

@@ -47,6 +47,7 @@ export const PRIVACY_COPY: Record<Locale, PrivacyCopy> = {
           "Neon — veritabanı, AB içinde (Frankfurt, Almanya) barındırılıyor.",
           "Vercel — uygulama sunucusu, AB içinde (Frankfurt, Almanya) barındırılıyor.",
           "Resend — e-posta gönderimi. Bu servis verileri ABD'de saklıyor; AB-ABD Veri Gizliliği Çerçevesi (Data Privacy Framework) ve Standart Sözleşme Hükümleri (SCC) ile yasal olarak korunuyor.",
+          "Google — yalnızca izinle Google Analytics. Veriler ABD’de işlenir. Uluslararası aktarımlar için Google, AB-ABD Veri Gizliliği Çerçevesi’ne ve uygun olduğu durumlarda Standart Sözleşme Hükümleri’ne (SCC) dayanır. Ayrıntılar: https://business.safety.google/adsdatatransfers/ ve https://policies.google.com/technologies/partner-sites",
           "Stripe — ödeme işleme. Kendi kapsamlı GDPR uyumluluk çerçevesi var.",
           "OpenAI — yalnızca haber içeriğini işler (özetleme/çeviri için); adın, e-postan ya da tercihlerin OpenAI'a hiç gönderilmez.",
           "Verilerin hiçbir zaman reklam amacıyla üçüncü taraflara satılmaz.",
@@ -69,7 +70,7 @@ export const PRIVACY_COPY: Record<Locale, PrivacyCopy> = {
       {
         heading: "Çerezler",
         body: [
-          "Sadece oturum açık tutmak için gerekli, zorunlu kimlik doğrulama çerezleri kullanıyoruz (Clerk tarafından). Reklam veya takip amaçlı çerez/analitik kullanmıyoruz.",
+          "Clerk, oturumunu açık tutmak için zorunlu kimlik doğrulama çerezleri kullanır. Google Analytics 4 yalnızca çerez bildirimini kabul ettiğinde yüklenir; reddedersen Google Analytics’e veri gönderilmez. İzninle ziyaretleri ve tamamlanan kayıtları ölçeriz; Google cihaz/tarayıcı bilgileri, sayfa görüntülemeleri ve çerez tanımlayıcılarını işler. Adını, e-postanı veya hesap kimliğini Analytics’e göndermeyiz. Reklam özellikleri kapalıdır. Yasal dayanak açık rızandır (GDPR Madde 6/1-a). Seçimin bu tarayıcıda localStorage ile saklanır; analiz çerezleri en fazla bir yıl saklanır. Sayfa altındaki Çerez ayarları bağlantısından iznini istediğin zaman geri çekebilirsin; bu, önceki işlemenin hukuka uygunluğunu etkilemez.",
         ],
       },
       {
@@ -104,6 +105,7 @@ export const PRIVACY_COPY: Record<Locale, PrivacyCopy> = {
         "Neon — unsere Datenbank, gehostet in der EU (Frankfurt, Deutschland).",
         "Vercel — unsere Anwendungsserver, gehostet in der EU (Frankfurt, Deutschland).",
         "Resend — E-Mail-Versand. Dieser Anbieter speichert Daten in den USA; die Übermittlung ist durch das EU-US Data Privacy Framework und Standardvertragsklauseln (SCC) abgesichert.",
+        "Google — Google Analytics, nur mit Einwilligung. Daten werden in den USA verarbeitet. Google stützt internationale Übermittlungen auf das EU-US Data Privacy Framework und gegebenenfalls Standardvertragsklauseln (SCC). Einzelheiten: https://business.safety.google/adsdatatransfers/ und https://policies.google.com/technologies/partner-sites",
         "Stripe — Zahlungsabwicklung mit einem eigenen umfassenden Rahmen zur Einhaltung der DSGVO.",
         "OpenAI — verarbeitet ausschließlich Nachrichteninhalte für Zusammenfassung und Übersetzung. Dein Name, deine E-Mail-Adresse und deine Einstellungen werden niemals an OpenAI gesendet.",
         "Wir verkaufen deine Daten niemals zu Werbezwecken an Dritte.",
@@ -117,7 +119,7 @@ export const PRIVACY_COPY: Record<Locale, PrivacyCopy> = {
         "Du kannst außerdem bei deiner zuständigen Datenschutzaufsichtsbehörde Beschwerde einlegen.",
       ] },
       { heading: "Cookies", body: [
-        "Wir verwenden ausschließlich technisch notwendige Authentifizierungs-Cookies von Clerk, damit du angemeldet bleibst. Wir verwenden keine Werbe-, Tracking- oder Analyse-Cookies.",
+        "Clerk verwendet notwendige Authentifizierungs-Cookies, damit du angemeldet bleibst. Google Analytics 4 wird erst nach deiner Zustimmung im Cookie-Hinweis geladen; bei Ablehnung werden keine Daten an Google Analytics gesendet. Mit deiner Einwilligung messen wir Besuche und abgeschlossene Registrierungen. Google verarbeitet Geräte-/Browserinformationen, Seitenaufrufe und Cookie-Kennungen. Wir senden keine Namen, E-Mail-Adressen oder Konto-IDs an Analytics. Werbefunktionen sind deaktiviert. Rechtsgrundlage ist deine Einwilligung (Art. 6 Abs. 1 Buchst. a DSGVO). Deine Auswahl wird in diesem Browser im localStorage gespeichert; Analyse-Cookies werden höchstens ein Jahr gespeichert. Über Cookie-Einstellungen im Seitenfuß kannst du jederzeit widerrufen. Die Rechtmäßigkeit der vorherigen Verarbeitung bleibt unberührt.",
       ] },
       { heading: "Änderungen", body: [
         "Diese Datenschutzerklärung kann gelegentlich aktualisiert werden. Bei wesentlichen Änderungen aktualisieren wir das Datum auf dieser Seite.",
@@ -156,6 +158,7 @@ export const PRIVACY_COPY: Record<Locale, PrivacyCopy> = {
           "Neon — our database, hosted in the EU (Frankfurt, Germany).",
           "Vercel — our application servers, hosted in the EU (Frankfurt, Germany).",
           "Resend — email delivery. This provider stores data in the US; transfers are covered by the EU-US Data Privacy Framework and Standard Contractual Clauses (SCCs).",
+          "Google — Google Analytics, only with consent. Data is processed in the US. Google relies on the EU-US Data Privacy Framework and, where applicable, Standard Contractual Clauses (SCCs) for international transfers. Details: https://business.safety.google/adsdatatransfers/ and https://policies.google.com/technologies/partner-sites",
           "Stripe — payment processing, with its own comprehensive GDPR compliance framework.",
           "OpenAI — processes only news article content (for summarization/translation); your name, email, or preferences are never sent to OpenAI.",
           "We never sell your data to third parties for advertising purposes.",
@@ -178,7 +181,7 @@ export const PRIVACY_COPY: Record<Locale, PrivacyCopy> = {
       {
         heading: "Cookies",
         body: [
-          "We only use strictly necessary authentication cookies (set by Clerk) to keep you signed in. We do not use advertising or tracking/analytics cookies.",
+          "Clerk uses essential authentication cookies to keep you signed in. Google Analytics 4 loads only after you accept the cookie notice; declining sends no data to Google Analytics. With consent, we measure visits and completed registrations. Google processes device/browser information, page views and cookie identifiers. We do not send names, email addresses or account IDs to Analytics. Advertising features are disabled. The legal basis is your consent (GDPR Art. 6(1)(a)). Your choice is stored in this browser’s localStorage; analytics cookies last at most one year. You can withdraw consent at any time via Cookie settings in the footer, without affecting the lawfulness of earlier processing.",
         ],
       },
       {

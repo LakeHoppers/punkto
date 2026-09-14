@@ -884,3 +884,23 @@ Ruff and production build passed. Browser confirmed the repaired German item.
 Renamed the SOCIETY display label to Kültür / Culture / Kultur in the shared
 site/email labels and Python email formatter. Enum, stored categories, ranking,
 and AI prompts are unchanged; the model continues returning SOCIETY. No migration.
+
+### Consent-based GA4 — 2026-09-14
+
+- Added env-configured GA4 with localized TR/EN/DE accept/decline banner and footer
+  cookie settings. No Google script or tracking before acceptance; withdrawal
+  disables collection, removes GA cookies and reloads to unload handlers.
+- Clerk completed sign-up resource emits `sign_up` once per observed consented
+  registration; normal login does not. No account IDs are sent to GA. Public
+  page views omit queries and private routes. Advertising consent stays denied.
+- Updated all privacy translations with consent basis, analytics data/purpose,
+  withdrawal, cookie expiry and Google's US transfer safeguards. No schema changes.
+- Measurement ID configured in local `.env`, `.env.example`, Vercel production and
+  preview. 177 tests passed (one existing opt-in test skipped), lint, typecheck and
+  production build passed. Real browser verified no Google script before consent,
+  decline persistence, acceptance loading, withdrawal unloading, and all locales.
+- Follow-up: the available Analytics login showed other projects, not News Daily.
+  Property admin must mark `sign_up` as a key event and disable Enhanced Measurement
+  to avoid automatic duplicate/unsanitized events. A real new registration received
+  in GA Realtime remains unverified; unit tests cover Clerk completion semantics.
+  Configuration and limitations: `docs/ANALYTICS.md`.

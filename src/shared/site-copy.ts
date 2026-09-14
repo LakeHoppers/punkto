@@ -1,6 +1,11 @@
 import type { Locale } from "./locale";
 export const SITE_COPY = {
   tr: {
+    cookieSettings: "Çerez ayarları",
+    cookieNotice: "Google Analytics ile ziyaretleri ve tamamlanan kayıtları ölçmek için yalnızca izninle analiz çerezleri kullanıyoruz. Reddetmek hizmeti etkilemez. İznini çerez ayarlarından geri çekebilirsin.",
+    cookieAccept: "Kabul et",
+    cookieDecline: "Reddet",
+
     signIn: "Giriş yap", signUp: "Kayıt ol", account: "Hesabım", theme: "Tema değiştir",
     footer: "Almanya’dan her sabah, Türkçe, İngilizce ve Almanca özet.",
     choose: "Hangi kategorilerin özetini görmek istediğini seç.", favorites: "Favori kategoriler",
@@ -14,6 +19,11 @@ export const SITE_COPY = {
     privacyLink: "Gizlilik Politikası", emailLanguage: "Günlük e-posta dili",
   },
   de: {
+    cookieSettings: "Cookie-Einstellungen",
+    cookieNotice: "Mit deiner Einwilligung verwenden wir Google-Analytics-Cookies, um Besuche und abgeschlossene Registrierungen zu messen. Ablehnen beeinträchtigt den Dienst nicht. Du kannst deine Einwilligung in den Cookie-Einstellungen widerrufen.",
+    cookieAccept: "Akzeptieren",
+    cookieDecline: "Ablehnen",
+
     signIn: "Anmelden", signUp: "Registrieren", account: "Mein Konto", theme: "Farbschema wechseln",
     footer: "Nachrichten aus Deutschland, jeden Morgen auf Türkisch, Englisch und Deutsch zusammengefasst.",
     choose: "Wähle die Kategorien, denen du folgen möchtest.", favorites: "Lieblingskategorien",
@@ -27,6 +37,11 @@ export const SITE_COPY = {
     privacyLink: "Datenschutzerklärung", emailLanguage: "Sprache der täglichen E-Mail",
   },
   en: {
+    cookieSettings: "Cookie settings",
+    cookieNotice: "With your permission, we use Google Analytics cookies to measure visits and completed registrations. Declining does not affect the service. You can withdraw consent in cookie settings.",
+    cookieAccept: "Accept",
+    cookieDecline: "Decline",
+
     signIn: "Sign in", signUp: "Sign up", account: "My Account", theme: "Toggle theme",
     footer: "German news every morning, summarized in Turkish, English and German.",
     choose: "Choose the categories you want to follow.", favorites: "Favorite categories",
