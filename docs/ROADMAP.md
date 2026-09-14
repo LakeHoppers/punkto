@@ -64,7 +64,9 @@ this pass: all user-facing UI/email/package copy renamed, GitHub repo renamed to
 Vercel project name, and Clerk application name updated directly by Emre),
 Google Search Console verified, placeholder "P" app icon (real logo still
 pending design), homepage description now carries the per-locale tagline
-("Almanya, özetle." / "Germany, to the point." / "Deutschland, auf den Punkt.").
+("Haberler, özetle." / "News, to the point." / "Nachrichten, auf den Punkt." —
+revised same day from a Germany-only framing, since the digest also carries
+world-news stories filtered through German press, not just domestic news).
 Not yet started: DPMA trademark filing, business registration (still
 deliberately deferred until real revenue — see TODO.md).
 
