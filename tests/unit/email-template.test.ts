@@ -58,7 +58,7 @@ it.each(LOCALES)("includes %s disclosure, commentary caption, sources and absolu
     expect(output.indexOf(copy.aiDisclosure)).toBeLessThan(output.indexOf("İlk paragraf"));
     expect(output).toContain(copy.aiAnalysis);
     expect(output).toContain(copy.aiFooter);
-    expect(output).toContain(`https://daily-news-saas.vercel.app/${locale}/impressum`);
+    expect(output).toContain(`https://www.punkto.fyi/${locale}/impressum`);
     expect(output).toContain("https://example.de/a");
   }
   expect(html).not.toContain("aria-hidden");

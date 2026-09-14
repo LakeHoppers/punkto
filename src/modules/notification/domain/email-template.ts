@@ -34,7 +34,7 @@ export function buildDigestEmail(digest: DigestView, locale: Locale = "tr"): Dig
   const labels = CATEGORY_LABELS[locale];
   const copy = HOME_COPY[locale];
   const impressumLabel = IMPRESSUM_COPY[locale].title;
-  const impressumUrl = `https://daily-news-saas.vercel.app/${locale}/impressum`;
+  const impressumUrl = `https://www.punkto.fyi/${locale}/impressum`;
   const why = { tr: "Neden önemli", en: "Why it matters", de: "Warum das wichtig ist" }[locale];
   const subject = {
     tr: `Punkto — ${digest.date} özeti (${digest.items.length} haber)`,
