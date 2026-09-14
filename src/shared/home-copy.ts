@@ -9,10 +9,18 @@ export const HOME_COPY: Record<
     emptyTitle: string;
     emptyBody: string;
     whyItMatters: string;
+    aiDisclosure: string;
+    aiAnalysis: string;
+    aiFooter: string;
+    sourcesLabel: string;
     storiesLabel: (count: number) => string;
   }
 > = {
   tr: {
+    aiDisclosure: "Özetler yapay zeka ile otomatik oluşturulur. Kaynaklar her haberin altında bağlantılıdır.",
+    aiAnalysis: "AI yorumu",
+    aiFooter: "Özetler yapay zeka ile oluşturulur.",
+    sourcesLabel: "Kaynaklar",
     tagline: "Otomatik. Her sabah. Güvenilir.",
     title: "Almanya'dan her sabah, Türkçe özet.",
     description:
@@ -24,6 +32,10 @@ export const HOME_COPY: Record<
     storiesLabel: (count) => `${count} haber`,
   },
   de: {
+    aiDisclosure: "Die Zusammenfassungen werden automatisiert mit KI erstellt. Quellen sind bei jedem Beitrag verlinkt.",
+    aiAnalysis: "KI-Einordnung",
+    aiFooter: "Zusammenfassungen mit KI erstellt.",
+    sourcesLabel: "Quellen",
     tagline: "Automatisch. Jeden Morgen. Verlässlich.",
     title: "Die wichtigsten Nachrichten aus Deutschland, jeden Morgen.",
     description: "News Daily sammelt die wichtigsten Nachrichten aus Deutschland, entfernt Dopplungen, ordnet sie nach Bedeutung und erklärt in einer täglichen Zusammenfassung, warum sie wichtig sind.",
@@ -33,6 +45,10 @@ export const HOME_COPY: Record<
     storiesLabel: (count) => `${count} Nachrichten`,
   },
   en: {
+    aiDisclosure: "Summaries are generated automatically with AI. Sources are linked with every story.",
+    aiAnalysis: "AI analysis",
+    aiFooter: "Summaries generated with AI.",
+    sourcesLabel: "Sources",
     tagline: "Automatic. Every morning. Reliable.",
     title: "The most important German news, every morning.",
     description:

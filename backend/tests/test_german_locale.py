@@ -25,3 +25,16 @@ def test_german_email_and_free_preference():
     assert "Warum das wichtig ist" in email["html"]
     assert "<script>" not in email["html"]
     assert 'lang="de"' in email["html"]
+
+
+@pytest.mark.parametrize("locale", ["tr", "en", "de"])
+def test_email_transparency_in_both_formats(locale):
+    from app.shared.home_copy import HOME_COPY
+
+    email = build_email({"date": "2026-09-14", "items": [{"category": "TECHNOLOGY", "headline": "News", "summary": "Text", "whyItMatters": "Reason", "sourceUrls": ["https://example.de/news", "javascript:alert(1)"]}]}, locale)
+    for output in (email["html"], email["text"]):
+        for field in ("aiDisclosure", "aiAnalysis", "aiFooter"):
+            assert HOME_COPY[locale][field] in output
+        assert f"https://daily-news-saas.vercel.app/{locale}/impressum" in output
+        assert "https://example.de/news" in output
+        assert "javascript:" not in output

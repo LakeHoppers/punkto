@@ -64,6 +64,10 @@ export default async function Home({
             <span>{copy.storiesLabel(digest.items.length)}</span>
           </div>
 
+          <p className="pt-3 text-xs font-normal leading-relaxed text-muted-foreground">
+            {copy.aiDisclosure}
+          </p>
+
           {digest.items.map((item, index) => (
             <article
               key={item.storyId}
@@ -106,6 +110,10 @@ export default async function Home({
                 <span className="font-semibold text-foreground">{copy.whyItMatters}</span>
                 {item.whyItMatters}
               </div>
+
+              <p className="pl-4 text-xs font-normal leading-relaxed text-muted-foreground">
+                {copy.aiAnalysis}
+              </p>
 
               {item.sourceUrls.length > 0 && (
                 <div className="flex flex-wrap gap-x-3 gap-y-1 pt-1 text-xs text-muted-foreground">

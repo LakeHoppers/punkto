@@ -858,3 +858,23 @@ are skipped; this does not rebuild the digest or email subscribers.
 Final verification for DE: 163 TypeScript tests passed (one private oracle opt-in skipped),
 88 Python tests passed including all three live read-only checks; lint, typecheck,
 Ruff and production build passed. Browser confirmed the repaired German item.
+
+
+### AI transparency — shipped 2026-09-14
+
+- Exact DE/EN/TR disclosure directly below the digest date/count; one plain,
+  12px, regular-weight muted caption below every significance block. No per-source
+  AI tags, badge containers, icons, animation or aria-hidden labels added.
+- HTML and text emails include the same disclosure below the date, commentary
+  captions, and a footer with localized absolute Impressum link and short AI note.
+  Added plain source links because the old email did not link its sources; unsafe
+  protocols and duplicate source links are filtered. New copy lives in HOME_COPY,
+  with a mirrored Python copy catalog for the shadow email formatter. Existing
+  Impressum content is untouched.
+- Browser verified all three locales: one header note and ten captions for ten
+  stories. Actual computed-color contrast: 4.597:1 light, 6.555:1 dark; authored
+  email #666 on explicit white is 5.742:1. All meet WCAG AA 4.5:1 for small text.
+  Email clients that forcibly recolor messages were not individually tested.
+- 167 TS tests, 88 Python tests (three live opt-in tests skipped), lint, typecheck,
+  Ruff and production build passed. No AI calls, subscriber emails, database or
+  scheduling changes. Evidence: `docs/verification/ai-transparency.json`.

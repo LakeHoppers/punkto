@@ -1,3 +1,5 @@
+import { HOME_COPY } from "@/shared/home-copy";
+import { LOCALES } from "@/shared/locale";
 import { describe, expect, it } from "vitest";
 import { buildDigestEmail } from "@/modules/notification/domain/email-template";
 import type { DigestView } from "@/modules/digest/domain/types";
@@ -46,4 +48,26 @@ describe("buildDigestEmail", () => {
     const { text } = buildDigestEmail(twoItemDigest);
     expect(text.split("---")).toHaveLength(2);
   });
+});
+
+it.each(LOCALES)("includes %s disclosure, commentary caption, sources and absolute legal footer in both formats", locale => {
+  const { html, text } = buildDigestEmail(DIGEST, locale);
+  const copy = HOME_COPY[locale];
+  for (const output of [html, text]) {
+    expect(output.split(copy.aiDisclosure)).toHaveLength(2);
+    expect(output.indexOf(copy.aiDisclosure)).toBeLessThan(output.indexOf("İlk paragraf"));
+    expect(output).toContain(copy.aiAnalysis);
+    expect(output).toContain(copy.aiFooter);
+    expect(output).toContain(`https://daily-news-saas.vercel.app/${locale}/impressum`);
+    expect(output).toContain("https://example.de/a");
+  }
+  expect(html).not.toContain("aria-hidden");
+  expect(html).toContain('font-weight: 400');
+});
+it("filters unsafe source schemes and escapes quoted URLs without duplicating links", () => {
+  const email = buildDigestEmail({ ...DIGEST, items: [{ ...DIGEST.items[0], sourceUrls: ["javascript:alert(1)", "broken", "https://example.de/a", "https://example.de/a", 'https://example.de/?q="quoted"&v=1'] }] });
+  expect(email.html).not.toContain("javascript:");
+  expect(email.text).not.toContain("javascript:");
+  expect(email.html.split('href="https://example.de/a"')).toHaveLength(2);
+  expect(email.html).toContain("&quot;quoted&quot;&amp;v=1");
 });

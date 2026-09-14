@@ -1,0 +1,31 @@
+{
+  "verifiedAt": "2026-09-14",
+  "locales": [
+    "de",
+    "en",
+    "tr"
+  ],
+  "headerNotesPerDigest": 1,
+  "analysisCaptionsPerTenStoryDigest": 10,
+  "fontSize": "12px",
+  "fontWeight": "400",
+  "ariaHidden": false,
+  "contrast": {
+    "light": 4.597324531153093,
+    "dark": 6.555182864133561,
+    "email": 5.74183648145415,
+    "minimum": 4.5
+  },
+  "method": "Browser computed CIELab/RGB colors; relative luminance with D50-to-D65 adaptation. Website themes toggled in browser. Email #666 on explicit #fff; email-client forced recoloring not claimed tested.",
+  "standard": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html",
+  "tests": {
+    "typescriptPassed": 167,
+    "pythonPassed": 88,
+    "pythonLiveOptInSkipped": 3,
+    "lint": true,
+    "typecheck": true,
+    "ruff": true,
+    "productionBuild": true
+  },
+  "emailsSent": 0
+}
