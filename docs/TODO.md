@@ -878,3 +878,9 @@ Ruff and production build passed. Browser confirmed the repaired German item.
 - 167 TS tests, 88 Python tests (three live opt-in tests skipped), lint, typecheck,
   Ruff and production build passed. No AI calls, subscriber emails, database or
   scheduling changes. Evidence: `docs/verification/ai-transparency.json`.
+
+### Culture display label — 2026-09-14
+
+Renamed the SOCIETY display label to Kültür / Culture / Kultur in the shared
+site/email labels and Python email formatter. Enum, stored categories, ranking,
+and AI prompts are unchanged; the model continues returning SOCIETY. No migration.

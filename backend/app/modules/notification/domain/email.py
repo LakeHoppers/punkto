@@ -11,7 +11,7 @@ LABELS = {
     "TECHNOLOGY": "Teknoloji",
     "EUROPE": "Avrupa",
     "BUSINESS": "İş Dünyası",
-    "SOCIETY": "Toplum",
+    "SOCIETY": "Kültür",
     "SPORTS": "Spor",
 }
 
@@ -36,8 +36,8 @@ def build_email(digest, locale="tr"):
     if locale not in ("tr", "en", "de"):
         locale = "tr"
     labels = LABELS if locale == "tr" else dict(zip(LABELS, {
-        "en": ["Politics", "Economy", "Immigration", "Berlin", "Technology", "Europe", "Business", "Society", "Sports"],
-        "de": ["Politik", "Wirtschaft", "Migration", "Berlin", "Technologie", "Europa", "Unternehmen", "Gesellschaft", "Sport"],
+        "en": ["Politics", "Economy", "Immigration", "Berlin", "Technology", "Europe", "Business", "Culture", "Sports"],
+        "de": ["Politik", "Wirtschaft", "Migration", "Berlin", "Technologie", "Europa", "Unternehmen", "Kultur", "Sport"],
     }[locale], strict=True))
     why = {"tr": "Neden önemli", "en": "Why it matters", "de": "Warum das wichtig ist"}[locale]
     copy = HOME_COPY[locale]

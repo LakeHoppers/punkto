@@ -8,7 +8,7 @@ export const CATEGORY_LABELS_TR: Record<Category, string> = {
   TECHNOLOGY: "Teknoloji",
   EUROPE: "Avrupa",
   BUSINESS: "İş Dünyası",
-  SOCIETY: "Toplum",
+  SOCIETY: "Kültür",
   SPORTS: "Spor",
 };
 
@@ -20,12 +20,12 @@ export const CATEGORY_LABELS_EN: Record<Category, string> = {
   TECHNOLOGY: "Technology",
   EUROPE: "Europe",
   BUSINESS: "Business",
-  SOCIETY: "Society",
+  SOCIETY: "Culture",
   SPORTS: "Sports",
 };
 
 export const CATEGORY_LABELS_DE: Record<Category, string> = {
   POLITICS: "Politik", ECONOMY: "Wirtschaft", IMMIGRATION: "Migration", BERLIN: "Berlin",
-  TECHNOLOGY: "Technologie", EUROPE: "Europa", BUSINESS: "Unternehmen", SOCIETY: "Gesellschaft", SPORTS: "Sport",
+  TECHNOLOGY: "Technologie", EUROPE: "Europa", BUSINESS: "Unternehmen", SOCIETY: "Kultur", SPORTS: "Sport",
 };
 export const CATEGORY_LABELS = { tr: CATEGORY_LABELS_TR, en: CATEGORY_LABELS_EN, de: CATEGORY_LABELS_DE };
