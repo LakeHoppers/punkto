@@ -47,5 +47,21 @@ export function createAnalytics(ports: AnalyticsPorts) {
       start();
       ports.event("sign_up", { method: "clerk" });
     },
+    signin(attempt: { status: string | null; createdSessionId: string | null } | undefined) {
+      if (attempt?.status !== "complete" || !attempt.createdSessionId) return;
+      const key = `news-daily.signin.${attempt.createdSessionId}`;
+      if (seen.has(key) || ports.read(key)) return;
+      seen.add(key);
+      if (consent !== "accepted") return;
+      ports.write(key, "observed");
+      start();
+      ports.event("login", { method: "clerk" });
+    },
+    /** Generic product-event tracker for interactions outside the Clerk lifecycle. No-ops without consent. */
+    track(name: string, params: Record<string, string> = {}) {
+      if (consent !== "accepted") return;
+      start();
+      ports.event(name, params);
+    },
   };
 }

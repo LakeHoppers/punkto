@@ -42,6 +42,8 @@ export function buildDigestEmail(digest: DigestView, locale: Locale = "tr"): Dig
   const impressumLabel = IMPRESSUM_COPY[locale].title;
   const impressumUrl = `https://www.punkto.fyi/${locale}/impressum`;
   const why = { tr: "Neden önemli", en: "Why it matters", de: "Warum das wichtig ist" }[locale];
+  const viewOnSiteLabel = { tr: "Punkto'da görüntüle", en: "View on Punkto", de: "Auf Punkto ansehen" }[locale];
+  const viewOnSiteUrl = `https://www.punkto.fyi/${locale}?utm_source=email&utm_medium=email&utm_campaign=daily_digest`;
   const dateLabel = formatDateDMY(digest.date);
   const subject = {
     tr: `Punkto — ${dateLabel} özeti (${digest.items.length} haber)`,
@@ -56,7 +58,7 @@ export function buildDigestEmail(digest: DigestView, locale: Locale = "tr"): Dig
     )
     .join("\n\n---\n\n");
 
-  const text = `Punkto — ${dateLabel}\n${copy.description}\n\n${storyText}\n\n${copy.aiDisclosure}\n\n${impressumLabel}: ${impressumUrl}\n${copy.aiFooter}`;
+  const text = `Punkto — ${dateLabel}\n${copy.description}\n\n${viewOnSiteLabel}: ${viewOnSiteUrl}\n\n${storyText}\n\n${copy.aiDisclosure}\n\n${impressumLabel}: ${impressumUrl}\n${copy.aiFooter}`;
 
   const html = `<div lang="${locale}" style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #1E1C19; background-color: #FAF7F1;">
 <div style="padding: 24px 24px 16px;">
@@ -67,6 +69,7 @@ export function buildDigestEmail(digest: DigestView, locale: Locale = "tr"): Dig
   <div style="font-size: 12px; color: #6F6558; text-transform: uppercase; letter-spacing: 0.04em; margin-top: 6px;">${escapeHtml(dateLabel)}</div>
 </div>
 <p style="padding: 0 24px; font-size: 14px; line-height: 1.6; color: #1E1C19;">${escapeHtml(copy.description)}</p>
+<p style="padding: 4px 24px 0;"><a href="${viewOnSiteUrl}" style="color: #9E3527; font-size: 13px; font-weight: 600; text-decoration: underline;">${escapeHtml(viewOnSiteLabel)} →</a></p>
 <div style="padding: 8px 24px 0;">
 ${digest.items
   .map(

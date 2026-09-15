@@ -2,6 +2,7 @@
 
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+import { trackEvent } from "@/components/analytics-consent";
 
 /**
  * Both icons always render; CSS (the `dark:` variant, driven by next-themes'
@@ -21,9 +22,11 @@ export function ThemeToggle({ label }: { label: string }) {
     <button
       type="button"
       aria-label={label}
-      onClick={() =>
-        setTheme(document.documentElement.classList.contains("dark") ? "light" : "dark")
-      }
+      onClick={() => {
+        const next = document.documentElement.classList.contains("dark") ? "light" : "dark";
+        setTheme(next);
+        trackEvent("theme_toggle", { theme: next });
+      }}
       className="inline-flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
     >
       <Sun className="size-4 hidden dark:block" />

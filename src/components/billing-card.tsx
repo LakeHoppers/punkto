@@ -5,6 +5,7 @@ import { FREE_DIGEST_HOUR, FREE_MAX_CATEGORIES } from "@/modules/billing/domain/
 
 import { SITE_COPY } from "@/shared/site-copy";
 import type { Locale } from "@/shared/locale";
+import { trackEvent } from "@/components/analytics-consent";
 
 export function BillingCard({
   plan,
@@ -63,7 +64,13 @@ export function BillingCard({
           {loading ? "..." : copy.upgrade}
         </button>
       ) : (
-        <p className="shrink-0 text-xs text-muted-foreground">{copy.premiumComingSoon}</p>
+        <button
+          type="button"
+          onClick={() => trackEvent("premium_interest_click", { locale })}
+          className="shrink-0 text-xs text-muted-foreground underline decoration-dotted hover:text-foreground"
+        >
+          {copy.premiumComingSoon}
+        </button>
       )}
     </div>
   );

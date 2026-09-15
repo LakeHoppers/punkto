@@ -7,6 +7,7 @@ import { CATEGORY_LABELS } from "@/shared/category-labels";
 import { CATEGORY_ACCENT } from "@/shared/category-colors";
 import { HOME_COPY } from "@/shared/home-copy";
 import type { Locale } from "@/shared/locale";
+import { TrackedSourceLink } from "@/components/tracked-source-link";
 
 function formatDate(isoDate: string, locale: Locale): string {
   return new Intl.DateTimeFormat(({ tr: "tr-TR", en: "en-US", de: "de-DE" })[locale], {
@@ -118,15 +119,12 @@ export default async function Home({
               {item.sourceUrls.length > 0 && (
                 <div className="flex flex-wrap gap-x-3 gap-y-1 pt-1 text-xs text-muted-foreground">
                   {item.sourceUrls.map((url) => (
-                    <a
+                    <TrackedSourceLink
                       key={url}
-                      href={url}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      url={url}
+                      category={item.category}
                       className="hover:text-foreground hover:underline"
-                    >
-                      {new URL(url).hostname.replace(/^www\./, "")}
-                    </a>
+                    />
                   ))}
                 </div>
               )}

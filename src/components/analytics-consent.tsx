@@ -60,6 +60,12 @@ function getAnalytics() {
   return analytics;
 }
 
+/** Fire a custom product event. No-ops silently if analytics is disabled or consent hasn't been given. */
+export function trackEvent(name: string, params: Record<string, string> = {}) {
+  if (!enabled) return;
+  getAnalytics().track(name, params);
+}
+
 export function CookieSettings({ locale }: { locale: Locale }) {
   if (!enabled) return null;
   return <button type="button" className="hover:text-foreground hover:underline" onClick={() => window.dispatchEvent(new Event(SETTINGS_EVENT))}>{SITE_COPY[locale].cookieSettings}</button>;
@@ -81,7 +87,10 @@ export function AnalyticsConsent({ locale }: { locale: Locale }) {
     window.addEventListener("storage", sync);
     // Defer the initial client-only banner state until hydration has completed.
     const timer = setTimeout(() => setVisible(tracker.consent === null), 0);
-    const unsubscribe = clerk.addListener(({ client }) => tracker.signup(client?.signUp));
+    const unsubscribe = clerk.addListener(({ client }) => {
+      tracker.signup(client?.signUp);
+      tracker.signin(client?.signIn);
+    });
     return () => { clearTimeout(timer); unsubscribe(); window.removeEventListener(SETTINGS_EVENT, open); window.removeEventListener("storage", sync); };
   }, [clerk]);
   useEffect(() => { if (enabled) getAnalytics().page(pathname); }, [pathname]);

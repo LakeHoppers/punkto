@@ -61,6 +61,7 @@ it.each(LOCALES)("includes %s disclosure, commentary caption, sources and absolu
     expect(output).toContain(copy.aiFooter);
     expect(output).toContain(`https://www.punkto.fyi/${locale}/impressum`);
     expect(output).toContain("https://example.de/a");
+    expect(output).toContain(`https://www.punkto.fyi/${locale}?utm_source=email&utm_medium=email&utm_campaign=daily_digest`);
   }
   expect(html).not.toContain("aria-hidden");
   expect(html).toContain('font-weight: 400');

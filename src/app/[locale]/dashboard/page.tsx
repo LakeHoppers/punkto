@@ -11,6 +11,7 @@ import { prisma } from "@/shared/prisma";
 import { isLocale } from "@/shared/locale";
 import { SITE_COPY } from "@/shared/site-copy";
 import { notFound } from "next/navigation";
+import { TrackedDetails } from "@/components/tracked-details";
 
 export default async function DashboardPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -51,7 +52,11 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
       {(() => {
         const pastDigests = history.filter((digest) => digest.items.length > 0);
         return (
-          <details className="group flex flex-col gap-4 [&_summary::-webkit-details-marker]:hidden">
+          <TrackedDetails
+            eventName="digest_history_opened"
+            eventParams={{ plan }}
+            className="group flex flex-col gap-4 [&_summary::-webkit-details-marker]:hidden"
+          >
             <summary className="flex w-fit cursor-pointer list-none items-center gap-1.5 text-lg font-semibold tracking-tight">
               {copy.history}
               {pastDigests.length > 0 && (
@@ -91,7 +96,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
                 ))}
               </div>
             )}
-          </details>
+          </TrackedDetails>
         );
       })()}
     </main>

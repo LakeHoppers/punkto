@@ -9,6 +9,7 @@ import { CATEGORY_LABELS_TR, CATEGORY_LABELS } from "@/shared/category-labels";
 import { SITE_COPY } from "@/shared/site-copy";
 import { LOCALES, type Locale } from "@/shared/locale";
 import { useRouter } from "next/navigation";
+import { trackEvent } from "@/components/analytics-consent";
 
 const ALL_CATEGORIES = Object.keys(CATEGORY_LABELS_TR) as Category[];
 
@@ -48,7 +49,14 @@ export function PreferencesForm({
         body: JSON.stringify({ favoriteCategories: [...selected], emailLocale }),
       });
       setStatus(res.ok ? "saved" : "error");
-      if (res.ok) router.refresh();
+      if (res.ok) {
+        trackEvent("preferences_saved", {
+          category_count: String(selected.size),
+          plan,
+          email_locale: emailLocale,
+        });
+        router.refresh();
+      }
     } catch {
       setStatus("error");
     }

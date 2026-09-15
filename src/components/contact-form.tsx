@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { trackEvent } from "@/components/analytics-consent";
 
 type ContactCopy = {
   nameLabel: string;
@@ -41,6 +42,7 @@ export function ContactForm({ copy }: { copy: ContactCopy }) {
       });
       if (!response.ok) throw new Error("request failed");
       setStatus("success");
+      trackEvent("contact_form_submit");
       form.reset();
     } catch {
       setStatus("error");
