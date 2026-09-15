@@ -35,8 +35,8 @@ export default async function Home({
     >
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between gap-4">
-          <div className="inline-flex items-center gap-2 text-xs font-medium tracking-wide text-muted-foreground uppercase">
-            <span className="h-1.5 w-1.5 rounded-full bg-foreground/50" />
+          <div className="inline-flex items-center gap-2 text-xs font-semibold tracking-wide text-brand uppercase">
+            <span className="h-1.5 w-1.5 rounded-full bg-brand" />
             {copy.tagline}
           </div>
 
