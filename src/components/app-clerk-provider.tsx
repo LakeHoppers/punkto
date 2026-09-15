@@ -3,6 +3,7 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import { enUS, trTR, deDE } from "@clerk/localizations";
 import { useTheme } from "next-themes";
+import { useMemo } from "react";
 import type { Locale } from "@/shared/locale";
 
 const LOCALIZATIONS = { en: enUS, tr: trTR, de: deDE };
@@ -41,6 +42,16 @@ export function AppClerkProvider({
 }) {
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
+  // Clerk treats a new `appearance` object identity as a reason to redo
+  // internal setup, which was interrupting in-flight flows like the OAuth
+  // SSO callback (it re-ran on every re-render, e.g. every navigation
+  // between /sign-in and /sign-in/sso-callback) and caused an infinite
+  // redirect loop between the two. Memoizing keeps the reference stable
+  // across renders that don't actually change the theme.
+  const appearance = useMemo(
+    () => ({ variables: isDark ? DARK_VARIABLES : LIGHT_VARIABLES }),
+    [isDark],
+  );
 
   return (
     <ClerkProvider
@@ -50,9 +61,7 @@ export function AppClerkProvider({
       signInFallbackRedirectUrl={`/${locale}/dashboard`}
       signUpFallbackRedirectUrl={`/${locale}/dashboard`}
       afterSignOutUrl={`/${locale}`}
-      appearance={{
-        variables: isDark ? DARK_VARIABLES : LIGHT_VARIABLES,
-      }}
+      appearance={appearance}
     >
       {children}
     </ClerkProvider>
