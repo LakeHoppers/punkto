@@ -1,4 +1,5 @@
 import { AnalyticsConsent } from "@/components/analytics-consent";
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Newsreader } from "next/font/google";
 import { AppClerkProvider } from "@/components/app-clerk-provider";
@@ -55,6 +56,7 @@ export default async function RootLayout({
             <AnalyticsConsent locale={locale} />
           </AppClerkProvider>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
