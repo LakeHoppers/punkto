@@ -24,7 +24,7 @@ const DIGEST: DigestView = {
 describe("buildDigestEmail", () => {
   it("includes the date and item count in the subject", () => {
     const { subject } = buildDigestEmail(DIGEST);
-    expect(subject).toContain("2026-07-27");
+    expect(subject).toContain("27.07.2026");
     expect(subject).toContain("1 haber");
   });
 
@@ -55,7 +55,8 @@ it.each(LOCALES)("includes %s disclosure, commentary caption, sources and absolu
   const copy = HOME_COPY[locale];
   for (const output of [html, text]) {
     expect(output.split(copy.aiDisclosure)).toHaveLength(2);
-    expect(output.indexOf(copy.aiDisclosure)).toBeLessThan(output.indexOf("İlk paragraf"));
+    expect(output.indexOf(copy.aiDisclosure)).toBeGreaterThan(output.indexOf("İlk paragraf"));
+    expect(output.indexOf(copy.description)).toBeLessThan(output.indexOf("İlk paragraf"));
     expect(output).toContain(copy.aiAnalysis);
     expect(output).toContain(copy.aiFooter);
     expect(output).toContain(`https://www.punkto.fyi/${locale}/impressum`);

@@ -12,6 +12,12 @@ export interface DigestEmailContent {
   text: string;
 }
 
+/** digest.date is a plain "YYYY-MM-DD" string (see digest-view.ts) — reformat to "DD.MM.YYYY". */
+function formatDateDMY(isoDate: string): string {
+  const [y, m, d] = isoDate.split("-");
+  return `${d}.${m}.${y}`;
+}
+
 function escapeHtml(text: string): string {
   return text
     .replace(/&/g, "&amp;")
@@ -36,10 +42,11 @@ export function buildDigestEmail(digest: DigestView, locale: Locale = "tr"): Dig
   const impressumLabel = IMPRESSUM_COPY[locale].title;
   const impressumUrl = `https://www.punkto.fyi/${locale}/impressum`;
   const why = { tr: "Neden önemli", en: "Why it matters", de: "Warum das wichtig ist" }[locale];
+  const dateLabel = formatDateDMY(digest.date);
   const subject = {
-    tr: `Punkto — ${digest.date} özeti (${digest.items.length} haber)`,
-    en: `Punkto — ${digest.date} digest (${digest.items.length} stories)`,
-    de: `Punkto — Nachrichtenüberblick vom ${digest.date} (${digest.items.length} Nachrichten)`,
+    tr: `Punkto — ${dateLabel} özeti (${digest.items.length} haber)`,
+    en: `Punkto — ${dateLabel} digest (${digest.items.length} stories)`,
+    de: `Punkto — Nachrichtenüberblick vom ${dateLabel} (${digest.items.length} Nachrichten)`,
   }[locale];
 
   const storyText = digest.items
@@ -49,25 +56,34 @@ export function buildDigestEmail(digest: DigestView, locale: Locale = "tr"): Dig
     )
     .join("\n\n---\n\n");
 
-  const text = `Punkto — ${digest.date}\n${copy.aiDisclosure}\n\n${storyText}\n\n${impressumLabel}: ${impressumUrl}\n${copy.aiFooter}`;
+  const text = `Punkto — ${dateLabel}\n${copy.description}\n\n${storyText}\n\n${copy.aiDisclosure}\n\n${impressumLabel}: ${impressumUrl}\n${copy.aiFooter}`;
 
-  const html = `<div lang="${locale}" style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #111; background-color: #fff;">
-<h1 style="font-size: 20px;">Punkto — ${escapeHtml(digest.date)}</h1>
-<p style="font-size: 12px; font-weight: 400; line-height: 1.5; color: #666;">${escapeHtml(copy.aiDisclosure)}</p>
+  const html = `<div lang="${locale}" style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #1E1C19; background-color: #FAF7F1;">
+<div style="padding: 24px 24px 16px;">
+  <div style="font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: #1E1C19;">
+    <span style="display: inline-block; width: 10px; height: 10px; background: #9E3527; border-radius: 50%; margin-right: 6px; vertical-align: middle;"></span
+    ><span style="vertical-align: middle;">Punkto</span>
+  </div>
+  <div style="font-size: 12px; color: #6F6558; text-transform: uppercase; letter-spacing: 0.04em; margin-top: 6px;">${escapeHtml(dateLabel)}</div>
+</div>
+<p style="padding: 0 24px; font-size: 14px; line-height: 1.6; color: #1E1C19;">${escapeHtml(copy.description)}</p>
+<div style="padding: 8px 24px 0;">
 ${digest.items
   .map(
-    (item) => `<div style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #e5e5e5;">
-  <div style="font-size: 12px; color: #666; text-transform: uppercase;">${escapeHtml(labels[item.category])}</div>
-  <h2 style="font-size: 16px; margin: 4px 0 8px;">${escapeHtml(item.headline)}</h2>
-  <p style="font-size: 14px; line-height: 1.5;">${escapeHtml(item.summary).replace(/\n/g, "<br/><br/>")}</p>
-  <p style="font-size: 13px; background: #f5f5f5; padding: 8px 12px; border-radius: 6px;"><strong>${why}:</strong> ${escapeHtml(item.whyItMatters)}</p>
-  <p style="font-size: 12px; font-weight: 400; line-height: 1.5; color: #666;">${escapeHtml(copy.aiAnalysis)}</p>
-  ${sourceLinks(item.sourceUrls).length ? `<p style="font-size: 12px; line-height: 1.5; color: #666;">${escapeHtml(copy.sourcesLabel)}: ${sourceLinks(item.sourceUrls).map(url => `<a href="${escapeHtml(url)}" style="color: #666; text-decoration: underline;">${escapeHtml(new URL(url).hostname)}</a>`).join(" · ")}</p>` : ""}
+    (item) => `<div style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #E7E0D5;">
+  <div style="font-size: 12px; color: #6F6558; text-transform: uppercase;">${escapeHtml(labels[item.category])}</div>
+  <h2 style="font-size: 16px; margin: 4px 0 8px; color: #1E1C19;">${escapeHtml(item.headline)}</h2>
+  <p style="font-size: 14px; line-height: 1.5; color: #1E1C19;">${escapeHtml(item.summary).replace(/\n/g, "<br/><br/>")}</p>
+  <p style="font-size: 13px; background: #F2EEE6; color: #1E1C19; padding: 8px 12px; border-radius: 6px;"><strong>${why}:</strong> ${escapeHtml(item.whyItMatters)}</p>
+  <p style="font-size: 12px; font-weight: 400; line-height: 1.5; color: #6F6558;">${escapeHtml(copy.aiAnalysis)}</p>
+  ${sourceLinks(item.sourceUrls).length ? `<p style="font-size: 12px; line-height: 1.5; color: #6F6558;">${escapeHtml(copy.sourcesLabel)}: ${sourceLinks(item.sourceUrls).map(url => `<a href="${escapeHtml(url)}" style="color: #6F6558; text-decoration: underline;">${escapeHtml(new URL(url).hostname)}</a>`).join(" · ")}</p>` : ""}
 </div>`,
   )
   .join("\n")}
-<footer style="font-size: 12px; font-weight: 400; line-height: 1.5; color: #666;">
-  <a href="${impressumUrl}" style="color: #666; text-decoration: underline;">${escapeHtml(impressumLabel)}</a>
+</div>
+<footer style="padding: 0 24px 24px; font-size: 12px; font-weight: 400; line-height: 1.5; color: #6F6558;">
+  <p>${escapeHtml(copy.aiDisclosure)}</p>
+  <a href="${impressumUrl}" style="color: #6F6558; text-decoration: underline;">${escapeHtml(impressumLabel)}</a>
   <p>${escapeHtml(copy.aiFooter)}</p>
 </footer>
 </div>`;
