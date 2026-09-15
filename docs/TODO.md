@@ -1027,3 +1027,36 @@ are in `punkto-marka-karar-ve-gecis-dokumani.md` (not part of this repo).
 - New page added as a side effect: `/[locale]/terms` (Terms of Service,
   TR/EN/DE) — Google's OAuth consent screen required a public ToS link before
   it would allow publishing. See `src/shared/terms-copy.ts`.
+
+## Post-cutover bug: Google sign-in redirected to broken Account Portal page — 2026-09-15
+- **Symptom (reported live by Emre)**: signed in with Google, got sent to a
+  `punkto.fyi/dashboard`-looking page that failed to load; had to manually
+  strip `/dashboard` from the URL to recover. Confirmed locale-agnostic —
+  happens at the OAuth infrastructure layer before locale routing, so TR/EN/DE
+  were all equally affected.
+- **First (partial) fix**: removed 4 stale `NEXT_PUBLIC_CLERK_SIGN_IN_URL` /
+  `..._SIGN_UP_URL` / `..._SIGN_IN_FALLBACK_REDIRECT_URL` /
+  `..._SIGN_UP_FALLBACK_REDIRECT_URL` env vars from Vercel (Production +
+  Preview) — set 7 days earlier, before locale routing existed, and
+  conflicting with the `<ClerkProvider>` props already in `layout.tsx`. Real
+  dead config, but didn't fully fix the bug.
+- **Root cause**: `<SignIn />` / `<SignUp />` in the catch-all
+  `[locale]/sign-in/[[...sign-in]]` and `[locale]/sign-up/[[...sign-up]]`
+  routes had no `path` / `routing="path"` props, so Clerk couldn't resolve
+  its own mounted URL during the OAuth SSO-callback step and fell back to the
+  hosted Account Portal (`accounts.punkto.fyi`) — which isn't locale-aware and
+  isn't part of our app.
+  - Dead end along the way: tried to fix this from the Clerk Dashboard
+    (Account Portal settings) — those "Sign in"/"Sign up" URLs are read-only,
+    auto-derived from the connected domain, not editable text fields.
+- [x] Fixed in code: both pages converted to async server components reading
+  `params.locale`, with explicit `path`, `routing="path"`, cross-link URLs
+  (`signUpUrl`/`signInUrl`), and `fallbackRedirectUrl={/${locale}/dashboard}`.
+  Same `fallbackRedirectUrl` added to the header's modal-mode
+  `SignInButton`/`SignUpButton` for robustness.
+- [x] Verified: typecheck, lint, and full test suite all clean. Live on
+  production — sign-in page renders correctly at its own `/tr/sign-in` URL
+  (not the Account Portal), and clicking "Google ile giriş yap" correctly
+  redirects to Google with `redirect_uri=https://clerk.punkto.fyi/v1/oauth_callback`.
+  Could not complete a full real Google login myself (no test credentials) —
+  **ask Emre to re-test the actual Google sign-in flow** to confirm end-to-end.
