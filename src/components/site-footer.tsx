@@ -2,6 +2,13 @@ import { CookieSettings } from "./analytics-consent";
 import Link from "next/link";
 import type { Locale } from "@/shared/locale";
 import { SITE_COPY } from "@/shared/site-copy";
+
+const TERMS_LABEL: Record<Locale, string> = {
+  tr: "Kullanım Koşulları",
+  en: "Terms of Service",
+  de: "Nutzungsbedingungen",
+};
+
 export function SiteFooter({ locale }: { locale: Locale }) {
   return (
     <footer className="border-t">
@@ -15,6 +22,9 @@ export function SiteFooter({ locale }: { locale: Locale }) {
           </Link>
           <Link href={`/${locale}/privacy`} className="hover:text-foreground hover:underline">
             {SITE_COPY[locale].privacyLink}
+          </Link>
+          <Link href={`/${locale}/terms`} className="hover:text-foreground hover:underline">
+            {TERMS_LABEL[locale]}
           </Link>
         </div>
       </div>
