@@ -1089,3 +1089,33 @@ are in `punkto-marka-karar-ve-gecis-dokumani.md` (not part of this repo).
   `/tr/dashboard` correctly redirects to sign-in without crashing). Could
   not complete a real Google login myself — **ask Emre to re-test once
   more** to confirm the dashboard now loads after signing in.
+
+## Third bug: infinite sign-in <-> sso-callback redirect loop — 2026-09-15
+- **Symptom (video from Emre)**: on mobile, `/en/sign-in` cycled forever
+  between a loading spinner and a briefly-rendered sign-in card, never
+  settling. `vercel logs` confirmed it precisely: `GET /en/sign-in` and
+  `GET /en/sign-in/sso-callback` alternating every ~200-300ms, continuously.
+- **Self-inflicted regression**: introduced by the same-day fix that made
+  the Clerk sign-in/sign-up UI follow the site's light/dark theme.
+  `AppClerkProvider` built a fresh `appearance` object literal on every
+  render (`{ variables: isDark ? DARK_VARIABLES : LIGHT_VARIABLES }`).
+  Clerk treats a new `appearance` object identity as a signal to redo
+  internal setup; since navigating between `/sign-in` and
+  `/sign-in/sso-callback` re-renders `AppClerkProvider` (it wraps the whole
+  app), every hop through the loop handed Clerk a "new" appearance and
+  interrupted the in-flight OAuth callback handshake before it could
+  finish — so it never progressed past the callback step, bouncing forever.
+- [x] Fixed: wrapped the `appearance` object in `useMemo` keyed on the
+  resolved theme (`src/components/app-clerk-provider.tsx`), so its identity
+  only changes when the theme actually flips, not on every render/navigation.
+- [x] Typecheck/lint/tests clean, deployed to production. Confirmed via
+  `vercel logs` that the `/en/sign-in` <-> `/en/sign-in/sso-callback` loop
+  stopped after deploy, and manually verified the sign-in page now stays
+  stable (no flicker/reload) over several seconds. Could not complete a
+  real Google login myself — **ask Emre to re-test the Google sign-in flow
+  once more**, this was actively breaking every login attempt.
+- **Process note**: this is the second same-day regression introduced by a
+  same-day fix (see the dashboard-crash bug above). Worth being more
+  cautious about side effects when touching `AppClerkProvider`/`ClerkProvider`
+  going forward — it wraps the entire app, so anything unstable inside it
+  (object literals, especially) impacts every page on every render.
