@@ -9,6 +9,13 @@ export class ForbiddenError extends Error {}
  * UserPreference row) on first authenticated request. There's no Clerk
  * webhook wired up yet (planned for later), so this upsert is the only thing
  * standing between "has a Clerk session" and "has an app-side User row".
+ *
+ * A user's `clerkId` can change out from under an existing row (e.g. the
+ * 2026-09-15 Clerk Development -> Production cutover re-created every real
+ * user with a new Clerk user id under the same email). Falling back to a
+ * lookup by email and re-linking it, instead of blindly inserting, avoids a
+ * unique-constraint crash on `email` and keeps the user's existing
+ * preferences/subscription/history attached to the same app-side User row.
  */
 export async function getOrCreateCurrentUser() {
   const { userId } = await auth();
@@ -29,15 +36,27 @@ export async function getOrCreateCurrentUser() {
     throw new Error("Clerk user has no email address");
   }
 
-  return prisma.user.upsert({
-    where: { clerkId: userId },
-    create: {
+  const byClerkId = await prisma.user.findUnique({ where: { clerkId: userId }, include: { preference: true } });
+  if (byClerkId) {
+    return byClerkId;
+  }
+
+  const byEmail = await prisma.user.findUnique({ where: { email } });
+  if (byEmail) {
+    return prisma.user.update({
+      where: { id: byEmail.id },
+      data: { clerkId: userId, name: clerkUser.fullName || byEmail.name },
+      include: { preference: true },
+    });
+  }
+
+  return prisma.user.create({
+    data: {
       clerkId: userId,
       email,
       name: clerkUser.fullName || undefined,
       preference: { create: {} },
     },
-    update: {},
     include: { preference: true },
   });
 }
