@@ -18,7 +18,7 @@ export const HOME_COPY: Record<
 > = {
   tr: {
     aiDisclosure: "Özetler yapay zeka ile otomatik oluşturulur. Kaynaklar her haberin altında bağlantılıdır.",
-    aiAnalysis: "AI yorumu",
+    aiAnalysis: "Punkto'nun yapay zeka destekli editöryal süreciyle hazırlanmıştır.",
     aiFooter: "Özetler yapay zeka ile oluşturulur.",
     sourcesLabel: "Kaynaklar",
     tagline: "Haberler, kısa ve öz.",
@@ -33,7 +33,7 @@ export const HOME_COPY: Record<
   },
   de: {
     aiDisclosure: "Die Zusammenfassungen werden automatisiert mit KI erstellt. Quellen sind bei jedem Beitrag verlinkt.",
-    aiAnalysis: "KI-Einordnung",
+    aiAnalysis: "Erstellt im Rahmen des KI-gestützten Redaktionsprozesses von Punkto.",
     aiFooter: "Zusammenfassungen mit KI erstellt.",
     sourcesLabel: "Quellen",
     tagline: "Nachrichten, auf den Punkt.",
@@ -46,7 +46,7 @@ export const HOME_COPY: Record<
   },
   en: {
     aiDisclosure: "Summaries are generated automatically with AI. Sources are linked with every story.",
-    aiAnalysis: "AI analysis",
+    aiAnalysis: "Prepared through Punkto's AI-assisted editorial process.",
     aiFooter: "Summaries generated with AI.",
     sourcesLabel: "Sources",
     tagline: "News, to the point.",

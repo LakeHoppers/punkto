@@ -57,7 +57,7 @@ it.each(LOCALES)("includes %s disclosure, commentary caption, sources and absolu
     expect(output.split(copy.aiDisclosure)).toHaveLength(2);
     expect(output.indexOf(copy.aiDisclosure)).toBeGreaterThan(output.indexOf("İlk paragraf"));
     expect(output.indexOf(copy.description)).toBeLessThan(output.indexOf("İlk paragraf"));
-    expect(output).toContain(copy.aiAnalysis);
+    expect(output.replace(/&#39;/g, "'")).toContain(copy.aiAnalysis);
     expect(output).toContain(copy.aiFooter);
     expect(output).toContain(`https://www.punkto.fyi/${locale}/impressum`);
     expect(output).toContain("https://example.de/a");
