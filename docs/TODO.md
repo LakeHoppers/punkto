@@ -993,3 +993,37 @@ are in `punkto-marka-karar-ve-gecis-dokumani.md` (not part of this repo).
   via Resend's domain-status API (`verified`) rather than sending an ad-hoc
   test email to that user's real inbox; if the Action still fails after the
   next hourly run, re-open this.
+
+## Clerk: Development → Production cutover — 2026-09-15
+- [x] Custom Google OAuth credentials created (Google Cloud project
+  "Punktofyi"), consent screen published ("In production", not "Testing" —
+  required so any user can sign in, not just pre-added test accounts). Client
+  ID/secret added to Clerk's Production instance under "Use custom
+  credentials"; no Google-side verification review needed since we only
+  request non-sensitive scopes (email/profile/openid).
+- [x] Custom domain `clerk.punkto.fyi` connected via Clerk's Vercel Domain
+  Connect integration — all 5 DNS records (Frontend API, Account portal,
+  3 email/DKIM records) added automatically and verified; SSL issued.
+- [x] `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` / `CLERK_SECRET_KEY` split by
+  environment in Vercel: **Production** now uses the real `pk_live_`/`sk_live_`
+  keys; **Preview** kept on the original `pk_test_`/`sk_test_` (Development
+  instance) keys, matching local `.env`. Local dev is unaffected.
+- [x] **User continuity**: before cutover, all 7 real Development-instance
+  users (Emre ×2, Tolga, Berkay, Levent, Revna, Gülşen — excluding the E2E
+  test account) were re-created in the Production instance via the Backend
+  API (`POST /v1/users`), with emails admin-verified on creation. Everyone
+  signs in via Google, so on next login Clerk should link by verified email
+  rather than creating a duplicate account — nobody re-registers from scratch.
+  Not yet confirmed with an actual returning user's real login; worth a
+  spot-check with one of them.
+- [x] Live-verified end-to-end: production site now serves `pk_live_...`,
+  sign-in modal shows "Punkto" (no more "Development mode" badge / "My
+  Application" placeholder), Google OAuth redirect correctly lands on
+  "Sign in to continue to **punkto.fyi**" with our real Privacy Policy/Terms
+  of Service links.
+- **Follow-up**: tell Tolga/Berkay/Levent/Revna/Gülşen they may be prompted
+  to sign in once more (Google account picker) next time they visit — expected,
+  one-time, not an account loss.
+- New page added as a side effect: `/[locale]/terms` (Terms of Service,
+  TR/EN/DE) — Google's OAuth consent screen required a public ToS link before
+  it would allow publishing. See `src/shared/terms-copy.ts`.
