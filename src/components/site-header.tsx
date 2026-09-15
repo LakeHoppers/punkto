@@ -25,10 +25,10 @@ export async function SiteHeader({ locale }: { locale: Locale }) {
           <LocaleSwitch locale={locale} />
           <ThemeToggle label={copy.theme} />
           <Show when="signed-out">
-            <SignInButton mode="modal">
+            <SignInButton mode="modal" fallbackRedirectUrl={`/${locale}/dashboard`}>
               <button className="text-sm font-medium">{copy.signIn}</button>
             </SignInButton>
-            <SignUpButton mode="modal">
+            <SignUpButton mode="modal" fallbackRedirectUrl={`/${locale}/dashboard`}>
               <button className="rounded-md bg-foreground px-3 py-1.5 text-sm font-medium text-background">
                 {copy.signUp}
               </button>
