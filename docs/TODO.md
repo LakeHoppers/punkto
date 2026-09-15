@@ -1060,3 +1060,32 @@ are in `punkto-marka-karar-ve-gecis-dokumani.md` (not part of this repo).
   redirects to Google with `redirect_uri=https://clerk.punkto.fyi/v1/oauth_callback`.
   Could not complete a full real Google login myself (no test credentials) —
   **ask Emre to re-test the actual Google sign-in flow** to confirm end-to-end.
+
+## Second post-cutover bug: dashboard crashed after a real Google login — 2026-09-15
+- **Symptom**: Emre re-tested Google sign-in after the fix above; this time
+  it correctly landed on `punkto.fyi/tr/dashboard` (routing fix confirmed
+  working) but the page itself failed with a server error.
+- **Root cause (confirmed via `vercel logs`)**:
+  `Error [PrismaClientKnownRequestError]: ... Unique constraint failed on
+  the fields: (email) ... code: 'P2002'` inside `getOrCreateCurrentUser`
+  (`src/shared/api-guards.ts`). The Development->Production cutover
+  re-created every real user in Clerk Production via the Backend API,
+  which gives them a **new** Clerk user id under the same email. On real
+  login, `getOrCreateCurrentUser` did `prisma.user.upsert({ where: {
+  clerkId } })` — no match on the new clerkId, so it fell into the
+  `create` branch and tried to insert a second `User` row with an email
+  that already existed (tied to the old Development clerkId) — violating
+  the `email @unique` constraint and crashing every dashboard load for
+  every real user.
+- [x] Fixed: `getOrCreateCurrentUser` now looks up by `clerkId` first, then
+  falls back to a lookup by `email` and **re-links** that existing row
+  (updates its `clerkId`) instead of trying to insert a duplicate. Brand
+  new users still get created normally. No manual DB cleanup needed — the
+  first login after this deploy self-heals each affected user's row (their
+  preferences/subscription/history all stay attached, since it's the same
+  `User.id`).
+- [x] Typecheck/lint/tests clean, deployed to production. Verified via
+  `vercel logs` that the error stopped after deploy (anonymous
+  `/tr/dashboard` correctly redirects to sign-in without crashing). Could
+  not complete a real Google login myself — **ask Emre to re-test once
+  more** to confirm the dashboard now loads after signing in.
