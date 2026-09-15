@@ -1,12 +1,11 @@
 import { AnalyticsConsent } from "@/components/analytics-consent";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Newsreader } from "next/font/google";
-import { ClerkProvider } from "@clerk/nextjs";
+import { AppClerkProvider } from "@/components/app-clerk-provider";
 import { ThemeProvider } from "next-themes";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import "../globals.css";
-import { enUS, trTR, deDE } from "@clerk/localizations";
 import { notFound } from "next/navigation";
 import { SITE_COPY } from "@/shared/site-copy";
 import { isLocale } from "@/shared/locale";
@@ -48,30 +47,14 @@ export default async function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${newsreader.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <ClerkProvider
-          localization={({ en: enUS, tr: trTR, de: deDE })[locale]}
-          signInUrl={`/${locale}/sign-in`}
-          signUpUrl={`/${locale}/sign-up`}
-          signInFallbackRedirectUrl={`/${locale}/dashboard`}
-          signUpFallbackRedirectUrl={`/${locale}/dashboard`}
-          afterSignOutUrl={`/${locale}`}
-          appearance={{
-            variables: {
-              colorPrimary: "#1c1917",
-              colorForeground: "#1c1917",
-              colorBackground: "#fefdfb",
-              fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif",
-              borderRadius: "0.5rem",
-            },
-          }}
-        >
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <AppClerkProvider locale={locale}>
             <SiteHeader locale={locale} />
             {children}
             <SiteFooter locale={locale} />
             <AnalyticsConsent locale={locale} />
-          </ThemeProvider>
-        </ClerkProvider>
+          </AppClerkProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
