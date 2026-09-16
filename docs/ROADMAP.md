@@ -55,7 +55,7 @@ compatibility and the single-request pipeline timeout risk. Then test coverage
 across modules, error alerting (Sentry), rate limiting, docs
 finalized, soft launch to a small user group.
 
-## M10 — Premium feature expansion (2026-09-16, planned)
+## M10 — Premium feature expansion (2026-09-16)
 Prioritized with Emre; mobile app pushed to the back deliberately (native app
 is a much bigger, separate undertaking — a PWA is a cheaper interim step once
 the others land, not started).
@@ -63,17 +63,22 @@ the others land, not started).
   (`digestHour`/`timezone` + `clampDigestHourForPlan`/`clampCategoriesForPlan`)
   but dormant behind the `BILLING_ENABLED` flag pending trademark/rebrand
   completion. No new engineering needed — just flip the flag when ready.
-- **Wider category taxonomy, Pro-selectable** — adding categories beyond the
-  current 10 (POLITICS/ECONOMY/IMMIGRATION/BERLIN/TECHNOLOGY/EUROPE/BUSINESS/
-  SOCIETY(Culture)/SPORTS/PANORAMA), e.g. Health/Education/Environment/Housing
-  (exact list being confirmed with Emre). Needs the same careful treatment as
-  the PANORAMA addition (see TODO.md 2026-09-16): clear per-category prompt
-  boundaries to avoid misclassification, schema migration, label/color
-  additions. Open design question: the digest is capped at 10 items/day with
-  a 4-item-per-category soft cap (`build-digest.use-case.ts`) — a Pro user
-  who favorites only 1-2 niche categories could see very sparse (even empty)
-  digests on quiet days; needs a product decision (accept it vs. backfill
-  with top general stories when a personalized digest is too thin).
+- **Wider category taxonomy, Pro-selectable ✅** — taxonomy grew from 10 to
+  14: added HEALTH, EDUCATION, ENVIRONMENT, HOUSING (confirmed with Emre),
+  same careful treatment as PANORAMA (prompt boundaries, migration,
+  labels/colors) — see TODO.md 2026-09-16.
+- **Personalized PRO digest ✅** — the shared digest's 10-item/4-per-category
+  cap meant a user favoriting 1-2 categories saw only a thin filtered slice
+  of it (verified: 4/10 for Politics, 2/10 for Culture on the same day).
+  Added `getPersonalizedDigest`, sourcing a top-10 directly from the
+  favorited categories' own story pool instead of filtering the shared
+  digest; wired into email delivery for PRO users with favorites set.
+  Verified live: Politics went 4 → 10. Decision with Emre: a genuinely thin
+  category (e.g. only 3 real stories that day) still shows only those 3 for
+  now — no backfill with unrelated top stories. Follow-up not yet done: the
+  dashboard's history view (`getDigestHistory`) still shows the old
+  filtered-shared-digest behavior for past days, only the daily email uses
+  the new personalized reader so far.
 - **Voice/audio digest** — TTS-generated audio version of the daily digest,
   one file per locale per day (not per subscriber — same content for everyone
   in a given language, so cost stays flat regardless of subscriber count).
