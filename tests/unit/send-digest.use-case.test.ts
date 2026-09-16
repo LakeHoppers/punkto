@@ -32,8 +32,15 @@ class FakeRepository implements NotificationRepository {
 }
 
 class FakeDigestReader implements DigestReader {
+  latestCalls = 0;
+  personalizedCalls = 0;
   constructor(private readonly digest: DigestView | null) {}
   async getLatestDigest() {
+    this.latestCalls++;
+    return this.digest;
+  }
+  async getPersonalizedDigest() {
+    this.personalizedCalls++;
     return this.digest;
   }
 }
@@ -54,6 +61,7 @@ function candidate(overrides: Partial<DeliveryCandidate> = {}): DeliveryCandidat
     timezone: "Europe/Berlin",
     digestHour: 13, // matches NOW below (12:00 UTC = 13:00 CET)
     favoriteCategories: [],
+    plan: "FREE",
     ...overrides,
   };
 }
@@ -199,6 +207,39 @@ it("allows the next day's edition after yesterday was delivered", async () => {
   expect(await useCase.execute(new Date("2026-01-16T12:17:00Z"))).toEqual({ delivered: 1, failed: 0, skipped: 0 });
 });
 
+it("uses the personalized reader for a PRO candidate with favorite categories, not the shared digest", async () => {
+  const repository = new FakeRepository();
+  repository.candidates = [candidate({ plan: "PRO", favoriteCategories: ["SOCIETY"] })];
+  const reader = new FakeDigestReader(DIGEST);
+  const sender = new FakeEmailSender();
+  const result = await new SendDigestUseCase(repository, reader, sender).execute(NOW);
+  expect(result).toEqual({ delivered: 1, failed: 0, skipped: 0 });
+  expect(reader.personalizedCalls).toBe(1);
+  expect(reader.latestCalls).toBe(0);
+});
+
+it("uses the shared digest reader for a PRO candidate with no favorite categories", async () => {
+  const repository = new FakeRepository();
+  repository.candidates = [candidate({ plan: "PRO", favoriteCategories: [] })];
+  const reader = new FakeDigestReader(DIGEST);
+  const sender = new FakeEmailSender();
+  const result = await new SendDigestUseCase(repository, reader, sender).execute(NOW);
+  expect(result).toEqual({ delivered: 1, failed: 0, skipped: 0 });
+  expect(reader.latestCalls).toBe(1);
+  expect(reader.personalizedCalls).toBe(0);
+});
+
+it("uses the shared digest reader for a FREE candidate even with a favorite category", async () => {
+  const repository = new FakeRepository();
+  repository.candidates = [candidate({ plan: "FREE", favoriteCategories: ["SOCIETY"] })];
+  const reader = new FakeDigestReader(DIGEST);
+  const sender = new FakeEmailSender();
+  const result = await new SendDigestUseCase(repository, reader, sender).execute(NOW);
+  expect(result).toEqual({ delivered: 1, failed: 0, skipped: 0 });
+  expect(reader.latestCalls).toBe(1);
+  expect(reader.personalizedCalls).toBe(0);
+});
+
 it("reads and formats in the saved email language and does not resend after a language change", async () => {
   const repository = new FakeRepository();
   repository.candidates = [candidate({ emailLocale: "de" })];
@@ -206,6 +247,7 @@ it("reads and formats in the saved email language and does not resend after a la
   const messages: { subject: string; html: string; text: string }[] = [];
   const useCase = new SendDigestUseCase(repository, {
     async getLatestDigest(categories, locale) { locales.push(locale); return { ...DIGEST, items: [{ ...DIGEST.items[0], headline: "Deutsche Nachricht" }] }; },
+    async getPersonalizedDigest() { throw new Error("not expected for a FREE candidate"); },
   }, { async send(message) { messages.push(message); } });
   expect((await useCase.execute(NOW)).delivered).toBe(1);
   expect(locales).toEqual(["de"]);

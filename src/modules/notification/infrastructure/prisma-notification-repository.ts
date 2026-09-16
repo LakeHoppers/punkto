@@ -10,7 +10,7 @@ export class PrismaNotificationRepository implements NotificationRepository {
   async getEmailDeliveryCandidates(): Promise<DeliveryCandidate[]> {
     const users = await prisma.user.findMany({
       where: { preference: { paused: false } },
-      include: { preference: true },
+      include: { preference: true, subscription: true },
     });
 
     return users
@@ -22,6 +22,7 @@ export class PrismaNotificationRepository implements NotificationRepository {
         timezone: user.preference!.timezone,
         digestHour: user.preference!.digestHour,
         favoriteCategories: user.preference!.favoriteCategories,
+        plan: user.subscription?.plan ?? "FREE",
       }));
   }
 
