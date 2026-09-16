@@ -1119,3 +1119,54 @@ are in `punkto-marka-karar-ve-gecis-dokumani.md` (not part of this repo).
   cautious about side effects when touching `AppClerkProvider`/`ClerkProvider`
   going forward — it wraps the entire app, so anything unstable inside it
   (object literals, especially) impacts every page on every render.
+
+## Category taxonomy: added PANORAMA — 2026-09-16
+- **Symptom (from Emre)**: a story about a TV news helicopter crash in Los
+  Angeles was filed under the "Culture" category — obviously wrong, it's
+  neither culture nor any other of the 8 existing categories.
+- **False start**: first attempt renamed the SOCIETY category's label from
+  "Culture" to "Society" in all three locales, treating it as a broad
+  catch-all. Emre corrected this immediately — Culture must stay Culture in
+  every language, and the helicopter story is neither Culture nor Society;
+  it needed a genuinely separate category. Reverted that rename (commit
+  `b438a34`) before it reached most readers (it was live for a few minutes
+  due to Vercel's GitHub auto-deploy on push — see the deploy note below).
+- [x] **Real fix**: added a new `PANORAMA` value to the `Category` enum
+  (Prisma migration `20260916082317_add_panorama_category`, additive
+  `ALTER TYPE ... ADD VALUE`, no data migration needed) for accidents,
+  disasters, crime, and general human-interest/offbeat incidents — distinct
+  from Culture. Name picked with Emre: matches the section name German
+  outlets (Spiegel, SZ, FAZ) already use for exactly this kind of story.
+  - Restored Culture's prompt definition to arts/culture specifically
+    (film, music, theater, literature, museums, heritage).
+  - Added explicit Panorama prompt guidance: classify by what kind of event
+    a story actually is, never by an incidental word in it (a helicopter
+    crash is Panorama because it's an accident, regardless of a TV
+    station being mentioned as the helicopter's owner or the reporting
+    outlet).
+  - Switched the "unknown category" fallback in both `pickCategory`
+    (clustering) and the summarizer's validation fallback from `SOCIETY` to
+    `PANORAMA`, so an ambiguous story no longer defaults into Culture.
+  - Added a `PANORAMA` accent color (`category-colors.ts`) distinct from
+    the other 9 hues.
+- Typecheck/lint/tests clean (updated one test asserting the old SOCIETY
+  fallback), migration applied directly to the production Neon database,
+  deployed to production.
+
+## Process note: accidental second Vercel project — 2026-09-16
+- While re-authenticating the Vercel CLI mid-deploy, `vercel link --yes` was
+  run without checking what it would do first — it auto-detected a
+  frontend/backend monorepo split (the parallel, not-yet-live Python/FastAPI
+  implementation under `backend/`) and **created a brand new Vercel project,
+  `kuprojects/germany-daily`**, connected to the same GitHub repo, and
+  rewrote `vercel.json` with an unwanted `services`/`rewrites` config for
+  that split.
+  - Caught before anything was deployed under it. `vercel.json` was reverted
+    via `git checkout`, and `.vercel/project.json` was restored to point back
+    at the real production project (`daily-news-saas`).
+  - **Left over and unresolved**: the stray `kuprojects/germany-daily`
+    Vercel project itself still exists and is still connected to
+    `LakeHoppers/punkto` — every future push to `main` will also trigger a
+    (harmless but wasted) build there. Should be deleted or have its GitHub
+    integration disconnected from the Vercel dashboard (Settings → General
+    → Delete Project, on the `germany-daily` project, not `daily-news-saas`).
