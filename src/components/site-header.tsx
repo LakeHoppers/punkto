@@ -19,7 +19,7 @@ export async function SiteHeader({ locale }: { locale: Locale }) {
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
         <Link href={`/${locale}`} className="flex items-baseline gap-1">
           <Logo size={22} />
-          <span className="text-sm font-medium text-muted-foreground">.fyi</span>
+          <span className="hidden text-sm font-medium text-muted-foreground sm:inline">.fyi</span>
         </Link>
         <div className="flex items-center gap-2 sm:gap-3">
           <LocaleSwitch locale={locale} />
