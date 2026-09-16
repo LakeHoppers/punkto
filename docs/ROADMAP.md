@@ -55,6 +55,30 @@ compatibility and the single-request pipeline timeout risk. Then test coverage
 across modules, error alerting (Sentry), rate limiting, docs
 finalized, soft launch to a small user group.
 
+## M10 — Premium feature expansion (2026-09-16, planned)
+Prioritized with Emre; mobile app pushed to the back deliberately (native app
+is a much bigger, separate undertaking — a PWA is a cheaper interim step once
+the others land, not started).
+- **Custom delivery hour + full category access** — already built in M7
+  (`digestHour`/`timezone` + `clampDigestHourForPlan`/`clampCategoriesForPlan`)
+  but dormant behind the `BILLING_ENABLED` flag pending trademark/rebrand
+  completion. No new engineering needed — just flip the flag when ready.
+- **Wider category taxonomy, Pro-selectable** — adding categories beyond the
+  current 10 (POLITICS/ECONOMY/IMMIGRATION/BERLIN/TECHNOLOGY/EUROPE/BUSINESS/
+  SOCIETY(Culture)/SPORTS/PANORAMA), e.g. Health/Education/Environment/Housing
+  (exact list being confirmed with Emre). Needs the same careful treatment as
+  the PANORAMA addition (see TODO.md 2026-09-16): clear per-category prompt
+  boundaries to avoid misclassification, schema migration, label/color
+  additions. Open design question: the digest is capped at 10 items/day with
+  a 4-item-per-category soft cap (`build-digest.use-case.ts`) — a Pro user
+  who favorites only 1-2 niche categories could see very sparse (even empty)
+  digests on quiet days; needs a product decision (accept it vs. backfill
+  with top general stories when a personalized digest is too thin).
+- **Voice/audio digest** — TTS-generated audio version of the daily digest,
+  one file per locale per day (not per subscriber — same content for everyone
+  in a given language, so cost stays flat regardless of subscriber count).
+  Not started; provider (OpenAI TTS vs. ElevenLabs) not yet chosen.
+
 ## Rebrand: "News Daily" → "Punkto" — 2026-09-14
 Final brand name decided (see `punkto-marka-karar-ve-gecis-dokumani.md` for the
 full naming rationale, trademark filing plan, and rename checklist). Live domain:
