@@ -172,3 +172,54 @@ export async function getDigestHistory(
     })),
   }));
 }
+
+/**
+ * Same idea as getPersonalizedDigest, but for every day in the history list
+ * instead of just the latest one — each day gets its own top-10 pick from
+ * the favorite categories' own story pool (a ~48h window ending that day),
+ * rather than a filtered slice of that day's shared, pre-capped digest.
+ */
+export async function getPersonalizedDigestHistory(
+  categories: Category[],
+  limit: number,
+  locale: Locale = "tr",
+): Promise<DigestHistoryItem[]> {
+  if (categories.length === 0) return getDigestHistory([], limit, locale);
+
+  const digests = await prisma.digest.findMany({
+    orderBy: { date: "desc" },
+    take: limit,
+    select: { date: true },
+  });
+
+  return Promise.all(
+    digests.map(async ({ date }) => {
+      const since = new Date(date.getTime() - PERSONALIZED_WINDOW_HOURS * 60 * 60 * 1000);
+      const until = new Date(date.getTime() + 24 * 60 * 60 * 1000);
+      const stories = await prisma.story.findMany({
+        where: {
+          category: { in: categories },
+          summaries: { some: {} },
+          rawArticles: { some: { publishedAt: { gte: since, lt: until } } },
+        },
+        orderBy: [{ importanceScore: "desc" }, { id: "asc" }],
+        take: 10,
+        include: { summaries: { orderBy: { version: "desc" as const }, take: 1 } },
+      });
+
+      return {
+        date: date.toISOString().slice(0, 10),
+        items: stories.map((story, index) => ({
+          rank: index + 1,
+          storyId: story.id,
+          category: story.category,
+          headline: pickLocalizedText(
+            locale,
+            story.summaries[0]?.headline ?? "",
+            story.summaries[0]?.headlineEn, story.summaries[0]?.headlineDe,
+          ),
+        })),
+      };
+    }),
+  );
+}

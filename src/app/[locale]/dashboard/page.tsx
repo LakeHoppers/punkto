@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PreferencesForm } from "@/components/preferences-form";
 import { BillingCard } from "@/components/billing-card";
 import { isBillingEnabled } from "@/shared/billing-flag";
-import { getDigestHistory } from "@/modules/digest/infrastructure/digest-view";
+import { getDigestHistory, getPersonalizedDigestHistory } from "@/modules/digest/infrastructure/digest-view";
 import { getOrCreateCurrentUser } from "@/shared/api-guards";
 import { CATEGORY_LABELS } from "@/shared/category-labels";
 import { prisma } from "@/shared/prisma";
@@ -19,11 +19,12 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
   const copy = SITE_COPY[locale];
   const user = await getOrCreateCurrentUser();
   const favoriteCategories = user.preference?.favoriteCategories ?? [];
-  const [history, subscription] = await Promise.all([
-    getDigestHistory(favoriteCategories, 14, locale),
-    prisma.subscription.findUnique({ where: { userId: user.id } }),
-  ]);
+  const subscription = await prisma.subscription.findUnique({ where: { userId: user.id } });
   const plan = subscription?.plan ?? "FREE";
+  const history =
+    plan === "PRO" && favoriteCategories.length > 0
+      ? await getPersonalizedDigestHistory(favoriteCategories, 14, locale)
+      : await getDigestHistory(favoriteCategories, 14, locale);
 
   return (
     <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-4 py-16">
