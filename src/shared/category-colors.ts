@@ -15,4 +15,5 @@ export const CATEGORY_ACCENT: Record<Category, string> = {
   BUSINESS: "oklch(0.5 0.08 145)",
   SOCIETY: "oklch(0.6 0.11 50)",
   SPORTS: "oklch(0.55 0.12 155)",
+  PANORAMA: "oklch(0.55 0.13 330)",
 };

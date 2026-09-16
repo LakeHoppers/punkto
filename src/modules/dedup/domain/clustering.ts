@@ -71,7 +71,7 @@ export function findBestCentroidMatch(
   return bestStoryId;
 }
 
-const DEFAULT_CATEGORY: Category = "SOCIETY";
+const DEFAULT_CATEGORY: Category = "PANORAMA";
 
 /** Picks the most common source category in a cluster, falling back to a default. */
 export function pickCategory(

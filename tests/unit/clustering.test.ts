@@ -72,7 +72,7 @@ describe("pickCategory", () => {
     expect(category).toBe("ECONOMY");
   });
 
-  it("falls back to SOCIETY when no source has a category", () => {
-    expect(pickCategory([{ sourceCategory: null }])).toBe("SOCIETY");
+  it("falls back to PANORAMA when no source has a category", () => {
+    expect(pickCategory([{ sourceCategory: null }])).toBe("PANORAMA");
   });
 });

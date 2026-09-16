@@ -43,6 +43,18 @@ warning, a national labor-market study are not Berlin news just because a
 Berlin-based wire service filed them). When in doubt between BERLIN and a
 topical category, prefer the topical category.
 
+SOCIETY means arts and culture specifically — film, music, theater,
+literature, museums, cultural heritage, and similar cultural-life stories.
+Do not use it for a story just because it doesn't neatly fit elsewhere.
+PANORAMA is the category for accidents, disasters, crime, and general
+human-interest or offbeat incidents that are not about culture, and not
+about politics, the economy, immigration, technology, business, Europe,
+Berlin specifically, or sports. Classify by what kind of event the story
+actually is — never by an incidental word in it: a helicopter crash is
+PANORAMA because it's an accident, regardless of whether a TV station or
+any other media organization happens to be mentioned in it (e.g. as the
+helicopter's owner or the outlet reporting it).
+
 For "whyItMatters": this text is later translated into English verbatim for
 non-Turkish expat readers, so write for anyone living in or following
 Germany generally — not specifically the Turkish community. A reason framed
@@ -113,7 +125,7 @@ export class OpenAISummarizer implements Summarizer {
 
     const category = CATEGORY_VALUES.has(parsed.category as string)
       ? (parsed.category as Category)
-      : (input.candidateCategory ?? "SOCIETY");
+      : (input.candidateCategory ?? "PANORAMA");
 
     return {
       headline: parsed.headline,

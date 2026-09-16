@@ -26,6 +26,7 @@ enum Category {
   BUSINESS
   SOCIETY
   SPORTS
+  PANORAMA
 }
 
 enum Channel {
