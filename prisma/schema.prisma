@@ -27,6 +27,10 @@ enum Category {
   SOCIETY
   SPORTS
   PANORAMA
+  HEALTH
+  EDUCATION
+  ENVIRONMENT
+  HOUSING
 }
 
 enum Channel {

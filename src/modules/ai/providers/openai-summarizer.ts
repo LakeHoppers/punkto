@@ -46,10 +46,24 @@ topical category, prefer the topical category.
 SOCIETY means arts and culture specifically — film, music, theater,
 literature, museums, cultural heritage, and similar cultural-life stories.
 Do not use it for a story just because it doesn't neatly fit elsewhere.
+HEALTH means public health, disease outbreaks, hospitals, healthcare policy
+and insurance, and medical research — a story about a health-insurance
+premium increase is HEALTH, not ECONOMY, because the mechanism is
+healthcare-specific.
+EDUCATION means schools, universities, students, curricula, and education
+policy — a minister's decision about school funding is EDUCATION, not
+POLITICS, when the story is fundamentally about the education system rather
+than general governance.
+ENVIRONMENT means climate change, pollution, conservation, and the energy
+transition (renewables, emissions) — a story about a new battery or solar
+technology is ENVIRONMENT when the story is about its climate/energy impact,
+TECHNOLOGY when it's about the technology itself.
+HOUSING means rent, real estate prices, the housing shortage, tenant
+rights, and construction of homes — a Berlin rent-cap story is HOUSING, not
+BERLIN or ECONOMY, because housing is the specific mechanism.
 PANORAMA is the category for accidents, disasters, crime, and general
-human-interest or offbeat incidents that are not about culture, and not
-about politics, the economy, immigration, technology, business, Europe,
-Berlin specifically, or sports. Classify by what kind of event the story
+human-interest or offbeat incidents that don't belong to any of the other,
+more specific categories above. Classify by what kind of event the story
 actually is — never by an incidental word in it: a helicopter crash is
 PANORAMA because it's an accident, regardless of whether a TV station or
 any other media organization happens to be mentioned in it (e.g. as the

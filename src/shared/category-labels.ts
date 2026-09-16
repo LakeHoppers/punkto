@@ -11,6 +11,10 @@ export const CATEGORY_LABELS_TR: Record<Category, string> = {
   SOCIETY: "Kültür",
   SPORTS: "Spor",
   PANORAMA: "Panorama",
+  HEALTH: "Sağlık",
+  EDUCATION: "Eğitim",
+  ENVIRONMENT: "Çevre",
+  HOUSING: "Konut",
 };
 
 export const CATEGORY_LABELS_EN: Record<Category, string> = {
@@ -24,11 +28,15 @@ export const CATEGORY_LABELS_EN: Record<Category, string> = {
   SOCIETY: "Culture",
   SPORTS: "Sports",
   PANORAMA: "Panorama",
+  HEALTH: "Health",
+  EDUCATION: "Education",
+  ENVIRONMENT: "Environment",
+  HOUSING: "Housing",
 };
 
 export const CATEGORY_LABELS_DE: Record<Category, string> = {
   POLITICS: "Politik", ECONOMY: "Wirtschaft", IMMIGRATION: "Migration", BERLIN: "Berlin",
   TECHNOLOGY: "Technologie", EUROPE: "Europa", BUSINESS: "Unternehmen", SOCIETY: "Kultur", SPORTS: "Sport",
-  PANORAMA: "Panorama",
+  PANORAMA: "Panorama", HEALTH: "Gesundheit", EDUCATION: "Bildung", ENVIRONMENT: "Umwelt", HOUSING: "Wohnen",
 };
 export const CATEGORY_LABELS = { tr: CATEGORY_LABELS_TR, en: CATEGORY_LABELS_EN, de: CATEGORY_LABELS_DE };
