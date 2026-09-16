@@ -1217,3 +1217,18 @@ are in `punkto-marka-karar-ve-gecis-dokumani.md` (not part of this repo).
   email now agree. Verified against production data: shared history showed
   2-4 items/day for Politics across 5 recent days; personalized showed a
   full 10 every day.
+
+## Category selection now markets the Premium limit instead of silently clamping — 2026-09-16
+- FREE users could check unlimited categories client-side; the server
+  silently clamped to 1 on save with no explanation, so extra checkmarks
+  would just vanish after clicking Save — confusing, and a missed marketing
+  moment on a currently pre-revenue product.
+- [x] `PreferencesForm` now disables (lock icon) any category beyond the
+  Free limit once it's reached, and shows the same "Genişletilmiş premium
+  sürüm üzerinde çalışıyoruz." / "We're working on an expanded premium
+  edition." teaser already used on the billing card (same
+  `premium_interest_click` GA4 event, `source: "preferences_form"`), so it
+  reads as an upcoming feature rather than a bug. PRO is unaffected — no
+  locks, all categories selectable.
+- Verified visually (locked categories show a lock icon and are unclickable
+  for FREE; PRO shows every category open, no teaser shown).
