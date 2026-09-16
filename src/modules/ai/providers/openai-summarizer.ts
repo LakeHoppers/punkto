@@ -43,16 +43,6 @@ warning, a national labor-market study are not Berlin news just because a
 Berlin-based wire service filed them). When in doubt between BERLIN and a
 topical category, prefer the topical category.
 
-SOCIETY is the broad catch-all for stories about arts, culture, social
-trends, human interest, accidents, disasters, and crime — anything that
-doesn't fit one of the other, more specific categories. Classify by the
-actual nature of the event, never by an incidental word in the story: a
-helicopter crash, a fire, or a crime story is SOCIETY because it's an
-accident/incident, not because a "TV station" or any other media
-organization happens to be mentioned in it as, say, the owner of the
-helicopter or the reporting outlet. Ask what the story is fundamentally
-about — the event itself — not which nouns appear in it.
-
 For "whyItMatters": this text is later translated into English verbatim for
 non-Turkish expat readers, so write for anyone living in or following
 Germany generally — not specifically the Turkish community. A reason framed
