@@ -1206,3 +1206,14 @@ are in `punkto-marka-karar-ve-gecis-dokumani.md` (not part of this repo).
   PRO+favorites / PRO+no-favorites / FREE+favorites branches), migration
   applied to production, deployed, sanity-checked against real production
   data (see numbers above).
+
+## Personalized digest extended to the dashboard — 2026-09-16
+- Emre caught the inconsistency: the personalized top-10 was only wired
+  into email delivery, so the dashboard's history view still showed the old
+  filtered-shared-digest counts (verified: 4/10 for Politics on the site vs.
+  10/10 in the email, same day). Added `getPersonalizedDigestHistory`
+  (per-day version of `getPersonalizedDigest`) and wired it into
+  `dashboard/page.tsx` for PRO users with favorite categories — site and
+  email now agree. Verified against production data: shared history showed
+  2-4 items/day for Politics across 5 recent days; personalized showed a
+  full 10 every day.
