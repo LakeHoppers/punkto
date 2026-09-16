@@ -1170,3 +1170,39 @@ are in `punkto-marka-karar-ve-gecis-dokumani.md` (not part of this repo).
     (harmless but wasted) build there. Should be deleted or have its GitHub
     integration disconnected from the Vercel dashboard (Settings → General
     → Delete Project, on the `germany-daily` project, not `daily-news-saas`).
+
+## Category taxonomy expanded to 14, PRO personalized digest shipped — 2026-09-16
+- [x] Added HEALTH, EDUCATION, ENVIRONMENT, HOUSING categories (confirmed
+  with Emre), same careful treatment as PANORAMA: additive migration
+  (`20260916100100_add_health_education_environment_housing`), labels/colors
+  for all three locales, explicit prompt boundaries against each category's
+  closest existing neighbor (Health vs Economy, Education vs Politics,
+  Environment vs Technology, Housing vs Berlin/Economy).
+- **Found and fixed a related gap Emre flagged**: the shared daily digest
+  caps at 10 items total and only 4 per category, so a signed-in user who
+  favorited just 1-2 categories only ever saw whatever thin slice of that
+  shared, capped selection happened to match them — verified live: 4/10 for
+  Politics, 2/10 for Culture on the same day. Not what "select your
+  categories" should feel like for a paying user.
+- [x] Added `getPersonalizedDigest` (`src/modules/digest/infrastructure/digest-view.ts`):
+  sources a top-10 directly from all recent summarized stories in the user's
+  favorite categories, independent of the shared digest's per-category cap.
+  Wired into email delivery for PRO users with favorite categories set (still
+  keyed to the real `Digest.id` for that day, so delivery-dedup tracking is
+  unaffected — only the item-sourcing changed). FREE users and PRO users with
+  no favorites keep the existing shared-digest behavior, per plan gating
+  (`clampCategoriesForPlan`/now this reader choice) already established in M7.
+  Verified live: Politics went from 4 → 10 items; Culture (genuinely only 3
+  real stories that day) correctly still shows 3, not padded — agreed with
+  Emre to accept a thin/empty personalized digest on quiet days for now
+  rather than backfill with unrelated top stories (see ROADMAP.md M10 open
+  question).
+- **Known follow-up, not done in this pass**: the dashboard's "history"
+  browsing (`getDigestHistory`, last 14 days) still filters each past day's
+  already-capped shared digest rather than using the wider personalized
+  query — today's fix only covers the daily email. Revisit if Emre wants
+  history browsing to match.
+- Typecheck/lint/tests clean (3 new tests on `SendDigestUseCase` covering the
+  PRO+favorites / PRO+no-favorites / FREE+favorites branches), migration
+  applied to production, deployed, sanity-checked against real production
+  data (see numbers above).
