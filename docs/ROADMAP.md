@@ -75,10 +75,14 @@ the others land, not started).
   digest; wired into email delivery for PRO users with favorites set.
   Verified live: Politics went 4 → 10. Decision with Emre: a genuinely thin
   category (e.g. only 3 real stories that day) still shows only those 3 for
-  now — no backfill with unrelated top stories. Follow-up not yet done: the
-  dashboard's history view (`getDigestHistory`) still shows the old
-  filtered-shared-digest behavior for past days, only the daily email uses
-  the new personalized reader so far.
+  now — no backfill with unrelated top stories. Extended the same day to
+  the dashboard's history view too (`getPersonalizedDigestHistory`), so the
+  site and the daily email now agree.
+- **Category-selection Premium teaser ✅** — Free users could check
+  unlimited categories client-side; only 1 was ever saved (silently
+  clamped server-side). Categories past the Free limit now show a lock icon
+  and the same "expanded premium edition" teaser used on the billing card,
+  so the restriction reads as a marketing moment rather than a bug.
 - **Voice/audio digest** — TTS-generated audio version of the daily digest,
   one file per locale per day (not per subscriber — same content for everyone
   in a given language, so cost stays flat regardless of subscriber count).
