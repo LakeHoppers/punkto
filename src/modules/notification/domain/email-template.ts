@@ -76,7 +76,7 @@ ${digest.items
     (item) => `<div style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #E7E0D5;">
   <div style="font-size: 12px; color: #6F6558; text-transform: uppercase;">${escapeHtml(labels[item.category])}</div>
   <h2 style="font-size: 16px; margin: 4px 0 8px; color: #1E1C19;">${escapeHtml(item.headline)}</h2>
-  <p style="font-size: 14px; line-height: 1.5; color: #1E1C19;">${escapeHtml(item.summary).replace(/\n/g, "<br/><br/>")}</p>
+  <p style="font-size: 14px; line-height: 1.5; color: #1E1C19;">${escapeHtml(item.summary).replace(/\n/g, "<br/>")}</p>
   <p style="font-size: 13px; background: #F2EEE6; color: #1E1C19; padding: 8px 12px; border-radius: 6px;"><strong>${why}:</strong> ${escapeHtml(item.whyItMatters)}</p>
   <p style="font-size: 12px; font-weight: 400; line-height: 1.5; color: #6F6558;">${escapeHtml(copy.aiAnalysis)}</p>
   ${sourceLinks(item.sourceUrls).length ? `<p style="font-size: 12px; line-height: 1.5; color: #6F6558;">${escapeHtml(copy.sourcesLabel)}: ${sourceLinks(item.sourceUrls).map(url => `<a href="${escapeHtml(url)}" style="color: #6F6558; text-decoration: underline;">${escapeHtml(new URL(url).hostname)}</a>`).join(" · ")}</p>` : ""}
