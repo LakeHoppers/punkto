@@ -1,8 +1,6 @@
 import Link from "next/link";
 import {
   Show,
-  SignInButton,
-  SignUpButton,
   UserButton,
 } from "@clerk/nextjs";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -25,14 +23,12 @@ export async function SiteHeader({ locale }: { locale: Locale }) {
           <LocaleSwitch locale={locale} />
           <ThemeToggle label={copy.theme} />
           <Show when="signed-out">
-            <SignInButton mode="modal" fallbackRedirectUrl={`/${locale}/dashboard`}>
-              <button className="text-sm font-medium">{copy.signIn}</button>
-            </SignInButton>
-            <SignUpButton mode="modal" fallbackRedirectUrl={`/${locale}/dashboard`}>
-              <button className="rounded-md bg-foreground px-3 py-1.5 text-sm font-medium text-background">
-                {copy.signUp}
-              </button>
-            </SignUpButton>
+            <Link href={`/${locale}/sign-in`} className="text-sm font-medium">
+              {copy.signIn}
+            </Link>
+            <Link href={`/${locale}/sign-up`} className="rounded-md bg-foreground px-3 py-1.5 text-sm font-medium text-background">
+              {copy.signUp}
+            </Link>
           </Show>
           <Show when="signed-in">
             <Link href={`/${locale}/dashboard`} className="text-sm font-medium">

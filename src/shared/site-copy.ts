@@ -1,6 +1,7 @@
 import type { Locale } from "./locale";
 export const SITE_COPY = {
   tr: {
+    instagramAuthNotice: "Instagram içinden açtıysan, kayıt veya giriş yapmadan önce menüden bu sayfayı Safari ya da Chrome’da açmanı öneririz. E-postandaki koda bakmak için uygulama değiştirdiğinde Instagram kayıt ekranını kapatabilir. Tarayıcı değiştirdikten sonra doğrulama işlemini yeniden başlatman gerekebilir.",
     cookieSettings: "Çerez ayarları",
     cookieNotice: "Google Analytics ile ziyaretleri ve tamamlanan kayıtları ölçmek için yalnızca izninle analiz çerezleri kullanıyoruz. Reddetmek hizmeti etkilemez. İznini çerez ayarlarından geri çekebilirsin.",
     cookieAccept: "Kabul et",
@@ -20,6 +21,7 @@ export const SITE_COPY = {
     premiumComingSoon: "Genişletilmiş premium sürüm üzerinde çalışıyoruz.",
   },
   de: {
+    instagramAuthNotice: "Wenn du diese Seite in Instagram geöffnet hast, öffne sie vor der Registrierung oder Anmeldung über das Browsermenü in Safari oder Chrome. Beim Wechsel zur E-Mail-App kann Instagram den Registrierungsbildschirm schließen. Nach dem Browserwechsel musst du die Verifizierung möglicherweise neu starten.",
     cookieSettings: "Cookie-Einstellungen",
     cookieNotice: "Mit deiner Einwilligung verwenden wir Google-Analytics-Cookies, um Besuche und abgeschlossene Registrierungen zu messen. Ablehnen beeinträchtigt den Dienst nicht. Du kannst deine Einwilligung in den Cookie-Einstellungen widerrufen.",
     cookieAccept: "Akzeptieren",
@@ -39,6 +41,7 @@ export const SITE_COPY = {
     premiumComingSoon: "Wir arbeiten an einer erweiterten Premium-Ausgabe.",
   },
   en: {
+    instagramAuthNotice: "If you opened this page in Instagram, we recommend opening it in Safari or Chrome from the browser menu before signing up or signing in. Switching apps to read your email code may close Instagram’s registration screen. You may need to restart verification after switching browsers.",
     cookieSettings: "Cookie settings",
     cookieNotice: "With your permission, we use Google Analytics cookies to measure visits and completed registrations. Declining does not affect the service. You can withdraw consent in cookie settings.",
     cookieAccept: "Accept",

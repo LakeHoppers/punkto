@@ -1232,3 +1232,32 @@ are in `punkto-marka-karar-ve-gecis-dokumani.md` (not part of this repo).
   locks, all categories selectable.
 - Verified visually (locked categories show a lock icon and are unclickable
   for FREE; PRO shows every category open, no teaser shown).
+
+### Next session — Premium audio deferred to 2026-09-17
+
+Emre asked to pause audio work and remind him next session. A one-time reminder
+was scheduled for September 17 at 09:00 (Europe/Berlin). Start with Turkish voice
+samples and measured cost; proposed Neon metadata + private Vercel Blob + OpenAI
+TTS, three shared daily files (TR/EN/DE). No audio implementation, migration,
+paid storage or production scheduling changes have been made.
+
+### Instagram signup interruption — 2026-09-16
+
+Reported: switching from Instagram's embedded browser to email made the code
+entry screen disappear; registration worked in an external browser. Found that
+header sign-in/sign-up opened modals, despite existing path-routed auth pages.
+Replaced both modal launchers with localized links to those pages, preserving
+Clerk's verification-step URLs across page reloads. Kept existing OAuth routes,
+redirects and memoized theme appearance unchanged. Added TR/EN/DE guidance on
+both auth pages when the user agent identifies Instagram: open in an external
+browser before starting; verification may need restarting across browsers.
+
+This addresses modal state loss, not an experimentally confirmed Instagram
+WebView lifecycle bug. A physical-device Instagram → email → Instagram test
+remains necessary; browser storage/session loss cannot be repaired by routing
+alone. No OTPs, passwords or auth tokens are stored by application code.
+
+Verification: 182 tests passed (one opt-in test skipped), lint, typecheck and
+production build passed. HTTP checks against the local production build passed
+for all six localized sign-in/sign-up pages: localized header links and guidance
+present only with an Instagram user agent (12 requests total).
