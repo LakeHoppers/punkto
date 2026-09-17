@@ -3,6 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SummaryEditForm } from "@/components/admin/summary-edit-form";
 import { ForbiddenError, requireAdmin } from "@/shared/api-guards";
 import { prisma } from "@/shared/prisma";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 export default async function AdminSummaryEditPage({
   params,

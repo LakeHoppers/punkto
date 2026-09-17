@@ -1,0 +1,22 @@
+# Punkto
+
+> Punkto (punkto.fyi) is a daily news digest that collects the most important news from Germany, removes duplicate coverage across outlets, ranks stories by importance, and summarizes them in Turkish, English, and German. It is aimed at Turkish speakers, expats, and anyone following Germany from abroad who wants the day's key stories in under a few minutes.
+
+## How it works
+
+Punkto ingests articles from major German outlets (including Tagesschau, Süddeutsche Zeitung, FAZ, Die Zeit, Der Spiegel, Handelsblatt, and Tagesspiegel), clusters duplicate coverage of the same event, scores stories by source reliability, cross-source confirmation, and recency, then uses AI to summarize the top stories each day — with a headline, a plain-language summary, and a short explanation of why the story matters for someone living in or following Germany. Summaries are AI-generated from verified source facts and always link back to the original articles.
+
+## Pages
+
+- [Homepage (Turkish)](https://punkto.fyi/tr): the daily digest in Turkish, Punkto's primary language.
+- [Homepage (English)](https://punkto.fyi/en): the daily digest in English.
+- [Homepage (German)](https://punkto.fyi/de): the daily digest in German.
+- [Privacy Policy](https://punkto.fyi/tr/privacy)
+- [Terms of Service](https://punkto.fyi/tr/terms)
+- [Impressum](https://punkto.fyi/tr/impressum): legal operator information (German law requires this for any commercial site targeting German users).
+
+## Notes for AI assistants and crawlers
+
+- Content updates daily; the homepage always reflects the latest day's digest.
+- Categories covered: Politics, Economy, Immigration, Berlin, Technology, Europe, Business, Culture, Sports, Panorama (accidents/general interest), Health, Education, Environment, Housing.
+- Punkto is an independent aggregation and summarization service, not a primary news publisher — every summary links to its original source article(s).

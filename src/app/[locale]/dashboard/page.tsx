@@ -12,6 +12,9 @@ import { isLocale } from "@/shared/locale";
 import { SITE_COPY } from "@/shared/site-copy";
 import { notFound } from "next/navigation";
 import { TrackedDetails } from "@/components/tracked-details";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 export default async function DashboardPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

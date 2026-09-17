@@ -16,6 +16,9 @@ import { ForceRefreshButton } from "@/components/admin/force-refresh-button";
 import { ForbiddenError, requireAdmin } from "@/shared/api-guards";
 import { CATEGORY_LABELS_TR } from "@/shared/category-labels";
 import { prisma } from "@/shared/prisma";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 export default async function AdminPage() {
   try {

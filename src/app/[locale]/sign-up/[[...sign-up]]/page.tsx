@@ -1,7 +1,10 @@
 import { InAppBrowserNotice } from "@/components/in-app-browser-notice";
 import { SignUp } from "@clerk/nextjs";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { isLocale } from "@/shared/locale";
+
+export const metadata: Metadata = { robots: { index: false, follow: true } };
 
 export default async function SignUpPage({
   params,

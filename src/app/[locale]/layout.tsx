@@ -6,10 +6,13 @@ import { AppClerkProvider } from "@/components/app-clerk-provider";
 import { ThemeProvider } from "next-themes";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { StructuredData } from "@/components/structured-data";
 import "../globals.css";
 import { notFound } from "next/navigation";
 import { SITE_COPY } from "@/shared/site-copy";
 import { isLocale } from "@/shared/locale";
+import { SITE_URL } from "@/shared/site-url";
+import { buildSocialMetadata } from "@/shared/seo";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +33,14 @@ const newsreader = Newsreader({
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
-  return { title: "Punkto", description: SITE_COPY[locale].description };
+  const copy = SITE_COPY[locale];
+  return {
+    metadataBase: new URL(SITE_URL),
+    title: { default: "Punkto", template: "%s | Punkto" },
+    description: copy.description,
+    ...buildSocialMetadata(locale, "Punkto", copy.description),
+    robots: { index: true, follow: true },
+  };
 }
 
 export default async function RootLayout({
@@ -48,6 +58,7 @@ export default async function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${newsreader.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <StructuredData locale={locale} />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AppClerkProvider locale={locale}>
             <SiteHeader locale={locale} />

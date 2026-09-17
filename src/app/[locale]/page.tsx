@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { isLocale } from "@/shared/locale";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,6 +9,23 @@ import { CATEGORY_ACCENT } from "@/shared/category-colors";
 import { HOME_COPY } from "@/shared/home-copy";
 import type { Locale } from "@/shared/locale";
 import { TrackedSourceLink } from "@/components/tracked-source-link";
+import { buildAlternates, buildSocialMetadata } from "@/shared/seo";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  if (!isLocale(locale)) notFound();
+  const copy = HOME_COPY[locale];
+  return {
+    title: copy.title,
+    description: copy.description,
+    alternates: buildAlternates("", locale),
+    ...buildSocialMetadata(locale, copy.title, copy.description),
+  };
+}
 
 function formatDate(isoDate: string, locale: Locale): string {
   return new Intl.DateTimeFormat(({ tr: "tr-TR", en: "en-US", de: "de-DE" })[locale], {

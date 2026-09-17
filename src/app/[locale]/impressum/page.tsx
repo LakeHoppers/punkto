@@ -1,13 +1,36 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { isLocale } from "@/shared/locale";
 import { IMPRESSUM_COPY } from "@/shared/impressum-copy";
+import { buildAlternates, buildSocialMetadata } from "@/shared/seo";
 
 const RELATED_LABEL: Record<string, string> = {
   tr: "Ayrıca bkz.",
   en: "See also:",
   de: "Siehe auch:",
 };
+
+const DESCRIPTION: Record<string, string> = {
+  tr: "Punkto'nun yasal işletmeci bilgileri ve iletişim adresi.",
+  en: "Punkto's legal operator information and contact address.",
+  de: "Anbieterkennzeichnung und Kontaktadresse von Punkto.",
+};
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  if (!isLocale(locale)) notFound();
+  return {
+    title: IMPRESSUM_COPY[locale].title,
+    description: DESCRIPTION[locale],
+    alternates: buildAlternates("/impressum", locale),
+    ...buildSocialMetadata(locale, IMPRESSUM_COPY[locale].title, DESCRIPTION[locale]),
+  };
+}
 
 const PRIVACY_LABEL: Record<string, string> = {
   tr: "Gizlilik Politikası",

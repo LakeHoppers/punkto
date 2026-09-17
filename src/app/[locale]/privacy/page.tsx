@@ -1,13 +1,31 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { isLocale } from "@/shared/locale";
 import { PRIVACY_COPY } from "@/shared/privacy-copy";
+import { buildAlternates, buildSocialMetadata } from "@/shared/seo";
 
 const RELATED_LABEL: Record<string, string> = {
   tr: "Ayrıca bkz.",
   en: "See also:",
   de: "Siehe auch:",
 };
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  if (!isLocale(locale)) notFound();
+  const copy = PRIVACY_COPY[locale];
+  return {
+    title: copy.title,
+    description: copy.intro[0],
+    alternates: buildAlternates("/privacy", locale),
+    ...buildSocialMetadata(locale, copy.title, copy.intro[0]),
+  };
+}
 
 export default async function PrivacyPage({
   params,
