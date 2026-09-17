@@ -1261,3 +1261,45 @@ Verification: 182 tests passed (one opt-in test skipped), lint, typecheck and
 production build passed. HTTP checks against the local production build passed
 for all six localized sign-in/sign-up pages: localized header links and guidance
 present only with an Instagram user agent (12 requests total).
+
+## SEO and GEO foundations added — 2026-09-17
+Prioritized by Emre ("her şeyden önce SEO ve GEO'ya yönelik adımlar
+atmalıyız"). Before this pass the site had none of the below — a real gap
+for a multi-locale content site meant to be found.
+- [x] `robots.txt` (`src/app/robots.ts`) — allow-all, no AI/LLM crawler
+  (GPTBot, Google-Extended, PerplexityBot, ClaudeBot, etc.) blocked since
+  none are explicitly disallowed; excludes dashboard/admin/sign-in/sign-up/api.
+- [x] `sitemap.xml` (`src/app/sitemap.ts`) — TR/EN/DE homepages + Impressum/
+  Privacy/Terms, each with hreflang alternates (`x-default` → Turkish) and
+  the homepage's `lastmod` tied to the latest digest date.
+- [x] Per-page `generateMetadata` (title/description/canonical/hreflang) for
+  the homepage and legal pages, using their own on-page copy rather than the
+  one generic "Punkto" title every page previously shared. `noindex` added
+  to sign-in/sign-up/dashboard/admin (private/functional, not content).
+- [x] Dynamic per-locale Open Graph image (`[locale]/opengraph-image.tsx`,
+  `next/og` `ImageResponse`) and correct Twitter card tags.
+- **Bug found and fixed along the way**: Next.js merges sibling
+  `metadata`/`generateMetadata` objects *shallowly* — a page that sets its
+  own `openGraph`/`twitter` replaces the whole object from the layout, not
+  just the fields it names. The homepage's first pass silently dropped
+  `twitter.card`/`openGraph.siteName`/`type`/`locale` this way (verified:
+  `twitter:card` came out as the Next default `summary` instead of
+  `summary_large_image`). Fixed by centralizing the full object in
+  `buildSocialMetadata()` (`src/shared/seo.ts`), used by every page that
+  needs a page-specific social title/description.
+- [x] Organization + WebSite JSON-LD (`src/components/structured-data.tsx`),
+  site-wide, `sameAs` linking the Instagram/LinkedIn pages added this
+  session — helps search engines and AI answer engines resolve Punkto as
+  one entity across three locale URLs.
+- [x] `public/llms.txt` — plain-text description of the site for LLM
+  crawlers/agents (the actual "GEO" lever): what Punkto is, how it works,
+  key pages, category list.
+- Verified via a full production build + local prod server before deploy
+  (robots.txt/sitemap.xml content, per-page titles/canonicals, noindex on
+  auth/admin, generated OG image), then re-verified live on punkto.fyi after
+  deploy (title/canonical/twitter:card/OG image all correct).
+- **Not done in this pass** (fast-follows if this proves worth investing
+  further in): a proper raster PNG brand logo for the JSON-LD `logo` field
+  (currently `/icon.svg` — Google's structured-data guidelines prefer a
+  raster format); per-story structured data (`NewsArticle`/`Article`) once
+  individual story pages exist; a PWA `manifest.json`.
