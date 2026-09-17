@@ -1370,3 +1370,25 @@ Emre caught two real issues right after the per-story pages shipped.
 - Verified live: slugged URLs render correctly, old bare-id URLs still
   resolve (200), canonical tag points at the slugged version, and all
   homepage `<h2>` headlines share one CSS class.
+
+## Fixed: canonical URLs pointed at a redirecting domain — 2026-09-17
+Emre asked ChatGPT what Punkto is; it reported no indexed content and that
+directly opening punkto.fyi failed while redirecting to www.
+- **Root cause found**: `SITE_URL` (introduced in yesterday's SEO work) was
+  set to `https://punkto.fyi` (no www) — but that apex domain always
+  308-redirects to `https://www.punkto.fyi` (confirmed: every other part of
+  the app — email links, Terms copy — already treated www as canonical, so
+  this was the one inconsistent piece). That meant every sitemap entry,
+  `<link rel="canonical">`, hreflang alternate, OG/Twitter image URL, and
+  JSON-LD `url` field declared an address that immediately redirected
+  elsewhere — likely exactly what ChatGPT hit.
+- [x] Fixed: `SITE_URL` now points at `https://www.punkto.fyi`. Verified
+  live: sitemap/robots.txt/canonical all now use www, and the canonical URL
+  itself returns a direct 200 with no further redirect.
+- **Not fixed by this, separate issue**: "no indexed content" is expected
+  for now — the sitemap/robots/structured data only went live in the last
+  ~1-2 days, and Google/AI crawlers take time to discover and index new
+  pages even with everything correctly configured. Submitting the sitemap
+  in Google Search Console (already verified for the domain per the
+  2026-09-14 rebrand work) and requesting indexing for key URLs would speed
+  this up rather than waiting for organic crawl discovery.
