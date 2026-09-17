@@ -1321,3 +1321,34 @@ existing yet).
   session (title/description/canonical/OG image text/JSON-LD inLanguage) —
   none of it was Turkish-only, Emre's concern was valid to check but
   everything was already correctly localized per locale.
+
+## Per-story pages + NewsArticle structured data — 2026-09-17
+Closed the last "not done" item from the SEO/GEO pass, after checking with
+Emre on two real concerns: would archiving create a data-volume problem
+(no — current pace is ~10-15 summarized stories/day, ~5k/year, trivial for
+both Postgres and the sitemap's 50k-URL limit), and would it actually help
+(yes — the homepage gets overwritten daily, so without permanent story URLs
+every day's coverage became completely uncitable/unindexable after ~24h;
+this is the single highest-leverage move of the whole SEO/GEO pass, though
+it's a compounding, months-long payoff not an immediate traffic bump).
+- [x] `/{locale}/story/{id}` (`src/app/[locale]/story/[id]/page.tsx`) — every
+  summarized story gets a permanent page: headline, summary, why-it-matters,
+  sources, `NewsArticle` JSON-LD. `author`/`publisher` honestly attributed
+  to the Punkto organization, not a fabricated journalist byline — matches
+  the site's existing AI-assisted-editorial disclosure.
+- [x] Homepage and dashboard history headlines now link to the story page
+  instead of being plain text (also resolves the "history looks like an
+  inert log" complaint from 2026-09-16 — clicking through now works).
+- [x] Sitemap includes every summarized story × 3 locales, kept
+  indefinitely (confirmed live: 1215 story URLs = 405 stories × 3 locales
+  at time of writing). Decision: pages/sitemap entries are **never**
+  deleted or time-limited — a story's citation value compounds over time.
+  Any "last 30 days" retention Emre wants is purely an on-site browsing-UI
+  choice (e.g. how far back the dashboard history list reaches), completely
+  separate from whether the permanent page stays indexable — deleting or
+  404ing old pages would actively undo the SEO benefit (deindexing, broken
+  inbound/AI-citation links), so that option was explicitly ruled out.
+- Verified end-to-end live on production: homepage links to a real story
+  page, page renders correctly in TR/EN/DE, correct canonical/title/
+  NewsArticle JSON-LD, invalid ID returns a real 404, sitemap count matches
+  expected (stories × 3).
