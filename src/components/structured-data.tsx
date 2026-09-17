@@ -15,7 +15,7 @@ export function StructuredData({ locale }: { locale: Locale }) {
       "@type": "Organization",
       name: "Punkto",
       url: SITE_URL,
-      logo: `${SITE_URL}/icon.svg`,
+      logo: `${SITE_URL}/icon-512.png`,
       sameAs: [
         "https://www.instagram.com/punktofyi/",
         "https://linkedin.com/company/punktofyi",
