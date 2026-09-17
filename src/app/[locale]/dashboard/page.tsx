@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PreferencesForm } from "@/components/preferences-form";
@@ -89,7 +90,9 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
                           key={item.storyId}
                           className="flex items-start justify-between gap-3 text-sm"
                         >
-                          <span>{item.headline}</span>
+                          <Link href={`/${locale}/story/${item.storyId}`} className="hover:underline">
+                            {item.headline}
+                          </Link>
                           <Badge variant="outline" className="shrink-0 text-xs">
                             {CATEGORY_LABELS[locale][item.category]}
                           </Badge>

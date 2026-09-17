@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isLocale } from "@/shared/locale";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -108,7 +109,9 @@ export default async function Home({
                   index === 0 ? "text-2xl sm:text-3xl" : "text-xl"
                 }`}
               >
-                {item.headline}
+                <Link href={`/${locale}/story/${item.storyId}`} className="hover:underline">
+                  {item.headline}
+                </Link>
               </h2>
 
               <div className="flex flex-col gap-3 text-[15px] leading-relaxed text-foreground/90">
