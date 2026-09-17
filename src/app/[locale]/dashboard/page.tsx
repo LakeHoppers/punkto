@@ -13,6 +13,7 @@ import { isLocale } from "@/shared/locale";
 import { SITE_COPY } from "@/shared/site-copy";
 import { notFound } from "next/navigation";
 import { TrackedDetails } from "@/components/tracked-details";
+import { storyPath } from "@/shared/seo";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = { robots: { index: false, follow: false } };
@@ -90,7 +91,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
                           key={item.storyId}
                           className="flex items-start justify-between gap-3 text-sm"
                         >
-                          <Link href={`/${locale}/story/${item.storyId}`} className="hover:underline">
+                          <Link href={storyPath(locale, item.storyId, item.headline)} className="hover:underline">
                             {item.headline}
                           </Link>
                           <Badge variant="outline" className="shrink-0 text-xs">

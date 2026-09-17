@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { LOCALES } from "@/shared/locale";
-import { buildAlternates } from "@/shared/seo";
+import { buildAlternates, buildStoryAlternates } from "@/shared/seo";
 import { prisma } from "@/shared/prisma";
 
 const STATIC_PAGES: { path: string; priority: number; changeFrequency: "yearly" | "daily" }[] = [
@@ -29,19 +29,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // rather than expiring after a "recent" window.
   const stories = await prisma.story.findMany({
     where: { summaries: { some: {} } },
-    select: { id: true, firstSeenAt: true },
+    select: {
+      id: true,
+      firstSeenAt: true,
+      summaries: { orderBy: { version: "desc" as const }, take: 1, select: { headline: true, headlineEn: true, headlineDe: true } },
+    },
     orderBy: { firstSeenAt: "desc" },
   });
 
-  const storyEntries = stories.flatMap(({ id, firstSeenAt }) =>
-    LOCALES.map((locale) => ({
-      url: buildAlternates(`/story/${id}`, locale).canonical,
+  const storyEntries = stories.flatMap(({ id, firstSeenAt, summaries }) => {
+    const summary = summaries[0];
+    if (!summary) return [];
+    const headlines = { tr: summary.headline, en: summary.headlineEn ?? summary.headline, de: summary.headlineDe ?? summary.headline };
+    return LOCALES.map((locale) => ({
+      url: buildStoryAlternates(id, headlines, locale).canonical,
       lastModified: firstSeenAt,
       changeFrequency: "yearly" as const,
       priority: 0.5,
-      alternates: { languages: buildAlternates(`/story/${id}`, locale).languages },
-    })),
-  );
+      alternates: { languages: buildStoryAlternates(id, headlines, locale).languages },
+    }));
+  });
 
   return [...staticEntries, ...storyEntries];
 }

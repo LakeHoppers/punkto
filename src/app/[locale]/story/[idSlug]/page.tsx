@@ -9,7 +9,7 @@ import { CATEGORY_LABELS } from "@/shared/category-labels";
 import { CATEGORY_ACCENT } from "@/shared/category-colors";
 import { HOME_COPY } from "@/shared/home-copy";
 import { TrackedSourceLink } from "@/components/tracked-source-link";
-import { buildAlternates, buildSocialMetadata } from "@/shared/seo";
+import { buildStoryAlternates, buildSocialMetadata } from "@/shared/seo";
 import { SITE_URL } from "@/shared/site-url";
 
 const BACK_LABEL: Record<Locale, string> = {
@@ -17,6 +17,11 @@ const BACK_LABEL: Record<Locale, string> = {
   en: "← All stories",
   de: "← Alle Nachrichten",
 };
+
+/** The slug after the id is decorative and never validated — the id (a cuid, which never contains "-") is the only part looked up. */
+function parseId(idSlug: string): string {
+  return idSlug.split("-")[0];
+}
 
 async function getStory(id: string) {
   return prisma.story.findUnique({
@@ -31,10 +36,11 @@ async function getStory(id: string) {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ locale: string; id: string }>;
+  params: Promise<{ locale: string; idSlug: string }>;
 }): Promise<Metadata> {
-  const { locale, id } = await params;
+  const { locale, idSlug } = await params;
   if (!isLocale(locale)) notFound();
+  const id = parseId(idSlug);
   const story = await getStory(id);
   if (!story) return {};
   const summary = story.summaries[0];
@@ -43,11 +49,12 @@ export async function generateMetadata({
   const headline = pickLocalizedText(locale, summary.headline, summary.headlineEn, summary.headlineDe);
   const body = pickLocalizedText(locale, summary.body, summary.bodyEn, summary.bodyDe);
   const description = body.slice(0, 200);
+  const headlines = { tr: summary.headline, en: summary.headlineEn ?? summary.headline, de: summary.headlineDe ?? summary.headline };
 
   return {
     title: headline,
     description,
-    alternates: buildAlternates(`/story/${id}`, locale),
+    alternates: buildStoryAlternates(id, headlines, locale),
     ...buildSocialMetadata(locale, headline, description),
   };
 }
@@ -55,10 +62,11 @@ export async function generateMetadata({
 export default async function StoryPage({
   params,
 }: {
-  params: Promise<{ locale: string; id: string }>;
+  params: Promise<{ locale: string; idSlug: string }>;
 }) {
-  const { locale, id } = await params;
+  const { locale, idSlug } = await params;
   if (!isLocale(locale)) notFound();
+  const id = parseId(idSlug);
   const story = await getStory(id);
   const summary = story?.summaries[0];
   if (!story || !summary) notFound();
@@ -73,7 +81,11 @@ export default async function StoryPage({
     summary.whyItMattersEn, summary.whyItMattersDe,
   );
   const sourceUrls = [...new Set(story.rawArticles.map((article) => article.url))];
-  const storyUrl = `${SITE_URL}/${locale}/story/${id}`;
+  const storyUrl = buildStoryAlternates(
+    id,
+    { tr: summary.headline, en: summary.headlineEn ?? summary.headline, de: summary.headlineDe ?? summary.headline },
+    locale,
+  ).canonical;
 
   const jsonLd = {
     "@context": "https://schema.org",

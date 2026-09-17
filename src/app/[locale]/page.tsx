@@ -10,7 +10,7 @@ import { CATEGORY_ACCENT } from "@/shared/category-colors";
 import { HOME_COPY } from "@/shared/home-copy";
 import type { Locale } from "@/shared/locale";
 import { TrackedSourceLink } from "@/components/tracked-source-link";
-import { buildAlternates, buildSocialMetadata } from "@/shared/seo";
+import { buildAlternates, buildSocialMetadata, storyPath } from "@/shared/seo";
 
 export async function generateMetadata({
   params,
@@ -104,12 +104,8 @@ export default async function Home({
                 </span>
               </div>
 
-              <h2
-                className={`font-heading leading-snug font-medium text-balance ${
-                  index === 0 ? "text-2xl sm:text-3xl" : "text-xl"
-                }`}
-              >
-                <Link href={`/${locale}/story/${item.storyId}`} className="hover:underline">
+              <h2 className="font-heading text-xl leading-snug font-medium text-balance">
+                <Link href={storyPath(locale, item.storyId, item.headline)} className="hover:underline">
                   {item.headline}
                 </Link>
               </h2>
