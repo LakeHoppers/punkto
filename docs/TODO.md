@@ -1303,3 +1303,21 @@ for a multi-locale content site meant to be found.
   (currently `/icon.svg` — Google's structured-data guidelines prefer a
   raster format); per-story structured data (`NewsArticle`/`Article`) once
   individual story pages exist; a PWA `manifest.json`.
+
+## SEO/GEO fast-follows: raster logo + PWA manifest — 2026-09-17
+Closed two of the three "not done" items from the SEO/GEO pass above
+(per-story NewsArticle schema stays blocked on individual story pages not
+existing yet).
+- [x] Recreated the brand mark (bar + circle "P") as flexbox shapes in
+  `src/shared/brand-mark.tsx` for `next/og`'s `ImageResponse` (it can't
+  reliably rasterize the original inline SVG paths), served as 192px/512px
+  PNGs (`icon-192.png`, `icon-512.png`). Verified visually — matches the
+  real mark exactly.
+- [x] Organization JSON-LD `logo` now points at `icon-512.png` instead of
+  the SVG (Google's structured-data guidelines prefer raster).
+- [x] Added `manifest.ts` (name, theme/background color, both icon sizes) —
+  makes the site installable ("add to home screen").
+- Verified all three languages' SEO output live on punkto.fyi in this same
+  session (title/description/canonical/OG image text/JSON-LD inLanguage) —
+  none of it was Turkish-only, Emre's concern was valid to check but
+  everything was already correctly localized per locale.
