@@ -1352,3 +1352,21 @@ it's a compounding, months-long payoff not an immediate traffic bump).
   page, page renders correctly in TR/EN/DE, correct canonical/title/
   NewsArticle JSON-LD, invalid ID returns a real 404, sitemap count matches
   expected (stories × 3).
+
+## Fixed: ugly story URLs and inconsistent headline sizing — 2026-09-17
+Emre caught two real issues right after the per-story pages shipped.
+- [x] Story URLs were bare cuids (`/tr/story/cmu52e24q...`) — "kötü duruyor".
+  Added `src/shared/slugify.ts` (Turkish/German-aware — handles ı/İ/ß and
+  strips diacritics) and changed URLs to
+  `/story/{id}-{readable-headline-slug}`. The id (cuids never contain a
+  hyphen) is the only part actually looked up — old plain-id links (already
+  live in today's earlier deploy) and any stale/mismatched slug still
+  resolve rather than 404ing; `buildStoryAlternates` always sets canonical
+  to the current correct slug. Sitemap updated to emit slugged URLs too.
+- [x] The homepage's first story rendered visibly larger (`text-2xl/3xl`)
+  than the rest (`text-xl`) — pre-existing "lead story" styling that read
+  as a layout bug once headlines became clickable links. Removed the
+  size distinction; all ten stories now render at the same `text-xl`.
+- Verified live: slugged URLs render correctly, old bare-id URLs still
+  resolve (200), canonical tag points at the slugged version, and all
+  homepage `<h2>` headlines share one CSS class.
