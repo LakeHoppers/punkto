@@ -24,7 +24,7 @@ export const HOME_COPY: Record<
     tagline: "Haberler, kısa ve öz.",
     title: "Almanya'dan her sabah, Türkçe özet.",
     description:
-      "Punkto Almanya'nın en önemli haberlerini toplar, tekrarları kaldırır, farklı medya kuruluşlarının aynı haberi nasıl aktardığını karşılaştırır, önem sırasına koyar, özetler ve neden önemli olduklarını açıklar – hepsini tek bir anlaşılır günlük özette sunar.",
+      "Punkto Almanya'nın en önemli haberlerini toplar, tekrarları kaldırır, farklı medya kuruluşlarının aynı haberi nasıl aktardığını karşılaştırır, önem sırasına koyar ve neden önemli olduklarını açıklar – hepsini tek bir anlaşılır günlük özette sunar.",
     emptyTitle: "Bugünkü özet henüz yok",
     emptyBody:
       "Haber toplama ve özetleme hattı henüz devreye alınmadı. İlk özet burada görünecek.",
@@ -38,7 +38,7 @@ export const HOME_COPY: Record<
     sourcesLabel: "Quellen",
     tagline: "Nachrichten, auf den Punkt.",
     title: "Die wichtigsten Nachrichten aus Deutschland, jeden Morgen.",
-    description: "Punkto sammelt Deutschlands wichtigste Nachrichten, entfernt Duplikate, vergleicht die Berichterstattung verschiedener Medien, ordnet sie nach Relevanz, fasst sie zusammen und erklärt, warum sie wichtig sind – in einer klaren täglichen Zusammenfassung.",
+    description: "Punkto sammelt Deutschlands wichtigste Nachrichten, entfernt Duplikate, vergleicht die Berichterstattung verschiedener Medien, ordnet sie nach Relevanz und erklärt, warum sie wichtig sind – in einer klaren täglichen Zusammenfassung.",
     emptyTitle: "Noch keine heutige Ausgabe",
     emptyBody: "Die erste Zusammenfassung erscheint hier, sobald die Nachrichten verarbeitet wurden.",
     whyItMatters: "Warum das wichtig ist — ",
@@ -52,7 +52,7 @@ export const HOME_COPY: Record<
     tagline: "News, to the point.",
     title: "The most important German news, every morning.",
     description:
-      "Punkto collects Germany's most important news, removes duplicates, compares how outlets report the same story, ranks by importance, summarizes them and explains why they matter in one clear daily summary.",
+      "Punkto collects Germany's most important news, removes duplicates, compares how outlets report the same story, ranks by importance, and explains why they matter in one clear daily summary.",
     emptyTitle: "No digest yet today",
     emptyBody: "The collection and summarization pipeline hasn't run yet. The first digest will appear here.",
     whyItMatters: "Why it matters — ",
