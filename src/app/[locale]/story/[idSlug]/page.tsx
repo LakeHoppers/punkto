@@ -12,6 +12,11 @@ import { TrackedSourceLink } from "@/components/tracked-source-link";
 import { buildStoryAlternates, buildSocialMetadata } from "@/shared/seo";
 import { SITE_URL } from "@/shared/site-url";
 
+// Story content is effectively immutable once published (admin corrections
+// are rare and non-urgent) and identical for every visitor, so cache the
+// rendered page — same reasoning as the homepage's `revalidate`.
+export const revalidate = 300;
+
 const BACK_LABEL: Record<Locale, string> = {
   tr: "← Tüm haberler",
   en: "← All stories",
