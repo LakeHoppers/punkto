@@ -1392,3 +1392,23 @@ directly opening punkto.fyi failed while redirecting to www.
   in Google Search Console (already verified for the domain per the
   2026-09-14 rebrand work) and requesting indexing for key URLs would speed
   this up rather than waiting for organic crawl discovery.
+
+## Fixed: untranslated "Sprit" + admin edit silently wiping EN/DE — 2026-09-18
+Emre caught "Sprit" (German colloquial for fuel/petrol) in a live Turkish
+headline/body/why-it-matters/tags — English (`Fuel`) and German
+(`Kraftstoffe`) were correctly handled, only Turkish kept the loanword.
+- [x] Corrected the live story as a new summary version (all EN/DE fields
+  carried over unchanged), live on production.
+- [x] Added "Sprit" → "benzin" as a concrete glossary example next to the
+  existing KI/Tor/Kapitän ones in the summarizer prompt, framed as another
+  instance of the same standing failure class (leaving ordinary German
+  vocabulary untranslated, not just technical terms/proper nouns) rather
+  than a one-off special case.
+- **Found while fixing this, unrelated but real**: `/api/admin/summaries/[id]`
+  (PATCH) only ever wrote the Turkish fields onto a new summary version —
+  headlineEn/bodyEn/whyItMattersEn/headlineDe/bodyDe/whyItMattersDe were
+  never carried over, so every admin edit (the edit form is Turkish-only)
+  silently nulled out the English/German translations. Fixed to carry
+  existing translations forward when the request doesn't supply them.
+  Checked for prior damage: only one admin edit has ever been made (the one
+  just done for this fix), so nothing was actually lost historically.
