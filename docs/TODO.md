@@ -1412,3 +1412,45 @@ headline/body/why-it-matters/tags — English (`Fuel`) and German
   existing translations forward when the request doesn't supply them.
   Checked for prior damage: only one admin edit has ever been made (the one
   just done for this fix), so nothing was actually lost historically.
+
+## Load-readiness pass (part 1) — 2026-09-18
+Emre wants a plan for what breaks under a sudden signup spike, before
+running an actual load test. Two concrete fixes shipped today; more items
+identified need Emre to check external dashboards (see below).
+- [x] **Switched production `DATABASE_URL` to Neon's pooled endpoint.** It
+  was pointed at the direct/unpooled connection (confirmed can't be read
+  back from Vercel — it's a Secret-type var — so replaced it outright with
+  the known-correct pooled value from `.env`'s `DATABASE_URL_POOLED`
+  rather than trying to inspect it further). Direct Postgres connections
+  don't multiplex across concurrent serverless invocations — under real
+  concurrent traffic this would hit Postgres's connection limit and start
+  throwing "too many connections" errors, the most likely silent killer
+  under a sudden traffic spike. Verified post-deploy: homepage (all 3
+  locales), a story page, and sitemap.xml all return 200; checked logs for
+  30 minutes post-deploy, no real errors (only the pre-existing benign pg
+  driver SSL-mode deprecation warning, not a functional failure).
+- [x] **Parallelized digest email delivery** (`SendDigestUseCase`): was a
+  plain sequential `for` loop sending one email at a time, so total cron
+  run time scaled linearly with subscriber count and would eventually risk
+  the serverless function's execution time limit as the user base grows —
+  manifesting as some users getting their digest late/delayed at their
+  preferred hour, not an outright failure (delivery catches up on a later
+  run) but a real degradation under growth. Now batches candidates 20 at a
+  time via `Promise.all`, same per-candidate logic/dedup semantics.
+- **Confirmed from `docs/ARCHITECTURE.md`: the project is on Vercel's free
+  Hobby plan** — hard technical ceilings (function timeout, concurrent
+  execution, 100GB/mo bandwidth), not just a cost concern. This should be
+  the first thing upgraded (to Pro) before any real growth push or
+  marketing campaign — a traffic spike on Hobby risks outright request
+  failures, not just slowness.
+- **Still needs Emre to check** (dashboards I don't have access to):
+  - Resend's current plan/monthly-send cap — digest email volume scales
+    1:1 with subscriber count.
+  - Clerk's current plan/Monthly Active User cap.
+  - Neon's current plan tier (compute-hour limits, autosuspend/cold-start
+    behavior after idle).
+- **Not done yet**: an actual load test (synthetic concurrent traffic
+  against the site). Deliberately held off until the known gaps above are
+  addressed — testing a system with an already-known bottleneck first
+  wastes the exercise. Also needs care to avoid hitting real
+  OpenAI/Resend/Clerk usage/cost during the test itself.
