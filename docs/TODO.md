@@ -1454,3 +1454,15 @@ identified need Emre to check external dashboards (see below).
   addressed — testing a system with an already-known bottleneck first
   wastes the exercise. Also needs care to avoid hitting real
   OpenAI/Resend/Clerk usage/cost during the test itself.
+
+## Domain email addresses live — 2026-09-18
+- [x] ImprovMX free forwarding set up for `punkto.fyi`: MX (mx1/mx2.improvmx.com)
+  + SPF (`v=spf1 include:spf.improvmx.com ~all`) records added via Vercel DNS at
+  the root domain — verified no conflict with Resend's existing records
+  (those are scoped to the `send` subdomain, not root). Catch-all alias
+  (`*@punkto.fyi`) forwards everything to Emre's personal Gmail; confirmed
+  working with a real end-to-end test send.
+- [x] Impressum/Privacy/Terms now show `emre@punkto.fyi` (was his personal
+  Gmail). Contact form now defaults to `info@punkto.fyi` via
+  `CONTACT_FORM_RECIPIENT` (was silently falling back to his unrelated
+  synch.coach work email — that env var had never actually been set).
