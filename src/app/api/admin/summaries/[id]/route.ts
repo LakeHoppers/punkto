@@ -48,6 +48,16 @@ export async function PATCH(
       tags: Array.isArray(body.tags)
         ? body.tags.filter((t: unknown): t is string => typeof t === "string")
         : existing.tags,
+      // The edit form is Turkish-only — without carrying these over, every
+      // admin edit silently wiped the English/German translations.
+      headlineEn: typeof body.headlineEn === "string" ? body.headlineEn : existing.headlineEn,
+      bodyEn: typeof body.bodyEn === "string" ? body.bodyEn : existing.bodyEn,
+      whyItMattersEn:
+        typeof body.whyItMattersEn === "string" ? body.whyItMattersEn : existing.whyItMattersEn,
+      headlineDe: typeof body.headlineDe === "string" ? body.headlineDe : existing.headlineDe,
+      bodyDe: typeof body.bodyDe === "string" ? body.bodyDe : existing.bodyDe,
+      whyItMattersDe:
+        typeof body.whyItMattersDe === "string" ? body.whyItMattersDe : existing.whyItMattersDe,
       aiProvider: existing.aiProvider,
       aiModel: existing.aiModel,
       version: nextVersion,
