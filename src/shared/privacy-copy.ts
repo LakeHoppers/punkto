@@ -12,7 +12,7 @@ export interface PrivacyCopy {
   sections: PrivacySection[];
 }
 
-const CONTACT_EMAIL = "emrekucuksahin@gmail.com";
+const CONTACT_EMAIL = "emre@punkto.fyi";
 
 export const PRIVACY_COPY: Record<Locale, PrivacyCopy> = {
   tr: {

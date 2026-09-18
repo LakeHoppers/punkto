@@ -12,7 +12,7 @@ export interface TermsCopy {
   sections: TermsSection[];
 }
 
-const CONTACT_EMAIL = "emrekucuksahin@gmail.com";
+const CONTACT_EMAIL = "emre@punkto.fyi";
 
 export const TERMS_COPY: Record<Locale, TermsCopy> = {
   tr: {

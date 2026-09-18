@@ -15,7 +15,7 @@ export interface ImpressumCopy {
 const FULL_NAME = "Emre Küçükşahin";
 const STREET = "Ebelingstr. 16";
 const CITY = "10249 Berlin";
-const CONTACT_EMAIL = "emrekucuksahin@gmail.com";
+const CONTACT_EMAIL = "emre@punkto.fyi";
 
 export const IMPRESSUM_COPY: Record<Locale, ImpressumCopy> = {
   de: {

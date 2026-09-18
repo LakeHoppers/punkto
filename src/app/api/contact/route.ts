@@ -21,7 +21,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: "not_configured" }, { status: 500 });
   }
 
-  const recipient = process.env.CONTACT_FORM_RECIPIENT ?? "emre@synch.coach";
+  const recipient = process.env.CONTACT_FORM_RECIPIENT ?? "info@punkto.fyi";
   const from = process.env.EMAIL_FROM_ADDRESS ?? "Punkto <onboarding@resend.dev>";
 
   const response = await fetch(RESEND_URL, {
