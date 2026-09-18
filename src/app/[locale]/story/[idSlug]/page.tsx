@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { unstable_cache } from "next/cache";
 import { isLocale, type Locale } from "@/shared/locale";
 import { prisma } from "@/shared/prisma";
 import { pickLocalizedText } from "@/modules/digest/domain/localize";
@@ -11,11 +12,6 @@ import { HOME_COPY } from "@/shared/home-copy";
 import { TrackedSourceLink } from "@/components/tracked-source-link";
 import { buildStoryAlternates, buildSocialMetadata } from "@/shared/seo";
 import { SITE_URL } from "@/shared/site-url";
-
-// Story content is effectively immutable once published (admin corrections
-// are rare and non-urgent) and identical for every visitor, so cache the
-// rendered page — same reasoning as the homepage's `revalidate`.
-export const revalidate = 300;
 
 const BACK_LABEL: Record<Locale, string> = {
   tr: "← Tüm haberler",
@@ -28,15 +24,21 @@ function parseId(idSlug: string): string {
   return idSlug.split("-")[0];
 }
 
-async function getStory(id: string) {
-  return prisma.story.findUnique({
+// Story content is effectively immutable once published (admin corrections
+// are rare and non-urgent), so cache the query — same reasoning and window
+// as getLatestDigest. Pages using Clerk (via the shared header) can't be
+// fully cached at the route level, so caching happens at the data layer.
+const getStory = unstable_cache(
+  async (id: string) => prisma.story.findUnique({
     where: { id },
     include: {
       summaries: { orderBy: { version: "desc" as const }, take: 1 },
       rawArticles: { select: { url: true } },
     },
-  });
-}
+  }),
+  ["story-page"],
+  { revalidate: 300 },
+);
 
 export async function generateMetadata({
   params,

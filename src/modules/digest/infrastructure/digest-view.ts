@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import type { Prisma } from "@/generated/prisma/client";
 import type { Category } from "@/generated/prisma/enums";
 import { prisma } from "@/shared/prisma";
@@ -49,17 +50,27 @@ function toDigestView(digest: DigestWithItems, locale: Locale): DigestView {
   };
 }
 
-/** The most recent digest, optionally filtered to a set of favorite categories (empty = all). */
-export async function getLatestDigest(
-  categories: Category[] = [],
-  locale: Locale = "tr",
-): Promise<DigestView | null> {
-  const digest = await prisma.digest.findFirst({
-    orderBy: { date: "desc" },
-    include: { items: digestItemsInclude(categories) },
-  });
-  return digest ? toDigestView(digest, locale) : null;
-}
+/**
+ * The most recent digest, optionally filtered to a set of favorite
+ * categories (empty = all). Cached: the public homepage calls this with the
+ * same (empty-categories) arguments on every anonymous page view, and the
+ * underlying data only changes once a day when the pipeline runs — a load
+ * test showed this query queuing under concurrent traffic (~700ms median at
+ * 50 concurrent requests vs ~200ms at 20), so most requests should hit this
+ * cache instead of Postgres. A few minutes of staleness is invisible for a
+ * once-daily digest.
+ */
+export const getLatestDigest = unstable_cache(
+  async (categories: Category[] = [], locale: Locale = "tr"): Promise<DigestView | null> => {
+    const digest = await prisma.digest.findFirst({
+      orderBy: { date: "desc" },
+      include: { items: digestItemsInclude(categories) },
+    });
+    return digest ? toDigestView(digest, locale) : null;
+  },
+  ["latest-digest"],
+  { revalidate: 300 },
+);
 
 // Must match CANDIDATE_WINDOW_HOURS in build-digest.use-case.ts — the recency
 // window a story has to fall within to be considered "today's news".

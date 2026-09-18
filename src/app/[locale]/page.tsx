@@ -12,15 +12,6 @@ import type { Locale } from "@/shared/locale";
 import { TrackedSourceLink } from "@/components/tracked-source-link";
 import { buildAlternates, buildSocialMetadata, storyPath } from "@/shared/seo";
 
-// The public homepage is identical for every visitor of a given locale (no
-// personalization — that's the dashboard's job) and the underlying digest
-// only changes once a day, so cache the rendered page instead of querying
-// the database on every single request. Under concurrent load this was the
-// actual bottleneck: connections queuing behind Neon's pooler, not a lack
-// of pooling itself. A stale window of a few minutes is invisible in
-// practice for a once-daily digest.
-export const revalidate = 300;
-
 export async function generateMetadata({
   params,
 }: {
