@@ -1488,3 +1488,28 @@ identified need Emre to check external dashboards (see below).
   waiting a full hour. No outstanding failed deliveries remained for today
   by the time this was found (the 07:10 retry had already caught everyone
   up); this prevents the recurrence tomorrow and as the user base grows.
+- [x] **Re-checked and found a second, deeper cause of the same symptom.**
+  All 29 active users share the same `digestHour` (7, Europe/Berlin) — so
+  the earlier theory that different due-hours staggered the batches was
+  wrong. The real reason a big batch of 20 formed together an hour late:
+  `PrismaDigestReader.getLatestDigest` (used by email delivery) was reading
+  the same `unstable_cache`-wrapped `getLatestDigest` the public homepage
+  uses. That cache keys per distinct (favoriteCategories, emailLocale) pair,
+  each with its own independent 5-minute revalidation clock tied to when a
+  real page view last touched it — so a combination the homepage hadn't
+  served recently could still hand delivery *yesterday's* digest right
+  after today's had been built, silently skipping that recipient
+  (digest.date mismatch) until its cache entry happened to revalidate.
+  That is what produced today's exact pattern: 5 users whose cache combo
+  was already warm delivered right at 05:09 UTC, the rest all became "due"
+  together once their caches caught up around 06:16 UTC — which is what
+  tripped the Resend rate limit above.
+- [x] Fixed: added `getEmailDeliveryDigest`, an uncached read straight from
+  Postgres, and pointed `PrismaDigestReader` at it instead of the cached
+  path (the homepage keeps using the cache — this is delivery-only). Also
+  added jitter to the 429 retry backoff so sends rate-limited together
+  don't all retry in the same instant. Both fixes verified deployed to
+  production (typecheck/lint/182 tests clean, CI green, Vercel production
+  alias confirmed pointing at the new build). Tomorrow's 07:00 CEST run is
+  the first real-world test of both fixes together; Emre will flag it
+  immediately if the email doesn't arrive on time.
