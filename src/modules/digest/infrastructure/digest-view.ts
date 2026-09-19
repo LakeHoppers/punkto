@@ -50,6 +50,17 @@ function toDigestView(digest: DigestWithItems, locale: Locale): DigestView {
   };
 }
 
+async function fetchLatestDigest(
+  categories: Category[] = [],
+  locale: Locale = "tr",
+): Promise<DigestView | null> {
+  const digest = await prisma.digest.findFirst({
+    orderBy: { date: "desc" },
+    include: { items: digestItemsInclude(categories) },
+  });
+  return digest ? toDigestView(digest, locale) : null;
+}
+
 /**
  * The most recent digest, optionally filtered to a set of favorite
  * categories (empty = all). Cached: the public homepage calls this with the
@@ -58,19 +69,25 @@ function toDigestView(digest: DigestWithItems, locale: Locale): DigestView {
  * test showed this query queuing under concurrent traffic (~700ms median at
  * 50 concurrent requests vs ~200ms at 20), so most requests should hit this
  * cache instead of Postgres. A few minutes of staleness is invisible for a
- * once-daily digest.
+ * once-daily digest on a page view.
+ *
+ * Do not use this for email delivery — `unstable_cache` keys per distinct
+ * (categories, locale) pair, each with its own independent revalidation
+ * clock, so a combination the homepage hasn't served recently can still
+ * return yesterday's digest right after today's has been built. That
+ * silently "skips" a due recipient (digest.date mismatch) until the cache
+ * happens to revalidate, which is exactly what produced 2026-09-19's
+ * delayed digest. `getEmailDeliveryDigest` below reads straight from
+ * Postgres for that reason.
  */
 export const getLatestDigest = unstable_cache(
-  async (categories: Category[] = [], locale: Locale = "tr"): Promise<DigestView | null> => {
-    const digest = await prisma.digest.findFirst({
-      orderBy: { date: "desc" },
-      include: { items: digestItemsInclude(categories) },
-    });
-    return digest ? toDigestView(digest, locale) : null;
-  },
+  fetchLatestDigest,
   ["latest-digest"],
   { revalidate: 300 },
 );
+
+/** Uncached equivalent of getLatestDigest, for delivery correctness. See the note above. */
+export const getEmailDeliveryDigest = fetchLatestDigest;
 
 // Must match CANDIDATE_WINDOW_HOURS in build-digest.use-case.ts — the recency
 // window a story has to fall within to be considered "today's news".
@@ -94,7 +111,7 @@ export async function getPersonalizedDigest(
   locale: Locale = "tr",
   limit = 10,
 ): Promise<DigestView | null> {
-  if (categories.length === 0) return getLatestDigest([], locale);
+  if (categories.length === 0) return fetchLatestDigest([], locale);
 
   const digest = await prisma.digest.findFirst({ orderBy: { date: "desc" } });
   if (!digest) return null;

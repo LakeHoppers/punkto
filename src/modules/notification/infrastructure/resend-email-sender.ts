@@ -46,9 +46,11 @@ export class ResendEmailSender implements EmailSender {
 
       if (response.status === 429 && attempt < RATE_LIMIT_RETRIES) {
         const retryAfterHeader = Number(response.headers.get("retry-after"));
+        // Jittered so concurrent sends that got rate-limited together don't
+        // all retry in the same instant and collide again.
         const backoffMs = Number.isFinite(retryAfterHeader) && retryAfterHeader > 0
-          ? retryAfterHeader * 1000
-          : RATE_LIMIT_BACKOFF_MS;
+          ? retryAfterHeader * 1000 + Math.random() * 250
+          : RATE_LIMIT_BACKOFF_MS + Math.random() * 400;
         await sleep(backoffMs);
         continue;
       }
