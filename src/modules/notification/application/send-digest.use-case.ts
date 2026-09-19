@@ -12,8 +12,11 @@ export interface SendDigestResult {
 // with subscriber count and risked hitting the serverless function's time
 // limit as the user base grows; a bounded batch size keeps total run time
 // roughly flat instead, without opening one connection/request per
-// candidate all at once.
-const DELIVERY_CONCURRENCY = 20;
+// candidate all at once. Kept under Resend's per-account requests/second
+// cap (hit at 20 concurrent sends on 2026-09-19, delaying ~9 users' digest
+// by a full hour) — ResendEmailSender also retries individual 429s, so this
+// is a margin against bursts, not the only safeguard.
+const DELIVERY_CONCURRENCY = 8;
 
 type DeliveryOutcome = "delivered" | "failed" | "skipped";
 

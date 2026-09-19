@@ -1466,3 +1466,25 @@ identified need Emre to check external dashboards (see below).
   Gmail). Contact form now defaults to `info@punkto.fyi` via
   `CONTACT_FORM_RECIPIENT` (was silently falling back to his unrelated
   synch.coach work email — that env var had never actually been set).
+
+## Fixed: late/failed digest delivery from the concurrency rewrite — 2026-09-19
+- [x] **Root cause found and fixed.** Yesterday's `SendDigestUseCase`
+  parallelization (batches of 20 concurrent `Promise.all` sends) exceeded
+  Resend's account rate limit (10 requests/second). Confirmed directly from
+  `DigestDelivery` rows: at 06:16 UTC today a batch of 20 due users fired at
+  once, Resend returned 429 `rate_limit_exceeded` for 9 of them, and because
+  `ResendEmailSender` treated any non-2xx as a permanent failure with no
+  retry, those 9 sat marked "failed" until the *next* hourly cron caught
+  them up an hour later (07:10 UTC) — a real ~1-2 hour delivery delay for
+  a subset of users, matching what Emre reported. The GitHub Actions
+  "Hourly digest delivery" workflow's `06:15:58 UTC` failure was this same
+  event: the endpoint returned 200 with `failed: 9`, which the workflow's
+  `jq` check correctly flagged.
+- [x] Fixed two ways: `DELIVERY_CONCURRENCY` lowered from 20 to 8 (safely
+  under the 10 req/s cap), and `ResendEmailSender.send` now retries a 429
+  in-place (honoring `Retry-After` if Resend sends it, else ~1.1s backoff,
+  up to 3 attempts) instead of failing immediately — so a burst that still
+  exceeds 8 concurrent sends recovers within the same cron run instead of
+  waiting a full hour. No outstanding failed deliveries remained for today
+  by the time this was found (the 07:10 retry had already caught everyone
+  up); this prevents the recurrence tomorrow and as the user base grows.
