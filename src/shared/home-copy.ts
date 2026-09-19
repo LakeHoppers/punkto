@@ -28,7 +28,7 @@ export const HOME_COPY: Record<
     emptyTitle: "Bugünkü özet henüz yok",
     emptyBody:
       "Haber toplama ve özetleme hattı henüz devreye alınmadı. İlk özet burada görünecek.",
-    whyItMatters: "Neden önemli — ",
+    whyItMatters: "Neden önemli? ",
     storiesLabel: (count) => `${count} haber`,
   },
   de: {
@@ -41,7 +41,7 @@ export const HOME_COPY: Record<
     description: "Punkto sammelt Deutschlands wichtigste Nachrichten, entfernt Duplikate, vergleicht die Berichterstattung verschiedener Medien, ordnet sie nach Relevanz und erklärt, warum sie wichtig sind – in einer klaren täglichen Zusammenfassung.",
     emptyTitle: "Noch keine heutige Ausgabe",
     emptyBody: "Die erste Zusammenfassung erscheint hier, sobald die Nachrichten verarbeitet wurden.",
-    whyItMatters: "Warum das wichtig ist — ",
+    whyItMatters: "Warum das wichtig ist? ",
     storiesLabel: (count) => `${count} Nachrichten`,
   },
   en: {
@@ -55,7 +55,7 @@ export const HOME_COPY: Record<
       "Punkto collects Germany's most important news, removes duplicates, compares how outlets report the same story, ranks by importance, and explains why they matter in one clear daily summary.",
     emptyTitle: "No digest yet today",
     emptyBody: "The collection and summarization pipeline hasn't run yet. The first digest will appear here.",
-    whyItMatters: "Why it matters — ",
+    whyItMatters: "Why it matters? ",
     storiesLabel: (count) => `${count} stories`,
   },
 };
