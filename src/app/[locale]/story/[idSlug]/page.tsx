@@ -99,8 +99,12 @@ export default async function StoryPage({
     "@type": "NewsArticle",
     headline,
     description: body.slice(0, 200),
-    datePublished: story.firstSeenAt.toISOString(),
-    dateModified: summary.createdAt.toISOString(),
+    // unstable_cache round-trips through JSON, so a cache hit hands back
+    // these Date fields as plain strings rather than Date instances — wrap
+    // in `new Date()` so this works whether the value just came from
+    // Postgres (Date) or from the cache (string).
+    datePublished: new Date(story.firstSeenAt).toISOString(),
+    dateModified: new Date(summary.createdAt).toISOString(),
     inLanguage: locale,
     url: storyUrl,
     mainEntityOfPage: storyUrl,
