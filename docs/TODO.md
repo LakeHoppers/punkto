@@ -1513,3 +1513,22 @@ identified need Emre to check external dashboards (see below).
   alias confirmed pointing at the new build). Tomorrow's 07:00 CEST run is
   the first real-world test of both fixes together; Emre will flag it
   immediately if the email doesn't arrive on time.
+- [x] **Reverted the concurrency rewrite entirely, per Emre.** It was a
+  preemptive fix for a future timeout risk that hadn't materialized, made
+  without checking Resend's real rate limit first — exactly the kind of
+  change that shouldn't touch a working core path without a real, current
+  reason. `SendDigestUseCase` is back to a plain sequential loop. Added an
+  explicit `maxDuration = 300` to `/api/cron/deliver/route.ts` (matching
+  `/api/cron/pipeline`'s documented Hobby/Fluid-Compute ceiling) so the
+  real budget is on record: at ~300-600ms/subscriber, sequential delivery
+  stays under half that budget until the low hundreds of subscribers —
+  concurrency shouldn't come back until real counts approach that, and
+  only after checking the target API's rate limit first.
+- **Growth trigger, unchanged: 70 subscribers.** That's still the right
+  single number to act on — it's forced by Resend's 100 email/day free-tier
+  cap (unrelated to the timeout math), well before sequential delivery
+  timing becomes a real concern (low hundreds). At 70: upgrade Resend,
+  reassess Vercel Pro (mainly for the Hobby ToS/commercial-use restriction
+  and page-traffic headroom, not delivery timing), and re-check whether
+  concurrent delivery is actually needed yet — it most likely still won't
+  be at that count.
