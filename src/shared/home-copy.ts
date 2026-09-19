@@ -11,7 +11,6 @@ export const HOME_COPY: Record<
     whyItMatters: string;
     aiDisclosure: string;
     aiAnalysis: string;
-    aiFooter: string;
     sourcesLabel: string;
     storiesLabel: (count: number) => string;
   }
@@ -19,7 +18,6 @@ export const HOME_COPY: Record<
   tr: {
     aiDisclosure: "Özetler yapay zeka ile otomatik oluşturulur. Kaynaklar her haberin altında bağlantılıdır.",
     aiAnalysis: "Punkto'nun yapay zeka destekli editöryal süreciyle hazırlanmıştır.",
-    aiFooter: "Özetler yapay zeka ile oluşturulur.",
     sourcesLabel: "Kaynaklar",
     tagline: "Haberler, kısa ve öz.",
     title: "Almanya'dan her sabah, Türkçe özet.",
@@ -34,7 +32,6 @@ export const HOME_COPY: Record<
   de: {
     aiDisclosure: "Die Zusammenfassungen werden automatisiert mit KI erstellt. Quellen sind bei jedem Beitrag verlinkt.",
     aiAnalysis: "Erstellt im Rahmen des KI-gestützten Redaktionsprozesses von Punkto.",
-    aiFooter: "Zusammenfassungen mit KI erstellt.",
     sourcesLabel: "Quellen",
     tagline: "Nachrichten, auf den Punkt.",
     title: "Die wichtigsten Nachrichten aus Deutschland, jeden Morgen.",
@@ -47,7 +44,6 @@ export const HOME_COPY: Record<
   en: {
     aiDisclosure: "Summaries are generated automatically with AI. Sources are linked with every story.",
     aiAnalysis: "Prepared through Punkto's AI-assisted editorial process.",
-    aiFooter: "Summaries generated with AI.",
     sourcesLabel: "Sources",
     tagline: "News, to the point.",
     title: "The most important German news, every morning.",

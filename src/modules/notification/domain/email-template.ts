@@ -58,7 +58,7 @@ export function buildDigestEmail(digest: DigestView, locale: Locale = "tr"): Dig
     )
     .join("\n\n---\n\n");
 
-  const text = `Punkto — ${dateLabel}\n${copy.description}\n\n${viewOnSiteLabel}: ${viewOnSiteUrl}\n\n${storyText}\n\n${copy.aiDisclosure}\n\n${impressumLabel}: ${impressumUrl}\n${copy.aiFooter}`;
+  const text = `Punkto — ${dateLabel}\n${copy.description}\n\n${viewOnSiteLabel}: ${viewOnSiteUrl}\n\n${storyText}\n\n${copy.aiDisclosure}\n\n${impressumLabel}: ${impressumUrl}`;
 
   const html = `<div lang="${locale}" style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #1E1C19; background-color: #FAF7F1;">
 <div style="padding: 24px 24px 16px;">
@@ -87,7 +87,6 @@ ${digest.items
 <footer style="padding: 0 24px 24px; font-size: 12px; font-weight: 400; line-height: 1.5; color: #6F6558;">
   <p>${escapeHtml(copy.aiDisclosure)}</p>
   <a href="${impressumUrl}" style="color: #6F6558; text-decoration: underline;">${escapeHtml(impressumLabel)}</a>
-  <p>${escapeHtml(copy.aiFooter)}</p>
 </footer>
 </div>`;
 
