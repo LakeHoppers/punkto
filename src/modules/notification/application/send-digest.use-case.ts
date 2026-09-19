@@ -8,16 +8,6 @@ export interface SendDigestResult {
   skipped: number;
 }
 
-// Caps how many deliveries run at once. Sequential delivery scaled linearly
-// with subscriber count and risked hitting the serverless function's time
-// limit as the user base grows; a bounded batch size keeps total run time
-// roughly flat instead, without opening one connection/request per
-// candidate all at once. Kept under Resend's per-account requests/second
-// cap (hit at 20 concurrent sends on 2026-09-19, delaying ~9 users' digest
-// by a full hour) — ResendEmailSender also retries individual 429s, so this
-// is a margin against bursts, not the only safeguard.
-const DELIVERY_CONCURRENCY = 8;
-
 type DeliveryOutcome = "delivered" | "failed" | "skipped";
 
 export class SendDigestUseCase {
@@ -27,6 +17,15 @@ export class SendDigestUseCase {
     private readonly emailSender: EmailSender,
   ) {}
 
+  // Sequential on purpose: a 2026-09-19 attempt at concurrent batches
+  // (to preempt a hypothetical future timeout as the subscriber count
+  // grows) tripped Resend's rate limit at real, current scale and delayed
+  // delivery by hours instead. At today's subscriber count this loop
+  // finishes in seconds, nowhere near the cron route's timeout budget —
+  // see the maxDuration comment on /api/cron/deliver/route.ts for the
+  // actual ceiling and the subscriber count that would justify revisiting
+  // this. Don't reintroduce concurrency preemptively; only do it against a
+  // real, measured need, with the target API's rate limit checked first.
   async execute(now: Date = new Date()): Promise<SendDigestResult> {
     const candidates = await this.repository.getEmailDeliveryCandidates();
     const due = candidates.filter((candidate) =>
@@ -34,11 +33,9 @@ export class SendDigestUseCase {
     );
 
     const counts: Record<DeliveryOutcome, number> = { delivered: 0, failed: 0, skipped: 0 };
-
-    for (let i = 0; i < due.length; i += DELIVERY_CONCURRENCY) {
-      const batch = due.slice(i, i + DELIVERY_CONCURRENCY);
-      const outcomes = await Promise.all(batch.map((candidate) => this.deliverTo(candidate, now)));
-      for (const outcome of outcomes) counts[outcome]++;
+    for (const candidate of due) {
+      const outcome = await this.deliverTo(candidate, now);
+      counts[outcome]++;
     }
 
     return { delivered: counts.delivered, failed: counts.failed, skipped: counts.skipped };
